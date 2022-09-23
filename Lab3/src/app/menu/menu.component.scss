@@ -1,0 +1,40 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  margin: 0;
+}
+
+.text {
+  &_black {
+    color: #000000;
+  }
+
+  &_bold_black {
+    color: #000000;
+    font-weight: bold;
+  }
+}
+
+.title {
+  align-self: center;
+  color: #000000;
+  font-weight: bold;
+
+  &_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_line {
+    width: 100%;
+    border-bottom: 1px solid #000000;
+  }
+}
+
+.mt {
+  &_36 {
+    margin-top: 36px;
+  }
+}
