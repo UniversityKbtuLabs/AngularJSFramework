@@ -1,0 +1,17 @@
+.esp-content{
+    display: flex;
+    flex-direction: column;
+    .form-selector {
+      padding: 10px 0;
+    }
+    .form-content {
+        display: flex;
+        flex-direction: row;
+    }
+    #typeRk {
+        padding-left: 9px;
+    }
+    #esp-help{
+        text-align: center;
+    }
+}

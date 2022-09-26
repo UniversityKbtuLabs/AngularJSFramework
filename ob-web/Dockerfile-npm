@@ -1,0 +1,6 @@
+
+FROM node:8
+
+WORKDIR /builder
+
+RUN npm rebuild node-sass

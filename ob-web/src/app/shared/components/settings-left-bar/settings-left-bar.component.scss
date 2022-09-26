@@ -1,0 +1,83 @@
+@import '/src/styles/variables.scss';
+
+.stg_left_bar {
+  padding: 24px;
+  background: #FFFFFF;
+  border-radius: 12px;
+  margin-bottom: 24px;
+}
+
+.stg_cont1 {
+  min-height: 48px;
+}
+
+.stg_name {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #2A353D;
+}
+
+.stg_company {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  margin-top: 4px;
+  color: #2A353D;
+}
+
+.stg_btn_cont {
+  margin-top: 32px;
+
+  :hover {
+    cursor: pointer;
+  }
+}
+
+.stg_btn_wrapper {
+  margin-bottom: 8px;
+
+  &_last {
+    margin-bottom: 0px;
+  }
+}
+
+.stg_btn {
+  padding: 16px;
+  height: auto;;
+  display: flex;
+  flex-direction: row;
+  background: $color-gray_main;
+  border-radius: 12px;
+}
+
+.active {
+  border: 1px solid #11BB91;
+  box-sizing: border-box;
+  margin: 0 -1px;
+}
+
+.stg_btn_name {
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 15px;
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #2A353D;
+  text-decoration: none;
+}
+@media screen and (max-width: 1023px) {
+  .stg_left_bar {
+    padding: 16px;
+  }
+}

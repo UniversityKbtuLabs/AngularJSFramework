@@ -1,0 +1,14 @@
+@import "/src/styles/main";
+.wrap-content {
+  border: 1px solid $color-pale-gray;
+  border-radius: 8px;
+  text-align: center;
+  width: 264px;
+  padding: 21px;
+}
+.dashed {
+  border: 1px dashed $color-gray-dark;
+}
+.solid {
+  border: 1px solid $color-gray-dark;
+}

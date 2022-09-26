@@ -1,0 +1,64 @@
+<div class="currencyes">
+  <p class="currencyes_title">
+    {{ 'currencyControl.halykFX.rates' | translate }}
+  </p>
+
+  <p class="currencyes_text_1 mt_16">
+    {{ 'currencyControl.halykFX.benefit' | translate }}
+  </p>
+
+  <p class="currencyes_text_2 mt_32">
+    {{ 'currencyControl.halykFX.chooseRate' | translate }}
+  </p>
+
+  <div class="mt_16">
+    <ob-loader [loading]="currencyesTypeListLoading">
+      <ob-tab-selects
+        [list]="currencyesTypeList"
+        [selected]="currencyesTypeList[0]?.code"
+        (obSelectedDate)="changeCurrencyType($event)"></ob-tab-selects>
+    </ob-loader>
+  </div>
+
+  <div class="mt_16">
+    <ob-loader [loading]="currentRatesLoading">
+      <table>
+        <tr>
+          <th>{{ 'currencyControl.halykFX.currency' | translate }}</th>
+          <th>{{ 'currencyControl.halykFX.sell' | translate }}</th>
+          <th>{{ 'currencyControl.halykFX.buy' | translate }}</th>
+          <th>{{ 'currencyControl.halykFX.actions' | translate }}</th>
+        </tr>
+        <tr *ngFor="let item of currencyList; let i = index">
+          <td>
+            <img
+              alt="{{ getCurrency(item) }}"
+              class="mr_16"
+              src="./assets/icons/{{
+                getCurrency(item).toLowerCase()
+              }}flag.svg" />
+            <div class="d-flex flex-row">
+              <p>{{ getCurrency(item) }}</p>
+              -
+              <p>{{ getCurrencyDescription(item)?.name }}</p>
+            </div>
+          </td>
+          <td>
+            <p>{{ getSellAmount(item) }}</p>
+          </td>
+          <td>
+            <p>{{ getBuyAmount(item) }}</p>
+          </td>
+          <td>
+            <p (click)="goToConvertationPage(item, 'sell')">
+              {{ 'currencyControl.halykFX.toSell' | translate }}
+            </p>
+            <p class="ml_40" (click)="goToConvertationPage(item, 'buy')">
+              {{ 'currencyControl.halykFX.toBuy' | translate }}
+            </p>
+          </td>
+        </tr>
+      </table>
+    </ob-loader>
+  </div>
+</div>

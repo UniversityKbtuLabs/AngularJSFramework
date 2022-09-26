@@ -1,0 +1,1015 @@
+<div #tableModal>
+  <div
+    [ngClass]="{ 'modal-wrapper': isLoading }"
+    *ngIf="
+      type !== 'PAY_TO_CARD' &&
+      type !== 'PAY_ORDER_CARDS' &&
+      operationDetails.knpCode !== '342' &&
+      type !== 'PAY_P2P' &&
+      type !== 'DEPOSIT_OPEN' &&
+      type !== 'CORP_CARD_ISSUE' &&
+      type !== 'ACCOUNT_CREATE'
+    ">
+    <ob-loader [loading]="isLoading">
+      <div class="modal-header">
+        <div *ngIf="!isAccountUrl; else subType">
+          <p
+            class="modal-title"
+            *ngIf="type !== 'CURR_EXCHANGE_FX' && type !== 'ACCOUNT_STATEMENT'">
+            {{ operationDetails.operationTypeName }}
+          </p>
+          <p class="modal-title" *ngIf="type === 'CURR_EXCHANGE_FX'">
+            {{ getOperationTypeName('CURR_EXCHANGE_FX') }}
+          </p>
+          <p class="modal-title" *ngIf="type === 'ACCOUNT_STATEMENT'">
+            {{ getOperationTypeName('PAY_BUDGET') }}
+          </p>
+        </div>
+        <ng-template #subType>
+          <p class="modal-title">
+            {{
+              operationDetails.nameRecipient ||
+                operationDetails.accountCredit ||
+                operationInfo?.operation?.type
+            }}
+          </p>
+        </ng-template>
+
+        <button
+          type="button"
+          class="btn-close close pull-right"
+          aria-label="Close"
+          (click)="closeModal()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="operation" *ngIf="!errorMessage">
+          <div class="operation-details">
+            <div class="operation-details__item">
+              <p
+                class="operation-secondary"
+                *ngIf="!isAccountUrl && type !== 'CURR_EXCHANGE_FX'">
+                {{ 'operations.default.destination' | translate }}
+              </p>
+              <p
+                class="operation-secondary"
+                *ngIf="type === 'CURR_EXCHANGE_FX'">
+                {{ 'currencyControl.convertation.amountDebit' | translate }}
+              </p>
+              <span
+                class="operation-main"
+                *ngIf="
+                  (operationDetails.subType === 'BUDGET' ||
+                    operationDetails.subType === 'SALARY') &&
+                  type !== 'CURR_EXCHANGE_FX'
+                "
+                >{{ operationDetails.bankNameRecipient }}
+              </span>
+
+              <ng-template [ngIf]="!isAccountUrl">
+                <span
+                  class="operation-main"
+                  *ngIf="
+                    operationDetails.subType !== 'BUDGET' &&
+                    operationDetails.subType !== 'SALARY' &&
+                    type !== 'CURR_EXCHANGE_FX'
+                  "
+                  >{{
+                    operationDetails.nameRecipient ||
+                      operationDetails.accountCredit ||
+                      operationInfo?.operation?.type
+                  }}
+                </span>
+              </ng-template>
+              <span
+                class="operation-main-bold"
+                *ngIf="type === 'CURR_EXCHANGE_FX'"
+                >{{ helperService.formatAmount(operationDetails.amountDebit) }}
+                {{
+                  helperService.formatCurrency(operationDetails.currencyDebit)
+                }}
+              </span>
+            </div>
+            <div class="operation-details__item">
+              <p
+                class="operation-secondary"
+                *ngIf="type !== 'CURR_EXCHANGE_FX'">
+                {{
+                  isAccountUrl
+                    ? ('operations.payments.sum' | translate)
+                    : ('operations.default.paymentAmount' | translate)
+                }}
+              </p>
+              <p
+                class="operation-secondary"
+                *ngIf="type === 'CURR_EXCHANGE_FX'">
+                {{ 'currencyControl.convertation.amountCredit' | translate }}
+              </p>
+              <span
+                class="operation-main-bold"
+                *ngIf="
+                  type !== 'CURR_EXCHANGE_FX' && type !== 'ACCOUNT_STATEMENT'
+                "
+                >{{
+                  helperService.formatAmount(operationDetails.amount)
+                }}
+                ₸</span
+              >
+              <span
+                class="operation-main-bold"
+                *ngIf="type === 'CURR_EXCHANGE_FX'"
+                >{{
+                  helperService.formatAmount(operationDetails.amountCredit)
+                }}
+                {{
+                  helperService.formatCurrency(operationDetails.currencyCredit)
+                }}</span
+              >
+              <span
+                class="operation-main-bold"
+                *ngIf="type === 'ACCOUNT_STATEMENT'">
+                {{ operationInfo.statementReceiver === 'C' ? '+' : '-' }}
+                {{ helperService.formatAmount(operationInfo.amount) }}
+                {{ helperService.formatCurrency(operationInfo.currency) }}
+              </span>
+            </div>
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'CURR_EXCHANGE_FX'">
+              <p class="operation-secondary">
+                {{ 'currencyControl.convertation.atTheRate' | translate }}
+              </p>
+              <span class="operation-main"
+                >{{ helperService.formatAmount(operationDetails.rate) }}
+                {{
+                  helperService.formatCurrency(operationDetails.currencyDebit)
+                }}</span
+              >
+            </div>
+          </div>
+          <!-- Статус -->
+          <div
+            class="operation-status"
+            *ngIf="
+              operationInfo.status !== 'DRAFT' &&
+              operationInfo.status !== null &&
+              operationInfo.type !== 'ACCOUNT_STATEMENT'
+            ">
+            <ob-small-status
+              [list]="getStatusHistory().reverse()"
+              [type]="'status'"></ob-small-status>
+          </div>
+          <!-- Статус -->
+          <div class="operation-details__body">
+            <p class="operation-subtitle">
+              {{
+                isAccountUrl
+                  ? ('operations.default.details' | translate)
+                  : ('operations.payments.paymentDetails' | translate)
+              }}
+            </p>
+            <!-- Номер документа -->
+            <div class="operation-details__item">
+              <p class="operation-secondary">
+                {{ 'operations.payment-confirmation.doc-number' | translate }}
+              </p>
+              <span
+                class="operation-main"
+                *ngIf="type !== 'ACCOUNT_STATEMENT'"
+                >{{ operationDetails.docNum }}</span
+              >
+              <span
+                class="operation-main"
+                *ngIf="type === 'ACCOUNT_STATEMENT'"
+                >{{ operationInfo.documentNumber }}</span
+              >
+            </div>
+            <!-- Номер документа -->
+            <!-- Дата и время -->
+            <div
+              class="operation-details__item"
+              *ngIf="
+                operationInfo.status !== 'NEWDOC' &&
+                operationInfo.status !== 'SIGN_DEAL' &&
+                timeAndValueDate
+              ">
+              <p class="operation-secondary">
+                {{
+                  isAccountUrl
+                    ? ('operations.default.timeAndValueDate' | translate)
+                    : ('operations.default.timeAndValueDateCreated' | translate)
+                }}
+              </p>
+              <span class="operation-main">{{
+                timeAndValueDate || operationInfo.date
+              }}</span>
+            </div>
+            <!-- Дата и время -->
+            <!-- Дата -->
+            <div
+              class="operation-details__item"
+              *ngIf="
+                (operationInfo.status === 'NEWDOC' ||
+                  operationInfo.status === 'SIGN_DEAL') &&
+                timeAndValueDate
+              ">
+              <p class="operation-secondary">
+                {{ 'operations.default.dateCreated' | translate }}
+              </p>
+              <span class="operation-main">{{ timeAndValueDate }}</span>
+            </div>
+            <!-- Дата  -->
+            <!-- Банк получателя -->
+            <!-- <div
+              class="operation-details__item"
+              *ngIf="operationDetails.subType === 'SALARY'"
+            >
+              <p class="operation-secondary">
+                {{ 'operations.default.bankRecipient' | translate }}
+              </p>
+              <span class="operation-main">{{
+                operationDetails.bankNameRecipient
+              }}</span>
+            </div> -->
+            <!-- Банк получателя -->
+            <!-- ИИН/БИН -->
+            <div
+              class="operation-details__item"
+              *ngIf="type !== 'CURR_EXCHANGE_FX'">
+              <p class="operation-secondary">
+                {{
+                  isAccountUrl
+                    ? ('operations.countragent.idn' | translate)
+                    : ('default.idn' | translate)
+                }}
+              </p>
+              <span
+                class="operation-main"
+                *ngIf="operationDetails.subType !== 'BUDGET'"
+                >{{
+                  operationDetails.idnRecipient ||
+                    operationDetails.binRecipient ||
+                    operationInfo.iin
+                }}</span
+              >
+              <span
+                class="operation-main"
+                *ngIf="operationDetails.subType === 'BUDGET'"
+                >{{ operationDetails.payBudgetList[0].bin }}</span
+              >
+            </div>
+            <!-- ИИН/БИН -->
+            <!-- Счет списания -->
+            <div
+              class="operation-details__item"
+              *ngIf="operationDetails.subType === 'BUDGET'">
+              <p class="operation-secondary">
+                {{ 'default.period' | translate }}
+              </p>
+              <span class="operation-main">{{
+                getFormattedPeriod(operationDetails.payBudgetList[0].period)
+              }}</span>
+            </div>
+
+            <div class="operation-details__item">
+              <p class="operation-secondary">
+                {{
+                  'operations.payment-confirmation.withdrawal-account'
+                    | translate
+                }}
+              </p>
+              <span class="operation-main">{{
+                operationDetails.accountSender ||
+                  operationDetails.accountDebit ||
+                  operationInfo?.accountSender
+              }}</span>
+            </div>
+            <!-- Счет списания -->
+            <!-- Счет зачисления -->
+            <div class="operation-details__item">
+              <p class="operation-secondary">
+                {{
+                  'operations.payment-confirmation.receiver-account' | translate
+                }}
+              </p>
+              <div class="operation-details__account-recipient operation-main">
+                <span>{{
+                  operationDetails.accountRecipient ||
+                    operationDetails.accountCredit ||
+                    operationInfo.accountRecipient
+                }}</span>
+                <div
+                  class="bank-recipient"
+                  *ngIf="operationDetails.bankNameRecipient">
+                  <span
+                    *ngIf="isBankIconExists"
+                    #bankIcon
+                    class="icon icon_bank icon_{{
+                      operationDetails.bicBankRecipient
+                    }}"></span>
+                  <p>
+                    {{ operationDetails.bankNameRecipient }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <!-- Счет зачисления -->
+            <!-- Регион -->
+            <div
+              class="operation-details__item"
+              *ngIf="operationDetails.subType === 'BUDGET'">
+              <p class="operation-secondary">
+                {{ 'operations.budget.region' | translate }}
+              </p>
+              <span class="operation-main">{{
+                operationDetails.nameRecipient
+              }}</span>
+            </div>
+            <!-- Регион -->
+            <!-- УГД -->
+            <div
+              class="operation-details__item"
+              *ngIf="operationDetails.subType === 'BUDGET'">
+              <p class="operation-secondary">
+                {{ 'operations.budget.ugd' | translate }}
+              </p>
+              <span
+                class="operation-main"
+                *ngIf="operationDetails.payBudgetList[0].taxCommitteeName">
+                {{ operationDetails.payBudgetList[0].taxCommitteeName }}
+              </span>
+            </div>
+            <!-- УГД -->
+            <!-- БИК -->
+            <div
+              class="operation-details__item"
+              *ngIf="operationDetails.subType === 'SALARY'">
+              <p class="operation-secondary">
+                {{ 'operations.payments.bic' | translate }}
+              </p>
+              <span class="operation-main">{{
+                operationDetails.bicBankRecipient
+              }}</span>
+            </div>
+            <!-- БИК -->
+            <!-- КНП -->
+            <div
+              class="operation-details__item"
+              *ngIf="
+                operationDetails.subType !== 'BUDGET' &&
+                type !== 'CURR_EXCHANGE_FX'
+              ">
+              <p class="operation-secondary">
+                {{ 'operations.default.knp' | translate }}
+              </p>
+              <span class="operation-main">
+                {{ operationDetails.knpCode || operationInfo?.knpCode }}
+              </span>
+            </div>
+            <!-- КНП -->
+            <!-- Назначение платежа -->
+            <div
+              class="operation-details__item"
+              *ngIf="operationDetails.subType !== 'BUDGET'">
+              <p class="operation-secondary">
+                {{
+                  isAccountUrl
+                    ? ('operations.goal' | translate)
+                    : ('operations.payments.purpose' | translate)
+                }}
+              </p>
+              <span class="operation-main">
+                {{
+                  operationDetails.knpName ||
+                    operationDetails.purpose ||
+                    operationInfo?.operation.sender
+                }}
+              </span>
+            </div>
+            <!-- Назначение платежа -->
+            <!-- Тип отчисления КНП -->
+            <div
+              class="operation-details__item"
+              *ngIf="operationDetails.subType === 'BUDGET'">
+              <p class="operation-secondary">
+                {{ 'operations.budget.knp-cbc' | translate }}
+              </p>
+              <div class="operation-main">
+                <span>
+                  ({{ 'operations.default.knp' | translate }}:
+                  {{ operationDetails.knpCode }}, КБК:
+                  {{ operationDetails.payBudgetList[0].cbc }} )
+                </span>
+                <p>
+                  {{ 'operations.default.knp' | translate }}:
+                  {{ operationDetails.payBudgetList[0].knpName }}
+                </p>
+                <p>
+                  {{ 'operations.default.cbc' | translate }}:
+                  {{ operationDetails.payBudgetList[0].cbcName }}
+                </p>
+              </div>
+              <!-- Тип отчисления КНП -->
+            </div>
+            <!-- Тип отчисления КНП -->
+          </div>
+
+          <div
+            *ngIf="employerList?.length > 0 && type !== 'CURR_EXCHANGE_FX'"
+            class="operation-details__employers">
+            <div class="table_title_wrapper" (click)="employeeTableShow()">
+              <p
+                class="operation-details__employers-title"
+                [ngClass]="{ 'mb-16': showEmployeeTable }">
+                {{ 'operations.default.employees' | translate }} ({{
+                  employerList?.length
+                }})
+              </p>
+              <img
+                src="assets/icons/down_arrow.svg"
+                [ngClass]="{
+                  arrow_down: showEmployeeTable === false,
+                  arrow_up: showEmployeeTable === true
+                }" />
+            </div>
+
+            <div
+              class="operation-employerList"
+              *ngIf="showEmployeeTable === true">
+              <p class="operation-employerList__number title">№</p>
+              <p class="operation-employerList__operation title">
+                {{ 'operations.default.employees' | translate }}
+              </p>
+              <p
+                class="operation-employerList__period title"
+                *ngIf="type !== 'PAY_SALARY_V2' && type !== 'PAY_SALARY'">
+                {{ 'default.period' | translate }}
+              </p>
+              <p
+                class="operation-employerList__period title"
+                *ngIf="type === 'PAY_SALARY_V2' || type === 'PAY_SALARY'">
+                {{ 'default.account' | translate }}
+              </p>
+              <p class="operation-employerList__amount title">
+                {{ 'operations.default.amount' | translate }}
+              </p>
+            </div>
+
+            <div
+              *ngIf="showEmployeeTable === true"
+              class="employee_table_wrapper">
+              <div
+                class="operation-employerList list"
+                *ngFor="let employee of employerList; let idx = index">
+                <p class="operation-employerList__number employee">
+                  {{ idx + 1 }}
+                </p>
+                <div class="operation-employerList__operation">
+                  <p class="employee">
+                    {{ employee.lastName }} {{ employee.firstName }}
+                    {{ employee.midlleName }}
+                  </p>
+                  <p class="employee-number">{{ employee.iin }}</p>
+                </div>
+                <p
+                  class="operation-employerList__period employee"
+                  *ngIf="
+                    type !== 'PAY_SALARY_V2' &&
+                    type !== 'PAY_SALARY' &&
+                    employee.period
+                  ">
+                  {{
+                    helperService.formatDateMonthYear(
+                      helperService.formattedPeriod(employee.period)
+                    )
+                  }}
+                </p>
+                <p
+                  class="operation-employerList__period employee"
+                  *ngIf="type === 'PAY_SALARY_V2' || type === 'PAY_SALARY'">
+                  {{ employee.account }}
+                </p>
+                <p class="operation-employerList__amount employee">
+                  {{ helperService.formatAmount(employee.amount) }} ₸
+                </p>
+              </div>
+            </div>
+          </div>
+          <!-- Подписанты -->
+          <ob-loader
+            [loading]="isLoadingSigningHistory"
+            *ngIf="
+              type !== 'CURR_EXCHANGE_FX' &&
+              operationInfo.type !== 'ACCOUNT_STATEMENT'
+            ">
+            <div
+              class="operation-signers"
+              *ngIf="getSigners().length > 0"
+              (click)="openSignersList()">
+              <ob-small-status
+                [list]="getSigners()"
+                [type]="'signers'"
+                [open]="openSigners"></ob-small-status>
+            </div>
+          </ob-loader>
+          <!-- Подписанты -->
+        </div>
+
+        <div *ngIf="errorMessage" class="operation-details__error">
+          {{ errorMessage }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <ob-new-doc-buttons
+          [status]="operationInfo.status"
+          [operation]="operationDetails"
+          [operationInfo]="operationInfo"></ob-new-doc-buttons>
+      </div>
+    </ob-loader>
+  </div>
+
+  <div
+    [ngClass]="{ 'modal-wrapper': isLoading }"
+    *ngIf="
+      type === 'PAY_TO_CARD' ||
+      type === 'PAY_ORDER_CARDS' ||
+      operationDetails.knpCode === '342' ||
+      type === 'PAY_P2P'
+    ">
+    <ob-loader [loading]="isLoading">
+      <div class="modal-header">
+        <div>
+          <p class="modal-title">{{ operationDetails.operationTypeName }}</p>
+        </div>
+        <button
+          type="button"
+          class="btn-close close pull-right"
+          aria-label="Close"
+          (click)="closeModal()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body-content">
+        <div>
+          <div class="operation-details">
+            <div class="operation-details__item">
+              <p class="operation-secondary">
+                {{ 'operations.payments.sum' | translate }}
+              </p>
+              <span class="operation-main-bold"
+                >{{
+                  helperService.formatAmount(operationDetails.amount)
+                }}
+                ₸</span
+              >
+            </div>
+          </div>
+          <!-- <div class="operation-details">        
+          <div class="operation-details__item"> 
+            <span class="icon icon_status_success"></span>    
+            <p class="operation-secondary"> Исполнено </p>
+          </div>
+        </div> -->
+          <!-- Статус -->
+          <div
+            class="operation-status"
+            *ngIf="
+              operationInfo.status !== 'DRAFT' &&
+              operationInfo.status !== '' &&
+              operationInfo.status !== null &&
+              type !== 'ACCOUNT_STATEMENT'
+            ">
+            <ob-small-status
+              [list]="getStatusHistory().reverse()"
+              [type]="'status'"></ob-small-status>
+          </div>
+          <!-- Статус -->
+          <div class="operation-details__body">
+            <p class="operation-subtitle">
+              {{ 'operations.payments.paymentDetails' | translate }}
+            </p>
+            <div class="operation-details__item">
+              <p class="operation-secondary">
+                {{ 'operations.payment-confirmation.doc-number' | translate }}
+              </p>
+              <span class="operation-main">{{ operationDetails.docNum }}</span>
+            </div>
+            <!-- Дата и время -->
+            <div
+              class="operation-details__item"
+              *ngIf="
+                operationInfo.status !== 'NEWDOC' &&
+                operationInfo.status !== 'SIGN_DEAL' &&
+                timeAndValueDate
+              ">
+              <p class="operation-secondary">
+                {{ 'operations.default.timeAndValueDateCreated' | translate }}
+              </p>
+              <span class="operation-main">{{ timeAndValueDate }}</span>
+            </div>
+            <!-- Дата и время -->
+            <!-- Дата -->
+            <div
+              class="operation-details__item"
+              *ngIf="
+                operationInfo.status === 'NEWDOC' ||
+                operationInfo.status === 'SIGN_DEAL'
+              ">
+              <p class="operation-secondary">
+                {{ 'operations.default.dateCreated' | translate }}
+              </p>
+              <span class="operation-main">{{
+                formatDate(operationDetails.docDate) || ''
+              }}</span>
+            </div>
+            <!-- Дата  -->
+            <div class="operation-details__item">
+              <p class="operation-secondary">
+                {{
+                  'operations.payment-confirmation.withdrawal-account'
+                    | translate
+                }}
+              </p>
+              <span class="operation-main">{{
+                operationDetails?.accountSender ||
+                  operationDetails?.senderIban ||
+                  operationDetails?.senderCardMask
+              }}</span>
+            </div>
+            <div class="operation-details__item">
+              <p class="operation-secondary">
+                {{
+                  'operations.payment-confirmation.receiver-account' | translate
+                }}
+              </p>
+              <div class="operation-details__account-recipient operation-main">
+                <span class="operation-main">{{
+                  operationDetails?.accountRecipient ||
+                    operationDetails?.recipientIban ||
+                    operationDetails?.receiverCardMask
+                }}</span>
+                <div
+                  class="bank-recipient"
+                  *ngIf="operationDetails.bankNameRecipient || bankName">
+                  <span
+                    *ngIf="
+                      isBankIconExists && operationDetails.bankNameRecipient
+                    "
+                    #bankIcon
+                    class="icon icon_bank icon_{{
+                      operationDetails.bicBankRecipient
+                    }}"></span>
+                  <p>
+                    {{ operationDetails.bankNameRecipient || bankName }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- Подписанты -->
+          <div class="operation-signers" *ngIf="getSigners().length > 0">
+            <ob-small-status
+              [list]="getSigners()"
+              [type]="'signers'"></ob-small-status>
+          </div>
+          <!-- Подписанты -->
+        </div>
+        <div *ngIf="errorMessage" class="operation-details__error">
+          {{ errorMessage }}
+        </div>
+      </div>
+      <div class="modal-footer">
+        <ob-new-doc-buttons
+          [status]="
+            operationInfo?.status || operationInfo?.status === null
+              ? operationInfo.status
+              : 'DRAFT'
+          "
+          class = "w-100"
+          [operation]="operationDetails"
+          [operationInfo]="operationInfo"
+          (clickToEmail)="sendToEmail()"></ob-new-doc-buttons>
+      </div>
+    </ob-loader>
+  </div>
+
+  <div
+    [ngClass]="{ 'modal-wrapper': isLoading }"
+    *ngIf="
+      type === 'DEPOSIT_OPEN' ||
+      type === 'CORP_CARD_ISSUE' ||
+      type === 'ACCOUNT_CREATE'
+    ">
+    <ob-loader [loading]="isLoading">
+      <div class="modal-header">
+        <div>
+          <p class="modal-title" *ngIf="type === 'DEPOSIT_OPEN'">
+            {{ operationDetails.operationTypeName }}
+          </p>
+          <p class="modal-title" *ngIf="type === 'CORP_CARD_ISSUE'">
+            {{ getOperationTypeName('CORP_CARD_ISSUE') }}
+          </p>
+          <p class="modal-title" *ngIf="type === 'ACCOUNT_CREATE'">
+            {{ getOperationTypeName('ACCOUNT_CREATE') }}
+          </p>
+        </div>
+        <button
+          type="button"
+          class="btn-close close pull-right"
+          aria-label="Close"
+          (click)="closeModal()">
+          <span aria-hidden="true" class="visually-hidden">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body-content pb-32">
+        <div>
+          <!-- Статус -->
+          <div
+            class="operation-status"
+            *ngIf="
+              operationInfo.status !== '' && operationInfo.status !== null
+            ">
+            <ob-small-status
+              [list]="getStatusHistory().reverse()"
+              [type]="'status'"></ob-small-status>
+          </div>
+          <!-- Статус -->
+          <div class="operation-details__body">
+            <p class="operation-subtitle">
+              {{ 'products.default.details' | translate }}
+            </p>
+
+            <!--Кому-->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'CORP_CARD_ISSUE'">
+              <p class="operation-secondary">
+                {{ 'operations.default.toWhom' | translate }}
+              </p>
+              <span class="operation-main">{{
+                operationInfo.nameRecipient
+              }}</span>
+            </div>
+            <!--Кому-->
+
+            <!--ИИН-->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'CORP_CARD_ISSUE'">
+              <p class="operation-secondary">
+                {{ 'operations.default.iin' | translate }}
+              </p>
+              <span class="operation-main">{{
+                operationInfo.iin || operationDetails.iin
+              }}</span>
+            </div>
+            <!--ИИН-->
+
+            <!--Доставка-->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'CORP_CARD_ISSUE'">
+              <p class="operation-secondary">
+                {{ 'products.cards.delivery_method' | translate }}
+              </p>
+              <ng-template [ngIf]="operationDetails.deliveryType === 'DEP'">
+                <span class="operation-main">{{
+                  'products.default.bank-department' | translate
+                }}</span>
+              </ng-template>
+              <ng-template [ngIf]="operationDetails.deliveryType === 'DEL'">
+                <span class="operation-main">{{
+                  'products.default.courier-delivery' | translate
+                }}</span>
+              </ng-template>
+            </div>
+            <!--Доставка-->
+
+            <!--Адрес-->
+            <ng-template [ngIf]="operationDetails.deliveryType === 'DEP'">
+              <div
+                class="operation-details__item"
+                *ngIf="type === 'CORP_CARD_ISSUE' && operationDetails.branch">
+                <p class="operation-secondary">
+                  {{ 'default.address' | translate }}
+                </p>
+                <span class="operation-main">{{
+                  operationDetails.branch
+                }}</span>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="operationDetails.deliveryType === 'DEL'">
+              <div
+                class="operation-details__item"
+                *ngIf="type === 'CORP_CARD_ISSUE' && returnDeliveryLocation()">
+                <p class="operation-secondary">
+                  {{ 'default.address' | translate }}
+                </p>
+                <span class="operation-main">{{
+                  returnDeliveryLocation()
+                }}</span>
+              </div>
+            </ng-template>
+            <!--Адрес-->
+
+            <!--Наименование-->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'DEPOSIT_OPEN' && operationDetails.depositType">
+              <p class="operation-secondary">
+                {{ 'default.name' | translate }}
+              </p>
+              <span class="operation-main">{{
+                operationDetails.depositType
+              }}</span>
+            </div>
+            <!--Наименование-->
+            <!-- Сумма депозита -->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'DEPOSIT_OPEN' && operationDetails.amount">
+              <p class="operation-secondary">
+                {{ 'products.deposits.depositAmount' | translate }}
+              </p>
+              <span class="operation-main">
+                {{ numberWithCommas(operationDetails.amount) }}
+                {{
+                  helperService.formatCurrency(
+                    operationDetails.benefAccountCurrency
+                  )
+                }}
+              </span>
+            </div>
+            <!-- Сумма депозита -->
+
+            <!-- Ставка -->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'DEPOSIT_OPEN' && operationDetails.feeRate">
+              <p class="operation-secondary">
+                {{ 'products.default.rate' | translate }}
+              </p>
+              <span class="operation-main"
+                >{{ operationDetails.feeRate }}%</span
+              >
+            </div>
+            <!-- Ставка -->
+            <!---->
+            <!-- Валюта -->
+            <div
+              class="operation-details__item"
+              *ngIf="
+                (type === 'DEPOSIT_OPEN' &&
+                  operationDetails.benefAccountCurrency) ||
+                type === 'ACCOUNT_CREATE'
+              ">
+              <p class="operation-secondary">
+                {{ 'default.currency' | translate }}
+              </p>
+              <span class="operation-main" *ngIf="type !== 'DEPOSIT_OPEN'">{{
+                operationInfo.currency
+              }}</span>
+              <span class="operation-main" *ngIf="type === 'DEPOSIT_OPEN'">{{
+                operationDetails.benefAccountCurrency
+              }}</span>
+            </div>
+            <!-- Валюта -->
+            <!-- Счет списания -->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'DEPOSIT_OPEN'">
+              <p class="operation-secondary">
+                {{
+                  'operations.payment-confirmation.withdrawal-account'
+                    | translate
+                }}
+              </p>
+              <span class="operation-main">{{
+                operationDetails?.accountSender ||
+                  operationDetails?.senderIban ||
+                  operationDetails?.senderCardMask
+              }}</span>
+            </div>
+            <!-- Счет списания -->
+            <!-- Филиал -->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'ACCOUNT_CREATE'">
+              <p class="operation-secondary">
+                {{ 'default.branch' | translate }}
+              </p>
+              <span class="operation-main">{{ operationDetails?.branch }}</span>
+            </div>
+            <!-- Филиал -->
+            <!-- Дата и время подачи заявки-->
+            <div
+              class="operation-details__item"
+              *ngIf="
+                operationInfo.status !== 'NEWDOC' &&
+                operationInfo.status !== 'SIGN_DEAL' &&
+                timeAndValueDate
+              ">
+              <p class="operation-secondary">
+                {{ 'products.default.requestSendDate' | translate }}
+              </p>
+              <span class="operation-main">{{ timeAndValueDate }}</span>
+            </div>
+            <!-- Дата и время подачи заявки-->
+            <!-- Дата истечения -->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'DEPOSIT_OPEN' && operationDetails.depositClose">
+              <p class="operation-secondary">
+                {{ 'products.deposits.depositCloseDate' | translate }}
+              </p>
+              <span class="operation-main">{{
+                formatDate(operationDetails.depositClose) || ''
+              }}</span>
+            </div>
+            <!-- Дата истечения -->
+
+            <!-- Номер документа -->
+            <div
+              class="operation-details__item"
+              *ngIf="type === 'DEPOSIT_OPEN' && operationDetails.docNumber">
+              <p class="operation-secondary">
+                {{ 'default.documentNumber' | translate }}
+              </p>
+              <span class="operation-main">{{
+                operationDetails.docNumber || ''
+              }}</span>
+            </div>
+            <!-- Номер документа -->
+
+            <!-- Дата подачи заявки-->
+            <div
+              class="operation-details__item"
+              *ngIf="
+                (operationInfo.status === 'NEWDOC' ||
+                  operationInfo.status === 'SIGN_DEAL') &&
+                operationDetails.docDate
+              ">
+              <p class="operation-secondary">
+                {{ 'products.default.requestSendDate' | translate }}
+              </p>
+              <span class="operation-main">{{
+                formatDate(operationDetails.docDate) || ''
+              }}</span>
+            </div>
+            <!-- Дата подачи заявки-->
+          </div>
+          <!-- Документы -->
+          <div
+            class="operation-documents"
+            *ngIf="
+              operationInfo?.status &&
+              operationInfo?.status !== 'NEWDOC' &&
+              operationInfo?.status !== 'SIGN_DEAL'
+            ">
+            <p class="operation-subtitle">
+              {{ 'default.documents' | translate }}
+            </p>
+            <div
+              class="operation-documents__item"
+              (click)="downloadProductPdf('request', type)">
+              <span class="icon icon_pdf-document"></span>
+              <div class="operation-main" *ngIf="type === 'DEPOSIT_OPEN'">
+                {{ 'products.deposits.depositRequestApplication' | translate }}
+              </div>
+              <div class="operation-main" *ngIf="type === 'ACCOUNT_CREATE'">
+                {{ 'products.deposits.accountRequestApplication' | translate }}
+              </div>
+              <div class="operation-main" *ngIf="type === 'CORP_CARD_ISSUE'">
+                {{ 'products.deposits.corpCardRequestApplication' | translate }}
+              </div>
+            </div>
+
+            <div
+              *ngIf="
+                operationInfo.status === 'FULFILLED' && type === 'DEPOSIT_OPEN'
+              "
+              class="operation-documents__item"
+              (click)="downloadProductPdf('conformation', type)">
+              <span class="icon icon_pdf-document"></span>
+              <div class="operation-main">
+                {{ 'products.deposits.depositRequestConfirmation' | translate }}
+              </div>
+            </div>
+          </div>
+          <!-- Документы -->
+        </div>
+        <div *ngIf="errorMessage" class="operation-details__error">
+          {{ errorMessage }}
+        </div>
+      </div>
+      <div *ngIf="type !== 'CORP_CARD_ISSUE' && type !== 'ACCOUNT_CREATE'">
+        <ob-new-doc-buttons
+          class="w-100"
+          [status]="operationInfo?.status"
+          [operation]="operationDetails"
+          [operationInfo]="operationInfo"></ob-new-doc-buttons>
+      </div>
+    </ob-loader>
+  </div>
+</div>

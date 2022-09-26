@@ -1,0 +1,289 @@
+@import "/src/styles/variables.scss";
+
+.info {
+  box-sizing: border-box;
+  padding: 27px 24px;
+  background-color: #fff;
+  border-radius: 12px;
+  margin-bottom: 32px;
+
+  &-header {
+    margin-bottom: 26px;
+
+    &__title {
+      font-size: $font-size-medium;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    &__edit {
+      margin-left: 11px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &__button {
+      color: $color-green;
+      // cursor: pointer;
+      opacity: .7; // TODO Раскомменить как будет сервис 
+    }
+  }
+
+  &-title {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: $font-weight-bold;
+    font-size: 26px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #263238;
+  }
+
+  &-title_currency {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: $font-weight-bold;
+    font-size: 26px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #263238;
+  }
+
+  &__small {
+    font-size: $font-size-medium !important;
+  }
+
+  &-subtitle_wrapper{
+    display: flex;
+    flex-direction: row;
+    margin-bottom: 15px;
+  }
+
+  &-subtitle {
+    font-family: 'Manrope';
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #263238;
+  }
+
+  &-buttons {
+    margin-bottom: 25px;
+    opacity: .6; // TODO Раскомментить когда будут сервисы
+  }
+
+  &-button {
+    display: flex;
+    align-items: center;
+    // cursor: pointer;
+    margin-bottom: 8px;
+
+    & > img {
+      margin-right: 13px;
+    }
+
+    & > p {
+      font-size: 26px;
+      font-weight: 500;
+    }
+  }
+
+  &-actions__title {
+    font-weight: 700;
+    font-size: 26px;
+    margin-bottom: 18px;
+  }
+
+  &-action {
+    box-sizing: border-box;
+    // padding: 16px;
+    // min-height: 108px;
+    background-color: $Background-light-grey;
+    border-radius: 12px;
+    margin-bottom: 24px;
+    cursor: pointer;
+
+    & > img {
+      margin-bottom: 16px;
+    }
+
+    & > p {
+      font-size: 13px;
+      font-weight: 500;
+    }
+  }
+
+  &-requisites {
+    margin-bottom: 27px;
+
+    &-text {
+      font-size: 14px;
+      font-weight: 700;
+      color: #11BB91;
+      cursor: pointer;
+    }
+  }
+
+  &-home {
+    margin-bottom: 27px;
+
+    &-icon {
+      width: 18px;
+      height: 18px;
+      align-self: center;
+    }
+
+    &-text {
+      font-weight: 500;
+      font-size: 14px;
+      align-self: center;
+      margin-left: 12px;
+    }
+  }
+
+  &-action {
+
+    &-card {
+      margin-bottom: 8px;
+      border-radius: 12px;
+      width: 100%;
+    }
+  }
+
+  &-invalid {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+
+    & > img {
+      margin-right: 8px;
+      width: 20px;
+      height: 20px;
+    }
+
+    &__text {
+      color: $color-error-red;
+      font-weight: 500;
+    }
+  }
+
+  &-main {
+    margin-bottom: 27px;
+  }
+
+  &-card {
+    width: 304px;
+    height: 192px;
+    padding: 24px 24px;
+    align-self: flex-start;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-image: url("../../../../../assets/icons/card.svg");
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+}
+
+@media screen and (max-width: 800px) {
+  .info-header {
+    display: block;
+
+    &__title {
+      margin-bottom: 10px;
+    }
+  }
+}
+
+@media screen and (min-width: 450px) and (max-width: 869px) {
+  .info {
+    &-action {
+      margin-right: 24px;
+
+      &-card {
+        max-width: 50%;
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 869px) and (max-width: 1128px) {
+  .info {
+    &-title {
+      font-size: 2vw;
+      font-weight: $font-weight-bold;
+      margin-bottom: 10px;
+    }
+
+    &-subtitle_wrapper{
+      margin-bottom: 1vw;
+    }
+
+    &-title_currency {
+      font-size: 2vw;
+      font-weight: $font-weight-bold;
+    }
+
+    &-subtitle{
+      font-size: 1.2vw;
+    }
+
+    &-card {
+      width: 25vw;
+      height: 16vw;
+    }
+  }
+}
+
+@media screen and (min-width: 1128px) and (max-width: 1600px) {
+  .info {
+    &-card {
+      width: 304px;
+      height: 192px;
+    }
+
+    //&-title{
+    //  font-size: 22px;
+    //}
+    //
+    //&-title_currency {
+    //  font-size: 22px;
+    //}
+    //
+    //&-subtitle {
+    //  font-size: 14px;
+    //  color: $color-gray-darker;
+    //}
+  }
+}
+
+@media screen and (max-width: 480px) {
+  .info {
+    &-card {
+      width: 76vw;
+      height: 52vw;
+    }
+
+    &-title {
+      font-size: 5vw;
+      font-weight: $font-weight-bold;
+      margin-bottom: 10px;
+    }
+
+    &-subtitle_wrapper{
+      margin-bottom: 3vw;
+    }
+
+    &-title_currency {
+      font-size: 5vw;
+      font-weight: $font-weight-bold;
+    }
+
+    &-subtitle{
+      font-size: 3vw;
+    }
+
+  }
+}

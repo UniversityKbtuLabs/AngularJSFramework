@@ -1,0 +1,26 @@
+<div
+  class="container col-dt-3 col-tb-3 col-mb-12"
+  *ngIf="flag && counteragent.length > 0">
+  <div>
+    <p class="container__title">{{ searchTitle }}</p>
+  </div>
+  <ul class="container-ul">
+    <li *ngFor="let item of counteragent" (click)="selectedItem(item.account)">
+      <p class="container-ul__title">{{ item.name }}</p>
+      <div class="container-el">
+        <p class="container-el__name">
+          <span>{{ 'operations.countragent.chet' | translate }}</span>
+          {{ item.account }}
+        </p>
+        <p class="container-el__name">
+          <span>{{ 'operations.countragent.bank' | translate }}</span>
+          {{ item.bankName }}
+        </p>
+        <p class="container-el__name">
+          <span>{{ 'operations.countragent.bin' | translate }}</span>
+          {{ item.idn }}
+        </p>
+      </div>
+    </li>
+  </ul>
+</div>

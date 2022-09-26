@@ -1,0 +1,236 @@
+<div class="row mb-114">
+  <div
+    class="col-dt-9 col-lgdt-8 col-smdt-12 g-custom"
+    [formGroup]="createAccountForm">
+    <div class="create-account create-account-content">
+      <h1 class="title">
+        {{ 'products.accounts.openAccountTitle' | translate }}
+      </h1>
+      <!-- Номер документа и дата -->
+      <section class="create-account-autofill">
+        <div class="create-account-autofill__text flex-column">
+          <div
+            class="create-account-autofill__secondary d-flex align-items-baseline">
+            <p
+              class="align-self-center create-account-autofill__secondary"
+              [ngStyle]="{
+                color: !createAccountForm.controls.docNum.errors?.required
+                  ? ''
+                  : '#FF5721'
+              }">
+              {{ 'default.documentNumber' | translate }}:
+            </p>
+            <span
+              class="ms-2 create-account-autofill__secondary"
+              *ngIf="
+                !createAccountForm.controls.docNum.errors?.required &&
+                !isEditDocNum
+              ">
+              №{{ createAccountForm.controls.docNum.value }}
+            </span>
+            <input
+              *ngIf="isEditDocNum"
+              formControlName="docNum"
+              maxlength="9"
+              class="form-control create-account-autofill__docNum"
+              [ngClass]="displayFieldClass('docNum')"
+              obDocNumberPayment
+              (docNumChange)="docNumChange($event)"
+              (focusout)="editDocNum()"
+              (keyup)="onDocNumKeyUp($event)"
+              id="docNum" />
+          </div>
+          <div class="align-self-start">
+            <div class="create-account-autofill__docNum-error-container">
+              <ob-field-error-display
+                *ngIf="
+                  createAccountForm.controls.docNum.errors?.maxLengthExceeded
+                "
+                [displayError]="isFieldInvalid('docNum')"
+                errorMsg="{{ 'error.documentNum-payments' | translate }}">
+              </ob-field-error-display>
+              <ob-field-error-display
+                *ngIf="createAccountForm.controls.docNum.errors?.pattern"
+                [displayError]="isFieldInvalid('docNum')"
+                errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+              </ob-field-error-display>
+            </div>
+          </div>
+        </div>
+        <div class="create-account-autofill__text">
+          <img
+            *ngIf="
+              !isEditDocNum &&
+              createAccountForm.controls.docNum.errors?.required
+            "
+            src="assets/icons/ic_edit1.svg"
+            alt="change-icon"
+            class="create-account-autofill__edit_icon"
+            (click)="editDocNum()" />
+          <img
+            *ngIf="
+              !isEditDocNum &&
+              !createAccountForm.controls.docNum.errors?.required
+            "
+            src="assets/icons/ic_edit.svg"
+            alt="change-icon"
+            class="create-account-autofill__edit_icon"
+            (click)="editDocNum()" />
+          <img
+            *ngIf="isEditDocNum"
+            src="assets/icons/ic_check_mark.svg"
+            alt="change-icon"
+            class="create-account-autofill__edit_icon"
+            (click)="editDocNum()" />
+        </div>
+        <div class="create-account-autofill__text">
+          <span class="create-account-autofill__secondary me-2">
+            {{ 'operations.default.dateCreated' | translate }}:
+          </span>
+          <span class="create-account-autofill__main-dark">{{
+            prefill?.docDate.split('-').reverse().join('.')
+          }}</span>
+        </div>
+      </section>
+      <!-- Номер документа и дата -->
+      <section class="create-account-section row">
+        <!-- Валюта счета -->
+        <div
+          class="col-dt-6 col-tb-6 col-mb-12 mb-16"
+          id="bootstrap-overrides-region">
+          <ng-select
+            formControlName="currency"
+            class="custom-select account-currency"
+            required
+            [searchable]="false"
+            [clearable]="false"
+            [ngClass]="displayFieldClass('currency')"
+            notFoundText="{{ 'error.empty-data' | translate }}"
+            placeholder="{{ 'products.accounts.accountCurrency' | translate }}"
+            dropdownPosition="bottom"
+            [loading]="currencyLoading"
+            id="currency"
+            loadingText="{{ 'default.loading' | translate }}...">
+            <ng-option
+              *ngFor="let currency of currencyList"
+              [value]="currency.isoCode">
+              <div class="currency-item">
+                <span class="icon icon_{{ currency.isoCode }}"></span>
+                <span class="currency-item__text">
+                  <p class="currency-item__iso currency-item__text-bold">
+                    {{ currency.isoCode }} -
+                  </p>
+                  <p class="currency-item__name">{{ currency.name }}</p>
+                </span>
+              </div>
+            </ng-option>
+          </ng-select>
+          <ob-field-error-display
+            *ngIf="createAccountForm.controls.currency.errors?.required"
+            [displayError]="isFieldInvalid('currency')"
+            errorMsg="{{ 'error.required' | translate }}">
+          </ob-field-error-display>
+        </div>
+        <div
+          class="col-dt-6 col-tb-6 col-mb-12"
+          id="bootstrap-overrides-region">
+          <ng-select
+            formControlName="branch"
+            class="custom-select floating-label branch-select"
+            required
+            placeholder="{{ 'products.accounts.branch' | translate }}"
+            [editableSearchTerm]="true"
+            [searchable]="isSearchableBranch"
+            [clearable]="true"
+            [ngClass]="displayFieldClass('branch')"
+            notFoundText="{{ 'default.not_found' | translate }}"
+            (open)="onOpenCloseBranch()"
+            [loading]="branchLoading"
+            (close)="onOpenCloseBranch()"
+            id="branch"
+            loadingText="{{ 'default.loading' | translate }}...">
+            <ng-option *ngFor="let branch of branchList" [value]="branch"
+              >{{ branch.eqShortName }}
+            </ng-option>
+          </ng-select>
+          <ob-field-error-display
+            *ngIf="createAccountForm.controls.branch.errors?.required"
+            [displayError]="isFieldInvalid('branch')"
+            errorMsg="{{ 'error.required' | translate }}">
+          </ob-field-error-display>
+        </div>
+      </section>
+      <hr class="create-account-section__line" />
+      <div class="create-account-footer">
+        <button
+          class="create-account-footer__button"
+          (click)="fieldsValidation()">
+          {{ 'products.accounts.openAccount' | translate }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="col-dt-3 col-smdt-12">
+    <div class="information create-account-content info">
+      <p class="create-account-content__right-heading">
+        {{ 'default.information' | translate }}
+      </p>
+      <div
+        class="information-content"
+        [ngClass]="{ divide: accountInfo1 || accountInfo2 }">
+        <div
+          class="d-flex flex-row justify-content-between information-content__click_area"
+          (click)="accountInfo1 = !accountInfo1">
+          <p class="information-content__title">
+            {{ 'products.accounts.accountInfoTitle1' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': accountInfo1 === false,
+              'information-content__arrow_up': accountInfo1 === true
+            }" />
+        </div>
+        <p class="information-content__text" *ngIf="accountInfo1 === true">
+          {{ 'products.accounts.accountInfoText1' | translate }}
+        </p>
+      </div>
+      <div class="information-content" [ngClass]="{ divide: accountInfo2 }">
+        <div
+          class="d-flex flex-row justify-content-between information-content__click_area"
+          (click)="accountInfo2 = !accountInfo2">
+          <p class="information-content__title">
+            {{ 'products.accounts.accountInfoTitle2' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': accountInfo2 === false,
+              'information-content__arrow_up': accountInfo2 === true
+            }" />
+        </div>
+        <p class="information-content__text" *ngIf="accountInfo2 === true">
+          {{ 'products.accounts.accountInfoText2' | translate }}
+        </p>
+      </div>
+      <div class="information-content">
+        <div
+          class="d-flex flex-row justify-content-between information-content__click_area"
+          (click)="accountInfo3 = !accountInfo3">
+          <p class="information-content__title">
+            {{ 'products.accounts.accountInfoTitle3' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': accountInfo3 === false,
+              'information-content__arrow_up': accountInfo3 === true
+            }" />
+        </div>
+        <p class="information-content__text" *ngIf="accountInfo3 === true">
+          {{ 'products.accounts.accountInfoText3' | translate }}
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

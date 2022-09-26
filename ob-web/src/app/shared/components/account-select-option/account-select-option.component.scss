@@ -1,0 +1,138 @@
+@import '/src/styles/variables.scss';
+
+.select-option, .select-option-disabled {
+	display: flex;
+	cursor: pointer;
+	box-sizing: border-box;
+	margin-bottom: 12px;
+	margin-top: 12px;
+	& > img {
+		margin-right: 16px;
+	}
+
+	&__disabled {
+		border: 1px solid $color-error-red;
+	}
+
+	&__title {
+		font-size: $font-size-medium;
+		font-weight: 700;
+		margin-bottom: 8px;
+		white-space: nowrap;
+		span{
+			font-size: inherit !important;
+		}
+		
+	}
+
+	&__currency{
+		font-size: 16.5px;
+		font-weight: bold;
+		margin-left: 3px;
+	}
+
+	&__desc {
+		font-weight: 500;
+		color: $color-gray-light-dark;
+		margin-bottom: 4px;
+		font-size: 12px;
+
+		&:last-child {
+			margin-bottom: 0;
+			font-size: $font-size-extra-small;
+		}
+	}
+	&__name {
+		font-weight: 500;
+		color: $color-gray-darker;
+		margin-bottom: 4px;
+		font-size: 14px;
+		width: 100%;
+
+		&.error {
+			width: 100% !important;
+		}
+	}
+
+	&__thin {
+		font-size: $font-size-small;
+		font-weight: 500;
+	}
+
+	&__error {
+		color: $color-error-red;
+		font-weight: 500;
+		font-size: 14px;
+	}
+}
+
+.select-option-disabled{
+	cursor: default;
+	pointer-events: none;
+}
+.select-option__last-child {
+	margin-bottom: 0;
+ }
+.option {
+	&_img__error {
+		outline: 1px solid $color-error-red !important;
+		border-radius: 12px;
+	}
+
+	&_body__img {
+		margin-right: 12px;
+		position: relative;
+	}
+
+	&_body__content {
+		letter-spacing: 0.02em;
+		width: 100%;
+		display: table;
+		table-layout: fixed;
+		:nth-child(1){
+			font-size: 14px;
+			color: $color-light-black;
+		}
+		:nth-child(3){
+			font-size: 12px;
+			line-height: 15.6px;
+		}
+	}
+	&_body__content_inner {
+		display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+		gap: 4px;
+	}
+
+	&__reason {
+		position: absolute;
+		top: -8px;
+		left: -8px;
+	}
+}
+
+@media screen and (max-width: 1045px) {
+	.select-option {
+		&__title {
+			margin-bottom: 2px;
+		}
+		&__desc {
+			font-size: 12px;
+		}
+		&__error {
+			margin-top: 0;
+		}
+	}
+}
+
+@media screen and (max-width: 950px) {
+	.select-option {
+		&__desc {
+			font-size: 11px;
+		}
+	}
+}
+.error {
+	color: $color-error-red !important;
+}

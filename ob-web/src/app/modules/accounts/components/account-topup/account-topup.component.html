@@ -1,0 +1,114 @@
+<div class="topup">
+  <div class="topup-header">
+    <p>
+      <ob-back-button [currentPage]="'accounts_topup'"></ob-back-button>
+    </p>
+    <div class="topup-form__inputs">
+      <div class="col-md-6"></div>
+      <ob-label-with-icon
+        [iconClass]="'icon_list'"
+        title="{{ 'default.ratesAndConditions' | translate }}"
+        (click)="openSlider()">
+      </ob-label-with-icon>
+    </div>
+  </div>
+
+  <div class="topup-body">
+    <p>"{{ 'operations.default.whereAndHowMuch' | translate }}"</p>
+    <div class="topup-form__inputs">
+      <ng-select
+        [(ngModel)]="selectedDestinyAccount"
+        class="custom-select col-md-6"
+        [searchable]="false"
+        [clearable]="false">
+        <ng-option *ngFor="let account of accounts" [value]="account.code">
+          <ob-select-account
+            [description]="account.label"
+            [title]="account.amount"
+            [icon]="account.img"></ob-select-account>
+        </ng-option>
+      </ng-select>
+
+      <input
+        class="form-control height-large br-12 col-md-6"
+        autocomplete="off"
+        type="type"
+        required="true"
+        [(ngModel)]="amount"
+        placeholder="{{ 'default.amount' | translate }}" />
+    </div>
+  </div>
+
+  <div class="topup-body">
+    <p>{{ 'default.where' | translate }}</p>
+
+    <div class="topup-form__inputs">
+      <ng-select
+        [(ngModel)]="selectedDestinyAccount"
+        class="custom-select"
+        [searchable]="false"
+        [clearable]="false">
+        <ng-option *ngFor="let account of accounts" [value]="account.code">
+          <ob-select-account
+            [description]="account.label"
+            [title]="account.amount"
+            [icon]="account.img"></ob-select-account>
+        </ng-option>
+      </ng-select>
+    </div>
+  </div>
+
+  <div class="topup-body">
+    <p></p>
+
+    <div class="topup-form__inputs">
+      <div class="form-check">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          value=""
+          id="flexCheckDefault" />
+        <label class="form-check-label" for="flexCheckDefault">
+          <p class="topup-form__checkbox">
+            {{ 'default.texts.bank-qr' | translate }}
+          </p>
+        </label>
+      </div>
+    </div>
+  </div>
+
+  <div class="topup-body">
+    <p>{{ 'default.total' | translate }}</p>
+
+    <div class="topup-form__inputs">
+      <div class="col-md-6"></div>
+      <div class="col-md-6">
+        <div class="topup-form__small-text">
+          <p>{{ 'operations.payments.commission' | translate }}</p>
+          <span>0₸</span>
+        </div>
+
+        <div class="topup-form__large-text">
+          <p>{{ 'default.texts.total-sum' | translate }}</p>
+          <span>0₸</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="topup-body">
+    <p></p>
+    <div class="topup-form__inputs">
+      <ob-button
+        label="'default.continue-later' | translate | uppercase"
+        class="col-md-6"
+        style="padding: 0"
+        [className]="'btn btn-secondary height-large br-12'"></ob-button>
+      <ob-button
+        label="'buttons.actions.submit-for-confirmation' | translate | uppercase"
+        class="col-md-6"
+        style="padding: 0"
+        [className]="'btn height-large br-12'"></ob-button>
+    </div>
+  </div>
+</div>

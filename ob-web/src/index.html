@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>Onlinebank</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/x-icon" href="./assets/icons/onlinebank.svg" />
+    <link rel="stylesheet" href="./assets/templates/ie_warning.css" />
+    <script src="./assets/js/fingerprintsdk.min.js"></script>
+    <script src="./assets/templates/ie_header_scripts.js"></script>
+    <script>
+      // window.addEventListener("click", event => {
+      //   console.log(event.target.className);
+      //   if(!event.target.className.includes("select-dropdown-selected","select", "select-marked")){
+      //       document.getElementsByClassName("select-dropdown")[0].classList.remove("select-dropdown-marked");
+      //       document.getElementsByClassName("select-arrow")[0].classList.remove("select-arrow-marked");
+      //     }
+      //     else {
+      //       document.getElementsByClassName("select-dropdown")[0].classList.add("select-dropdown-marked");
+      //       document.getElementsByClassName("select-arrow")[0].classList.add("select-arrow-marked");
+      //     }
+      // })
+    </script>
+  </head>
+  <body>
+    <div id="ie_warning" style="display: none">
+      <div id="header"></div>
+
+      <section class="ie-wrapper">
+        <div id="warning-temp"></div>
+      </section>
+    </div>
+
+    <ob-root id="root" style="display: none"></ob-root>
+  </body>
+
+  <script>
+    window.console.log = () => {};
+    window.console.info = () => {};
+    window.onload = function (event) {
+      if (localStorage.getItem('token')) {
+        sessionStorage.setItem('token', localStorage.getItem('token'));
+      }
+
+      if (window.document.documentMode) {
+        if (
+          document.getElementById('ie_warning') &&
+          document.getElementById('root')
+        ) {
+          document.getElementById('ie_warning').style.display = 'flex';
+          document.getElementById('root').style.display = 'none';
+          getTemplate('assets/templates/ie_header.html', 'header');
+          getTemplate('assets/templates/ie_warning.html', 'warning-temp');
+        }
+      } else {
+        if (
+          document.getElementById('ie_warning') &&
+          document.getElementById('root')
+        ) {
+          document.getElementById('ie_warning').style.display = 'none';
+          document.getElementById('root').style.display = 'block';
+        }
+      }
+    };
+
+    window.onbeforeunload = function (event) {
+      localStorage.removeItem('token');
+      return undefined;
+    };
+
+    function getTemplate(url, id) {
+      var request;
+
+      if (window.XMLHttpRequest) {
+        request = new XMLHttpRequest();
+      }
+      try {
+        request.onreadystatechange = function () {
+          if (request.readyState == 4) {
+            var value = request.responseText;
+            document.getElementById(id).innerHTML = value;
+          }
+        };
+        request.open('GET', url, true);
+        request.send();
+      } catch (error) {
+        alert(error);
+      }
+    }
+  </script>
+</html>

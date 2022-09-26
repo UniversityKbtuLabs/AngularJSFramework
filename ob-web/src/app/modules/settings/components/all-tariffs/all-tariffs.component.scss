@@ -1,0 +1,71 @@
+@import '/src/styles/variables.scss';
+
+.all-tariffs {
+    background-color: #fff;
+    border-radius: 24px;
+    padding: 32px;
+
+    &__back-btn {
+        margin-bottom: 32px;
+    }
+}
+
+.tariff-card {
+    padding: 32px;
+    background-color: $color-gray_main;
+    border-radius: 24px;
+    
+    &__header {
+      margin-bottom: 24px;
+    }
+  
+    &__title {
+      font-weight: $font-weight-extra-bold;
+      font-size: $font-size-h3-medium;
+      line-height: 130%;
+      letter-spacing: 0.02em;
+      color: $color-light-black;
+    }
+  
+    &__line {
+      margin: 8px 0 16px;
+      height: 6px;
+      width: 100px;
+      background-color: #42D4B0;
+    }
+  
+    &__subtitle {
+      font-size: $font-size-medium;
+      color: $color-gray-darker;
+      line-height: 130%;
+      letter-spacing: 0.02em;
+      font-weight: $font-weight-medium;
+    }
+  
+    &__footer {
+      margin-top: 24px;
+    }
+  
+    &__price {
+      margin-bottom: 24px;
+      font-size: $font-size-medium-large;
+      line-height: 32px;
+    }
+  
+    &__btn {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #fff;
+      background-color: $color-green;
+      height: 52px;
+      width: 100%;
+      border: none;
+      border-radius: 12px;
+    }
+  }
+
+  .g-24 {
+    --bs-gutter-x: 24px !important;
+    --bs-gutter-y: 24px !important;
+  }

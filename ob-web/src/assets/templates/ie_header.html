@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>header</title>
+  </head>
+  <body>
+    <header class="ie-header">
+      <div class="ie-logo">
+        <img src="./assets/icons/logo.svg" alt="logo" />
+      </div>
+      <div class="ie-languages">
+        <div class="ie-select" onclick="onCLickSelect()">
+          <div class="ie-select-value">RU</div>
+          <div class="ie-select-arrow">
+            <img src="./assets/icons/down_arrow.svg" alt="down" />
+          </div>
+        </div>
+        <div class="ie-select-dropdown">
+          <div onclick="onItemSelected(event, 'kz')">KZ</div>
+          <div
+            class="ie-select-dropdown-selected"
+            onclick="onItemSelected(event, 'ru')">
+            RU
+          </div>
+          <div onclick="onItemSelected(event, 'en')">EN</div>
+        </div>
+      </div>
+    </header>
+  </body>
+</html>

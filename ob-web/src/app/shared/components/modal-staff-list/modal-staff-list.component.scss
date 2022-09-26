@@ -1,0 +1,150 @@
+@import '/src/styles/variables.scss';
+.mr-24 {
+	margin-right: 24px;
+}
+
+.modal {
+  &-body {
+    max-height: 548px;
+    min-height: 548px;
+    overflow-y: auto;
+    &.employees {
+      padding-bottom: 0;
+      tbody tr:last-child td {
+        padding-bottom: 0;
+      }
+      .table {
+        margin-bottom: 0;
+      }
+    }
+
+  }
+  &-title {
+    font-size: $font-size-medium-large;
+    font-weight: 800;
+    color: $color-light-black;
+  }
+}
+
+::ng-deep .modal-lg{
+  // max-width: 1120px !important;
+  table{
+    tbody{
+      margin-top: 1rem !important;
+      :last-child{
+        td{
+          border-bottom: 0 !important;
+        }
+      }
+    }
+  }
+  .users-list{
+    margin-bottom: 0;
+  }
+}
+
+.table > :not(:first-child) {
+  border-top: 0;
+}
+
+.users-list {
+  thead {
+    th {
+      color: $color-gray-darker;
+      font-weight: 600;
+      font-size: $font-size-extra-small;
+    }
+    th:first-child {
+      font-size: 14px;
+    }
+    th:nth-child(3) {
+      padding-left: 16px;
+    }
+    th:nth-child(4) {
+      padding-left: 16px;
+    }
+  }
+
+  tbody {
+    tr{
+      vertical-align: middle;
+    }
+    tr:last-child td{
+      border-bottom-width: 0 !important;
+    }
+    td{
+      padding-top: 1rem;
+      padding-bottom: 1rem;
+      color: $color-light-black;
+      font-size: 14px;
+      font-weight: 500;
+    }
+    td:nth-child(2) {
+      max-width: 278px !important;
+      padding-right: 16px;
+      font-weight: 700;
+      color: $color-black;
+    }
+    td:nth-child(3) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    td:nth-child(4) {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+  }
+
+  &__sum {
+    white-space: nowrap !important;
+  }
+
+  &-text{
+    &__main {
+      font-weight: 700 !important;
+      font-size: 14px;
+      line-height: 18.2px;
+      letter-spacing: 0.02em;
+    }
+  }
+}
+
+.modal-footer {
+	justify-content: space-between;
+	padding: 24px 32px 27px;
+}
+
+.displayNone {
+  display: none;
+}
+.displayBlock {
+  display: block ;
+}
+
+.bankName{
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #829199;
+}
+
+.edit-icon {
+  cursor: pointer;
+}
+
+.employees {
+  &-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #fff;
+    margin-top: 24px;
+    margin-bottom: 40px;
+  }
+  &-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+}

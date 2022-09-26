@@ -1,0 +1,5 @@
+<ob-new-header
+  [login]="loginService.isAuthorized | async"
+  (appSignIn)="isSignIn($event)"></ob-new-header>
+<router-outlet></router-outlet>
+<ob-footer [login]="loginService.isAuthorized | async"></ob-footer>

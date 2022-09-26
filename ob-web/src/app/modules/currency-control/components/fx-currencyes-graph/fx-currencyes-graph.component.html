@@ -1,0 +1,123 @@
+<div class="curreccyes_graph">
+  <p class="currency_section_text_title">
+    {{ 'exchange.exchangeRates' | translate }}
+  </p>
+
+  <div class="currency_section mt_24">
+    <ob-f-x-currency-select
+      (currencyBuy)="changeCurrencyBuy($event)"
+      (currencySell)="changeCurrencySell($event)"
+      [currecySelectClassName]="'currency_section_main'">
+    </ob-f-x-currency-select>
+
+    <div class="currency_section_rates">
+      <!--        Курс продажи банком-->
+      <div class="currency_section_rates_sale">
+        <p class="currency_section_text_1 ms-auto">
+          {{ 'currencyControl.halykFX.bankSaleRate' | translate }}
+        </p>
+        <p class="currency_section_text_rate mt_12">{{ getSellAmount() }}</p>
+      </div>
+      <!--        Курс продажи банком-->
+
+      <div class="currency_section_rates_line"></div>
+
+      <!--        Курс покупки банком-->
+      <div class="currency_section_rates_buy">
+        <p class="currency_section_text_1 ms-auto">
+          {{ 'currencyControl.halykFX.bankBuyRate' | translate }}
+        </p>
+        <p class="currency_section_text_rate mt_12">{{ getBuyAmount() }}</p>
+      </div>
+      <!--        Курс покупки банком-->
+    </div>
+  </div>
+
+  <div class="mt_40">
+    <ob-tabs [tabs]="banks" (obSelected)="onBankChange($event)"></ob-tabs>
+  </div>
+
+  <ng-template [ngIf]="currentBank === 'onlineBank'">
+    <div class="online_bank">
+      <div class="online_bank_filter">
+        <div class="online_bank_filter_tabs">
+          <ob-tab-selects
+            [list]="periodTypeList"
+            (obSelectedDate)="changePeriodType($event)"></ob-tab-selects>
+        </div>
+        <!--        <div class="online_bank_filter_inputs">-->
+        <!--          <div class="d-flex flex-row">-->
+        <!--            <input-->
+        <!--              type="text"-->
+        <!--              class="form-control online_bank_calendar_input"-->
+        <!--              bsDatepicker-->
+        <!--              placement="bottom"-->
+        <!--              [ngClass]="{ 'invalid-period': startDateError }"-->
+        <!--              [bsConfig]="{-->
+        <!--                maxDate: startDateMax,-->
+        <!--                customTodayClass: 'custom-today-class',-->
+        <!--                isAnimated: true,-->
+        <!--                dateInputFormat: 'DD.MM.YYYY',-->
+        <!--                startView: 'day',-->
+        <!--                minMode: 'day',-->
+        <!--                adaptivePosition: true,-->
+        <!--                containerClass: 'calendar',-->
+        <!--                showWeekNumbers: false-->
+        <!--              }"-->
+        <!--              placeholder="{{'currencyControl.halykFX.trackingDate'|translate}}"-->
+        <!--              [(ngModel)]="startDate"-->
+        <!--              [ngModelOptions]="{ standalone: true }"-->
+        <!--              (ngModelChange)="changeStartDate($event)"-->
+        <!--              #dp1="bsDatepicker"-->
+        <!--            />-->
+        <!--            <span class="online_bank_calendar_icon" (click)="dp1.toggle()">-->
+        <!--              <img src="./assets/icons/ic_calendar2.svg" alt="" />-->
+        <!--            </span>-->
+        <!--          </div>-->
+        <!--          <div class="d-flex flex-row ml_32">-->
+        <!--            <input-->
+        <!--              type="text"-->
+        <!--              class="form-control online_bank_calendar_input"-->
+        <!--              bsDatepicker-->
+        <!--              placement="bottom"-->
+        <!--              [ngClass]="{ 'invalid-period': endDateError }"-->
+        <!--              [bsConfig]="{-->
+        <!--                maxDate: endDateMax,-->
+        <!--                customTodayClass: 'custom-today-class',-->
+        <!--                isAnimated: true,-->
+        <!--                dateInputFormat: 'DD.MM.YYYY',-->
+        <!--                startView: 'day',-->
+        <!--                minMode: 'day',-->
+        <!--                adaptivePosition: true,-->
+        <!--                containerClass: 'calendar',-->
+        <!--                showWeekNumbers: false-->
+        <!--              }"-->
+        <!--              placeholder="{{'currencyControl.halykFX.trackingDate'|translate}}"-->
+        <!--              [(ngModel)]="endDate"-->
+        <!--              [ngModelOptions]="{ standalone: true }"-->
+        <!--              (ngModelChange)="changeEndDate($event)"-->
+        <!--              #dp2="bsDatepicker"-->
+        <!--            />-->
+        <!--            <span class="online_bank_calendar_icon" (click)="dp2.toggle()">-->
+        <!--              <img src="./assets/icons/ic_calendar2.svg" alt="" />-->
+        <!--            </span>-->
+        <!--          </div>-->
+
+        <!--          <p class="online_bank_filter_download ml_32">{{'currencyControl.halykFX.downloadRates'|translate}}</p>-->
+        <!--        </div>-->
+      </div>
+
+      <div class="mt_40">
+        <ob-histogram
+          [periodType]="periodType"
+          [currencyBuy]="currencyBuy"
+          [currencySell]="currencySell">
+        </ob-histogram>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-template [ngIf]="currentBank === 'nacBank'">
+    <div class="nac_bank">nac_bank</div>
+  </ng-template>
+</div>

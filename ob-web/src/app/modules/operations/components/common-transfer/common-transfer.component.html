@@ -1,0 +1,348 @@
+<div class="row mb-114">
+  <div
+    class="col-smdt-9 col-dt-9 col-lgdt-8 g-custom common"
+    [formGroup]="transferForm">
+    <h1 class="title">{{ transferTitle }}</h1>
+
+    <!-- Номер документа -->
+    <section class="common-autofill">
+      <div class="common-autofill__text flex-column">
+        <span class="common-autofill__secondary d-flex align-items-baseline">
+          <p
+            class="common-autofill__secondary"
+            [ngStyle]="{
+              color: !transferFormControl.docNum.errors?.required
+                ? ''
+                : '#FF5721'
+            }">
+            {{ 'operations.payment-confirmation.doc-number' | translate }}:
+          </p>
+          <span
+            class="ms-2 common-autofill__secondary"
+            *ngIf="
+              !transferFormControl.docNum.errors?.required && !isEditDocNum
+            ">
+            №{{ transferFormControl.docNum.value }}
+          </span>
+          <input
+            *ngIf="isEditDocNum"
+            formControlName="docNum"
+            maxlength="9"
+            (focusout)="editDocNum()"
+            class="form-control common-autofill__docNum"
+            [ngClass]="displayFieldClass('docNum')"
+            obDocNumberPayment
+            (docNumChange)="docNumChange($event)"
+            (keyup)="onDocNumKeyUp($event)"
+            id="docNum" />
+        </span>
+        <div class="align-self-start">
+          <div class="common-autofill__docNum-error-container">
+            <ob-field-error-display
+              *ngIf="transferFormControl.docNum.errors?.maxLengthExceeded"
+              [displayError]="isFieldValid('docNum')"
+              errorMsg="{{ 'error.documentNum-payments' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="transferFormControl.docNum.errors?.pattern"
+              [displayError]="isFieldValid('docNum')"
+              errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+            </ob-field-error-display>
+          </div>
+        </div>
+      </div>
+      <div class="common-autofill__text">
+        <img
+          *ngIf="!isEditDocNum && transferFormControl.docNum.errors?.required"
+          src="assets/icons/ic_edit1.svg"
+          alt="change-icon"
+          class="contragent-autofill__edit_icon"
+          (click)="editDocNum()" />
+        <img
+          *ngIf="!isEditDocNum && !transferFormControl.docNum.errors?.required"
+          src="assets/icons/ic_edit.svg"
+          alt="change-icon"
+          class="contragent-autofill__edit_icon"
+          (click)="editDocNum()" />
+        <img
+          *ngIf="isEditDocNum"
+          src="assets/icons/ic_check_mark.svg"
+          alt="change-icon"
+          class="common-autofill__edit_icon"
+          (click)="editDocNum()" />
+      </div>
+      <div class="common-autofill__text">
+        <span class="common-autofill__secondary me-2">
+          {{ 'operations.default.createDate' | translate }}
+        </span>
+        <span class="common-autofill__main">{{
+          defaultPrefill.docDate | reverse
+        }}</span>
+      </div>
+    </section>
+    <!-- Номер документа -->
+
+    <!-- Откуда - Куда -->
+    <section>
+      <p class="common-subtitle">
+        {{ 'operations.default.fromTo' | translate }}
+      </p>
+
+      <div class="row">
+        <!-- Карта списания -->
+        <div
+          class="col-dt-6 col-tb-6 col-mb-12 common-comission__input"
+          id="bootstrap-overrides-transfer-from">
+          <ng-select
+            formControlName="cardFrom"
+            class="custom-select"
+            (change)="changeSelectedAccount($event, 'cardFrom')"
+            [searchable]="isSearchableSrc"
+            [ngClass]="{
+              'is-invalid':
+                this.transferForm.get('cardFrom').touched &&
+                !this.transferForm.get('cardFrom').pristine &&
+                this.transferForm.get('cardFrom').hasError('required')
+            }"
+            required
+            [clearable]="false"
+            [loading]="accountListLoading || corpCardsLoading"
+            [notFoundText]="notFound"
+            (open)="onOpenOnCloseSrc(isSearchableSrc)"
+            (close)="onOpenOnCloseSrc(isSearchableSrc)"
+            placeholder="{{ 'operations.transfers.cardFrom' | translate }}"
+            [readonly]="accountListLoading || corpCardsLoading"
+            [inputAttrs]="{
+              maxlength: '20'
+            }">
+            <ng-option
+              *ngFor="let acc of accountFromList | accountListSorter"
+              [value]="acc.accountIban"
+              disabled="{{ acc.accountIban === accountTo?.iban }}">
+              <ob-select-account
+                [description]="acc | accountNumber"
+                [title]="acc.amountBalance || acc.actualBalance || 0"
+                [icon]="getIcon(acc)"
+                [currency]="acc.currency"></ob-select-account>
+            </ng-option>
+          </ng-select>
+          <div>
+            <p
+              *ngIf="
+                this.transferForm.get('cardFrom').touched &&
+                !this.transferForm.get('cardFrom').pristine &&
+                this.transferForm.get('cardFrom').hasError('required')
+              "
+              class="invalid">
+              {{ 'error.required' | translate }}
+            </p>
+            <p *ngIf="insufficientFunds" class="text-muted">
+              {{ 'error.amount' | translate }}
+            </p>
+          </div>
+        </div>
+        <!-- Карта списания -->
+
+        <!-- Карта получения -->
+        <div class="col-dt-6 col-tb-6 col-mb-12 card-to-wrapper">
+          <span class="bank-logo">
+            <img
+              [src]="
+                (observableIssuerBankLogo$ | async) &&
+                this.transferForm.get('cardTo').value.length >= 6
+                  ? getBankIcon(observableIssuerBankLogo$ | async)
+                  : (observableIssuerCardType$ | async) &&
+                    this.transferForm.get('cardTo').value.length >= 6
+                  ? getCardIcon(observableIssuerCardType$ | async)
+                  : './assets/icons/transfer_to.svg'
+              "
+              alt="bank logo" />
+          </span>
+          <div class="form-floating">
+            <input
+              #val
+              formControlName="cardTo"
+              id="cardTo"
+              type="text"
+              class="form-control base-input pd-12"
+              mask="0000 0000 0000 0000"
+              placeholder="{{ 'operations.p2p.cardNumber' | translate }}"
+              autocomplete="off"
+              [ngClass]="displayFieldClass('cardTo')" />
+            <label for="cardTo">{{
+              'operations.p2p.cardNumber' | translate
+            }}</label>
+          </div>
+          <p
+            *ngIf="
+              transferForm.get('cardTo').touched &&
+              !this.transferForm.get('cardTo').pristine &&
+              transferForm.get('cardTo').errors?.required
+            "
+            class="invalid">
+            {{ 'error.required' | translate }}
+          </p>
+          <p
+            class="invalid"
+            *ngIf="
+              errorCardNumber &&
+              transferForm.get('cardTo').value !== '' &&
+              !transferFormControl.cardTo.errors?.cardLength &&
+              !(
+                transferForm.get('cardTo').touched &&
+                !this.transferForm.get('cardTo').pristine &&
+                transferForm.get('cardTo').errors?.required
+              )
+            ">
+            {{ 'error.enter_correct_card_number' | translate }}
+          </p>
+          <p
+            class="invalid"
+            *ngIf="
+              transferFormControl.cardTo.errors?.cardLength &&
+              !(
+                transferForm.get('cardTo').touched &&
+                !this.transferForm.get('cardTo').pristine &&
+                transferForm.get('cardTo').errors?.required
+              )
+            ">
+            {{ 'error.less_than_16_digits' | translate }}
+          </p>
+        </div>
+        <!-- Карта получения -->
+      </div>
+    </section>
+    <!-- Откуда - Куда -->
+
+    <!-- Сумма -->
+    <section>
+      <p class="common-subtitle">
+        {{ 'operations.default.amount' | translate }}
+      </p>
+      <div class="row">
+        <!-- [ngModelOptions]="{standalone: true}" -->
+        <div class="col-dt-6 col-tb-6 col-mb-12 mb-2">
+          <div class="form-floating">
+            <input
+              formControlName="amount"
+              type="text"
+              class="form-control base-input pd-12"
+              id="paymentPurpose"
+              placeholder="{{
+                'operations.default.transferAmount' | translate
+              }}"
+              maxlength="16"
+              name="digitalAmount"
+              required
+              mask="separator.2"
+              suffix=" ₸"
+              thousandSeparator=" "
+              separatorLimit="999999999999999999"
+              autocomplete="off"
+              [ngClass]="displayFieldClass('amount')" />
+            <label for="paymentPurpose">{{
+              'operations.default.transferAmount' | translate
+            }}</label>
+          </div>
+          <p
+            *ngIf="
+              transferForm.get('amount').touched &&
+              !this.transferForm.get('amount').pristine &&
+              transferForm.get('amount').errors?.required
+            "
+            class="invalid">
+            {{ 'error.required' | translate }}
+          </p>
+          <p *ngIf="insufficientFunds" class="text-muted">
+            {{ 'error.amount' | translate }}
+          </p>
+          <!-- <div class="col-dt-4 col-tb-4 col-mb-12 mt-4">
+          <p class="common-autofill__secondary">
+            <strong>{{ 'operations.default.comission' | translate }}</strong>
+            {{ commission || '0' + ' ₸' }}
+          </p>
+        </div> -->
+        </div>
+      </div>
+    </section>
+    <!-- Сумма -->
+  </div>
+  <div class="col-dt-3 col-smdt-3">
+    <div
+      class="information transfer-content"
+      [ngClass]="{ divide: commonTransferInfo && commonTransferInfo1 }">
+      <p class="transfer-content__right-heading">
+        {{ 'default.information' | translate }}
+      </p>
+      <div class="information-content">
+        <div
+          class="d-flex flex-row justify-content-between information-content__click_area"
+          (click)="commonTransferInfoShow()">
+          <p class="information-content__title">
+            {{ 'operations.transfers.commonTransfer.info.title' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': commonTransferInfo === false,
+              'information-content__arrow_up': commonTransferInfo === true
+            }" />
+        </div>
+        <div
+          class="information-content__text"
+          *ngIf="commonTransferInfo === true">
+          <ul>
+            <li>
+              {{ 'operations.transfers.commonTransfer.info.text' | translate }}
+            </li>
+            <li>
+              {{ 'operations.transfers.commonTransfer.info.text1' | translate }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="information-content">
+        <div
+          class="d-flex flex-row justify-content-between information-content__click_area"
+          (click)="commonTransferInfo1Show()">
+          <p class="information-content__title">
+            {{ 'operations.transfers.commonTransfer.info1.title' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': commonTransferInfo1 === false,
+              'information-content__arrow_up': commonTransferInfo1 === true
+            }" />
+        </div>
+        <div
+          class="information-content__text"
+          *ngIf="commonTransferInfo1 === true">
+          <ul>
+            <li>
+              {{ 'operations.transfers.commonTransfer.info1.text' | translate }}
+            </li>
+            <li>
+              {{
+                'operations.transfers.commonTransfer.info1.text1' | translate
+              }}
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- [loading]="isLoading || formLoading" -->
+<!-- Комиссия -->
+<ob-payment-footer
+  [operationType]="'transfer'"
+  [commission]="commission"
+  [sum]="transferForm.get('amount').value || '0.00'"
+  (toSign)="sendToConfirm()"
+  [isSave]="true"
+  [isSign]="true"
+  [operationType]="'transfer'"
+  [loading]="formLoading || accountListLoading || corpCardsLoading || isLoading"
+  [comissionLoading]="formLoading"></ob-payment-footer>
+<!-- Комиссия -->

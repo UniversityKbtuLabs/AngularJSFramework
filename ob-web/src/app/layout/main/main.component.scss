@@ -1,0 +1,135 @@
+@import "/src/styles/main.scss";
+
+.sidebarTablet {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  background: #fff;
+  z-index: 1;
+  transition: 0.5s;
+}
+.sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 250px;
+  background: $color-white;
+}
+.nav-bottom {
+  width: 250px;
+  border-top: 1px solid #ebebeb;
+  &_item {
+    font-size: $font-size-tiny;
+    color: $color-gray-dark;
+    padding: 3px 15px;
+  }
+}
+.nav_left-icon {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.logo-content {
+  padding: 20px;
+  height: 60px;
+  .logo {
+    //margin: 20px 6px;
+  }
+}
+.menu {
+  border-right: 1px solid #ebebeb;
+  border-top: 1px solid #ebebeb;
+  .nav-list-two {
+    padding-top: 90px;
+  }
+}
+ul {
+  margin-top: 20px;
+}
+ul li {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  margin: 0 5px;
+  list-style: none;
+  line-height: 50px;
+  border-radius: 12px;
+}
+ul li a {
+  color: #505c64;
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  transition: all 0.4s ease;
+}
+ul li a i {
+  height: 50px;
+  min-width: 43px;
+  border-radius: 12px;
+  line-height: 50px;
+  text-align: center;
+}
+
+.section {
+  height: 100vh;
+  background: #fff;
+}
+
+.active {
+  color: $color-green;
+  font-weight: 700;
+}
+.icon_delete {
+  display: none;
+}
+.cover {
+  opacity: 0.45;
+  width: 100%;
+  height: 100%;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-button {
+  background: transparent;
+}
+
+  /* Handle */
+::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 7px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888888;
+}
+
+@media only screen and (max-width: 980px) {
+  .sidebar {
+    display: none;
+    width: 0;
+  }
+  .section {
+    margin: 0px !important;
+  }
+  .icon_delete {
+    display: inline !important;
+    padding: 1px 40px;
+  }
+}

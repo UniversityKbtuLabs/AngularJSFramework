@@ -1,0 +1,17 @@
+<div class="mail-form">
+  <p class="mail-form-title">Отправить</p>
+  <div>
+    <input
+      class="form-control mail-form-input height-large br-12"
+      autocomplete="off"
+      type="type"
+      required="true"
+      [(ngModel)]="mailValue" />
+  </div>
+  <div class="mail-button">
+    <ob-button
+      [label]="'Отправить на почту' | uppercase"
+      [onClick]="sendForm"
+      class="btn height-large br-12"></ob-button>
+  </div>
+</div>

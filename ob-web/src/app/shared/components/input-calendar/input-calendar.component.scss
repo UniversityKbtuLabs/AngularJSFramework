@@ -1,0 +1,50 @@
+// .calendar-container {
+//   display: flex;
+//   align-items: center;
+//   border: 1px solid #e7e7e7;
+//   box-sizing: border-box;
+//   border-radius: 4px;
+//   input {
+//     border: none !important;
+//     outline: none !important;
+//     box-shadow: none !important;
+//     width: 85px;
+//     height: 40px;
+//   }
+//   input:focus {
+//     outline: none;
+//   }
+// }
+@import '/src/styles/main.scss';
+::ng-deep .bs-datepicker.calendar {
+	border-radius: 12px;
+	.bs-datepicker-head {
+		background-color: #fff !important;
+		button {
+			color: $color-light-black;
+			font-size: 14px;
+			font-weight: 700;
+		}
+	}
+	
+	.bs-datepicker-body {
+		border: none;
+		
+		table{
+			td {
+				height: 0;
+				color: $color-light-black;
+			}
+		
+			tbody tr td span {
+				font-size: 14px;
+				text-transform: capitalize;
+				height: 52px;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				border-radius: 12px;
+			}
+		}
+	}
+}

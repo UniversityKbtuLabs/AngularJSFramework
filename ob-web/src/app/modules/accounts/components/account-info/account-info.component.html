@@ -1,0 +1,51 @@
+<div class="account-info">
+  <div class="account-info-cards col-md-12" style="padding: 0">
+    <div class="account-info-card col-md-3">
+      <p class="account-info-title">
+        {{ 'accounts.account-info.incoming-balance' | translate }}
+      </p>
+      <p class="account-info-desc">
+        {{ account?.actualBalance || account?.amountBalance || '0.00' }}
+        <span class="account-info-currency">{{
+          account?.currency || account?.currencyCode
+        }}</span>
+      </p>
+    </div>
+
+    <div class="account-info-card col-md-3">
+      <p class="account-info-title">
+        {{ 'accounts.account-info.outgoing-balance' | translate }}
+      </p>
+      <p class="account-info-desc">
+        0.00
+        <span class="account-info-currency">{{
+          account?.currency || account?.currencyCode
+        }}</span>
+      </p>
+    </div>
+
+    <div class="account-info-card col-md-3">
+      <p class="account-info-title error">
+        {{ 'accounts.account-info.consumption' | translate }}
+      </p>
+      <p class="account-info-desc">
+        0.00
+        <span class="account-info-currency">{{
+          account?.currency || account?.currencyCode
+        }}</span>
+      </p>
+    </div>
+
+    <div class="account-info-card col-md-3">
+      <p class="account-info-title success">
+        {{ 'accounts.account-info.income' | translate }}
+      </p>
+      <p class="account-info-desc">
+        0.00
+        <span class="account-info-currency">{{
+          account?.currency || account?.currencyCode
+        }}</span>
+      </p>
+    </div>
+  </div>
+</div>

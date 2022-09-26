@@ -1,0 +1,206 @@
+.curreccyes_graph {
+  padding: 32px;
+  background: #FFFFFF;
+  border-radius: 12px;
+}
+
+.currency_section {
+  display: flex;
+  flex-direction: row;
+
+  &_main {
+    display: flex;
+    flex-direction: row;
+    margin-right: 126px;
+
+    &_sell {
+      display: flex;
+      flex-direction: column;
+      margin-right: 56px;
+    }
+
+    &_switch {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      margin-right: 56px;
+    }
+
+    &_buy {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &_rates {
+    display: flex;
+    flex-direction: row;
+
+    &_sale {
+      display: flex;
+      flex-direction: column;
+      margin-right: 42px;
+    }
+
+    &_line {
+      background: #D0D6D8;
+      width: 1px;
+      height: 100%;
+      margin-right: 42px;
+    }
+
+    &_buy {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+
+  &_img {
+    &_currency {
+      height: 36px;
+      width: 36px;
+    }
+
+    &_switch {
+      width: 32px;
+      height: 32px;
+    }
+
+    &_arrow {
+      &_up {
+        height: 24px;
+        width: 24px;
+        margin-top: 4px;
+      }
+
+      &_down {
+        height: 24px;
+        width: 24px;
+        margin-top: 4px;
+        transform: rotate(180deg);
+      }
+    }
+  }
+
+  &_text {
+    &_title {
+      font-weight: 700;
+      font-size: 16px;
+      color: #263238;
+    }
+
+    &_1 {
+      font-weight: 500;
+      font-size: 12px;
+      color: #829199;
+    }
+
+    &_currency {
+      font-weight: 700;
+      font-size: 16px;
+      color: #263238;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    &_rate {
+      font-weight: 800;
+      font-size: 20px;
+      color: #263238;
+    }
+  }
+}
+
+.online_bank {
+
+  &_filter {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin-top: 16px;
+
+    &_tabs {
+
+    }
+
+    &_inputs {
+      display: flex;
+      flex-direction: row;
+    }
+
+    &_download {
+      font-weight: 700;
+      font-size: 14px;
+      color: #11BB91;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
+
+  &_calendar {
+    &_input {
+      padding: 9px 12px 9px 12px;
+      width: 140px;
+      font-weight: 500;
+      border: 1px solid #D0D6D8;
+      border-radius: 12px !important;
+
+      &::placeholder {
+        font-weight: 500;
+        font-size: 16px;
+        color: #829199;
+      }
+    }
+
+    &_icon {
+      height: 24px;
+      width: 24px;
+      margin-left: -32px;
+      margin-bottom: auto;
+      margin-top: auto;
+    }
+  }
+}
+
+.mr {
+  &_10 {
+    margin-right: 10px;
+  }
+
+  &_16 {
+    margin-right: 16px;
+  }
+}
+
+.ml {
+  &_32 {
+    margin-left: 32px;
+  }
+
+  &_48 {
+    margin-left: 48px;
+  }
+}
+
+.mt {
+  &_8 {
+    margin-top: 8px;
+  }
+
+  &_12 {
+    margin-top: 12px;
+  }
+
+  &_16 {
+    margin-top: 16px;
+  }
+
+  &_24 {
+    margin-top: 24px;
+  }
+
+  &_40 {
+    margin-top: 40px;
+  }
+}

@@ -1,0 +1,43 @@
+<section>
+  <button type="button" class="btn btn-light">Все</button>
+  <button type="button" class="btn btn-light ml">Исполнено</button>
+  <button type="button" class="btn btn-light ml">
+    <div class="btn-width d-flex justify-content-between align-items-center">
+      <div>В обработке</div>
+      <div class="count d-flex justify-content-center align-items-center">
+        1
+      </div>
+    </div>
+  </button>
+  <button type="button" class="btn btn-light ml">Отклонено</button>
+</section>
+
+<section class="my-3">
+  <div class="row">
+    <div class="col-6 d-flex">
+      <select class="form-select" aria-label="Default select example">
+        <option selected>Все операции</option>
+        <option value="1">One</option>
+        <option value="2">Two</option>
+        <option value="3">Three</option>
+      </select>
+      <input
+        type="text"
+        placeholder="Месяц"
+        class="form-control ml"
+        bsDatepicker
+        [bsConfig]="{
+          customTodayClass: 'custom-today-class',
+          isAnimated: true
+        }" />
+    </div>
+    <div class="col-4 offset-2 d-flex">
+      <input
+        type="email"
+        class="form-control"
+        id="exampleFormControlInput1"
+        placeholder="Наименование, ИИН/БИН" />
+      <img src="assets/icons/ic_settings.svg" alt="settings" class="ml" />
+    </div>
+  </div>
+</section>

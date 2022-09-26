@@ -1,0 +1,172 @@
+@import '/src/styles/main';
+@import '/src/styles/variables.scss';
+
+#sms-help {
+  text-align: center;
+
+  .btnDisabled {
+    background-color: $color-gray;
+    color: $color-gray-dark;
+    font-weight: $font-weight-bold;
+  }
+  ::ng-deep .btn-main{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: 700;
+  }
+}
+
+.sms-input {
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 24px;
+  color: $color-light-black;
+}
+
+.sms-input__title {
+  font-size: $font-size-medium;
+  font-weight: $font-weight-medium;
+  color: $color-light-black;
+  margin-bottom: 16px;
+  text-align: left;
+  .crypto-name{
+    color: $color-green;
+    text-decoration: unset;
+  }
+}
+
+.sms-hint-button {
+  color: $color-green;
+  font-size: $font-size-small;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 32px;
+  cursor: pointer;
+}
+
+.sms-description {
+  font-size: $font-size-medium;
+  margin-bottom: 6px;
+  &__phone {
+    margin-bottom: 16px;
+  }
+}
+
+.sms-timer {
+  margin-top: 16px;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.sms-resend {
+  color: $color-green;
+  font-weight: 700;
+  cursor: pointer;
+  // margin-bottom: 17px;
+}
+
+.code-container {
+  @include flex-default(flex, row, center);
+  margin: 16px;
+}
+
+.helper {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+
+label {
+  margin-bottom: 0px;
+}
+
+code-input {
+  --item-spacing: 8px !important;
+  --item-height: 56px !important;
+  font-size: 24px !important;
+  font-weight: 700;
+  --item-border: 1px solid #acbbbe !important;
+  --item-border-focused: 2px solid #11bb91 !important;
+  --item-shadow-focused:  none !important;
+  --item-border-radius: 12px !important;
+  --item-border-bottom: 1px solid #acbbbe !important;
+  --item-border-has-value: 1px solid #acbbbe !important;
+  --item-border-bottom-has-value: 1px solid #acbbbe !important;
+  --item-border-focused: 2px solid #11bb91 !important;
+  --item-border-bottom-focused: 2px solid #11bb91 !important;
+
+
+  ::ng-deep span:first-child {
+    padding-left: 0 !important;
+  }
+}
+
+.code-container {
+  max-width: 328px;
+  padding: 0;
+  margin: 0;
+}
+
+code-input.code-input-error {
+  --item-border: 1px solid #ff5721 !important;
+  --item-border-bottom: 1px solid #ff5721 !important;
+  --item-border-has-value: 1px solid #ff5721 !important;
+  --item-border-bottom-has-value: 1px solid #ff5721 !important;
+  --item-border-focused: 2px solid #ff5721 !important;
+  --item-shadow-focused: 0 1px 2px 0 #ff5721 !important;
+  --item-border-focused: 1px solid #ff5721 !important;
+  --item-border-bottom-focused: 1px solid #ff5721 !important;
+}
+
+.code_input_error {
+  color: #ff5721;
+  font-size: $font-size-small;
+  font-weight: 500;
+  margin-top: 5px;
+  margin-left: 11px;
+}
+
+input {
+  margin-bottom: 38px;
+}
+
+button {
+  margin-top: 32px;
+  //margin-bottom: 32px;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.sms-error-text {
+  margin-top: -15px;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+.text_green {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #11bb91;
+}
+
+.text_green:hover {
+  cursor: pointer;
+}
+
+.form-control.is-invalid {
+ background-image: none;
+}
+
+.ecp-hint {
+  margin-top: 24px;
+  color: #11BB91;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 700;
+}

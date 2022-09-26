@@ -1,0 +1,124 @@
+@import "/src/styles/variables.scss";
+
+.stg_notifications_container {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 32px;
+}
+
+.text_bolder {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #2A353D;
+}
+
+.text_bold {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #263238;
+}
+
+.text1 {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0.02em;
+  color: #263238;
+
+}
+
+.text_green {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0.02em;
+  color: #11BB91;
+}
+
+.wrapper_1 {
+  width: 671px;
+  height: 88px;
+  margin-top: 30px;
+  padding: 16px;
+  background: #F3F6F8;
+  border-radius: 12px;
+}
+
+.text_light {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #88999C;
+
+}
+
+.stg_notifications_container_1 {
+  height: 266px;
+  background: #FFFFFF;
+  border-radius: 12px;
+  margin-top: 30px;
+  padding: 24px 32px;
+}
+
+.qr {
+  width: 120px;
+  height: 120px;
+}
+
+.stg_download_btn {
+  width: 144px;
+  height: 56px;
+  padding: 14px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  background: #F3F6F8;
+  border-radius: 12px;
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.stg_download_btn_img {
+  width: 22px;
+  height: 26px;
+  margin-bottom: auto;
+  margin-top: auto;
+}
+
+.stg_text4 {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: $font-weight-bold;
+  font-size: 10px;
+  line-height: 150%;
+  letter-spacing: 0.01em;
+  color: #505C64;
+}
+
+.stg_text5 {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: $font-weight-bold;
+  font-size: 12px;
+  line-height: 150%;
+  letter-spacing: 0.01em;
+  color: #505C64;
+}
+

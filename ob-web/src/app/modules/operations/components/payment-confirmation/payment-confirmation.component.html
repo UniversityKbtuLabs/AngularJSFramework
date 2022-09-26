@@ -1,0 +1,1579 @@
+<ng-template
+  [ngIf]="
+    operationType !== 'convertation' &&
+    operationType !== 'currency-transfer' &&
+    operationType !== 'contract-creation'
+  ">
+  <div style="margin-bottom: 35px">
+    <ob-back-button currentPage="operation"> </ob-back-button>
+  </div>
+  <div class="row mb-114">
+    <div class="col-smdt-9 col-dt-9 col-lgdt-8 g-custom">
+      <div class="payment-confirmation payment-content">
+        <ng-template
+          [ngIf]="
+            this.operationType === 'card' || this.operationType === 'accounts'
+          ">
+          <p class="payment-confirmation__title">
+            {{
+              'operations.transfer-confirmation.confirmationLabel' | translate
+            }}
+          </p>
+        </ng-template>
+        <ng-template
+          [ngIf]="
+            this.operationType !== 'card' && this.operationType !== 'accounts'
+          ">
+          <p class="payment-confirmation__title">
+            {{
+              'operations.payment-confirmation.confirmationLabel' | translate
+            }}
+          </p>
+        </ng-template>
+
+        <div class="payment-details">
+          <div class="payment-details-row">
+            <div>
+              <p
+                class="payment-details-row__label"
+                *ngIf="
+                  this.operationType !== 'card' &&
+                  this.operationType !== 'accounts'
+                ">
+                {{ 'operations.default.destination' | translate }}
+              </p>
+            </div>
+            <div>
+              <p
+                class="payment-details-row__desc fw"
+                *ngIf="
+                  this.operationType !== 'card' &&
+                  this.operationType !== 'accounts' &&
+                  this.operationType !== 'budget'
+                ">
+                {{ template?.nameRecipient }}
+              </p>
+              <p
+                class="payment-details-row__desc fw"
+                *ngIf="this.operationType === 'budget'">
+                {{ template?.payBudgetList[0].taxCommitteeName }}
+                {{ template?.nameRecipient }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'operations.default.amount' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc fw">
+                {{ getFormattedAmount(template?.amount) }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'operations.payments.commission' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc">
+                {{
+                  checkNumber(template?.comission)
+                    ? getFormattedAmount(template?.comission)
+                    : template?.comission
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'operations.payment-confirmation.doc-number' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc">
+                {{ template?.docNum }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'operations.payment-confirmation.time' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc">
+                {{ formatDate(template?.docDate) }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'operations.default.transfetType' | translate }}
+              </p>
+            </div>
+            <div>
+              <p
+                *ngIf="this.operationType === 'accounts'"
+                class="payment-details-row__desc">
+                {{ getTransferType(template?.docType) }}
+              </p>
+              <p
+                *ngIf="
+                  this.operationType !== 'accounts' &&
+                  this.operationType !== 'card' &&
+                  this.operationType !== 'osms'
+                "
+                class="payment-details-row__desc">
+                {{ getOpertationType(template?.subType) }}
+              </p>
+              <p
+                *ngIf="this.operationType === 'card'"
+                class="payment-details-row__desc">
+                {{ cardTransfer }}
+              </p>
+              <p
+                *ngIf="this.operationType === 'osms'"
+                class="payment-details-row__desc">
+                {{ osmsPayment }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row" *ngIf="operationType === 'budget'">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'default.period' | translate }}
+              </p>
+            </div>
+            <div>
+              <p
+                *ngIf="operationType === 'budget'"
+                class="payment-details-row__desc">
+                {{ changePeriodFormat(template?.payBudgetList[0].period) }}
+              </p>
+            </div>
+          </div>
+          <div
+            class="payment-details-row"
+            *ngIf="operationType === 'counteragent'">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'operations.payment-confirmation.IIN/BIN' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc">
+                {{ template.idnRecipient }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row">
+            <div>
+              <p
+                class="payment-details-row__label"
+                *ngIf="this.operationType !== 'card'">
+                {{
+                  'operations.payment-confirmation.withdrawal-account'
+                    | translate
+                }}
+              </p>
+              <p
+                class="payment-details-row__label"
+                *ngIf="this.operationType === 'card'">
+                {{
+                  'operations.transfer-confirmation.withdrawal-card' | translate
+                }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc">
+                {{ template?.accountSender }}
+              </p>
+            </div>
+            <div>
+              <p
+                class="payment-details-row__desc"
+                *ngIf="this.operationType === 'card'">
+                {{ template?.contractName }}
+                {{
+                  this.helperService.formatIban(
+                    template?.contractNumber,
+                    'cards'
+                  )
+                }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row">
+            <div>
+              <p
+                class="payment-details-row__label"
+                *ngIf="this.operationType !== 'card'">
+                {{
+                  'operations.payment-confirmation.receiver-account' | translate
+                }}
+              </p>
+              <p
+                class="payment-details-row__label"
+                *ngIf="this.operationType === 'card'">
+                {{
+                  'operations.transfer-confirmation.receiver-card' | translate
+                }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc">
+                {{ template?.accountRecipient }}
+              </p>
+            </div>
+            <div>
+              <p
+                class="payment-details-row__desc"
+                *ngIf="this.operationType === 'card'">
+                {{ this.helperService.formatIban(template?.cardTo, 'cards') }}
+              </p>
+            </div>
+          </div>
+          <div class="payment-details-row">
+            <div>
+              <p
+                class="payment-details-row__label"
+                *ngIf="
+                  this.operationType !== 'card' &&
+                  this.operationType !== 'accounts'
+                ">
+                {{ 'operations.payment-confirmation.type' | translate }}
+              </p>
+            </div>
+            <div>
+              <p
+                class="payment-details-row__desc"
+                *ngIf="
+                  operationType !== 'budget' &&
+                  this.operationType !== 'card' &&
+                  this.operationType !== 'accounts'
+                ">
+                {{ 'operations.default.knp' | translate }}:
+                {{ template?.knpCode }} {{ template?.knpName }}
+              </p>
+            </div>
+            <div *ngIf="operationType === 'budget'">
+              <p class="payment-details-row__desc">
+                {{ 'operations.default.knp' | translate }}:
+                {{ template?.knpCode }}
+                {{ template?.payBudgetList[0].knpName }}
+              </p>
+              <p class="payment-details-row__desc pt">
+                {{ 'operations.default.cbc' | translate }}:
+                {{ template?.payBudgetList[0].cbc }}
+                {{ template?.payBudgetList[0].cbcName }}
+              </p>
+            </div>
+          </div>
+          <div
+            class="payment-details-row"
+            *ngIf="
+              operationType === 'salary' || operationType === 'counteragent'
+            ">
+            <div>
+              <p class="payment-details-row__label">
+                {{
+                  'operations.payment-confirmation.purpose-payment' | translate
+                }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc">
+                {{ template?.purpose }}
+              </p>
+            </div>
+          </div>
+          <div
+            *ngIf="
+              operationType === 'salary' ||
+              operationType === 'osms' ||
+              operationType === 'social' ||
+              operationType === 'retirement'
+            ">
+            <div
+              *ngIf="employerList?.length > 0"
+              class="operation-details__employers">
+              <div class="table_title_wrapper" (click)="employeeTableShow()">
+                <p
+                  class="operation-details__employers-title"
+                  [ngClass]="{ 'mb-16': showEmployeeTable }">
+                  {{ 'operations.default.employees' | translate }} ({{
+                    employerList?.length
+                  }})
+                </p>
+                <img
+                  src="assets/icons/down_arrow.svg"
+                  [ngClass]="{
+                    arrow_down: showEmployeeTable === false,
+                    arrow_up: showEmployeeTable === true
+                  }" />
+              </div>
+
+              <div
+                class="operation-employerList"
+                *ngIf="showEmployeeTable === true">
+                <p class="operation-employerList__number title">№</p>
+                <p class="operation-employerList__operation title">
+                  {{ 'operations.default.employees' | translate }}
+                </p>
+                <p
+                  class="operation-employerList__period title"
+                  *ngIf="
+                    operationType === 'osms' ||
+                    operationType === 'social' ||
+                    operationType === 'retirement'
+                  ">
+                  {{ 'default.period' | translate }}
+                </p>
+                <p
+                  class="operation-employerList__period title"
+                  *ngIf="operationType === 'salary'">
+                  Счет
+                </p>
+                <p class="operation-employerList__amount title">
+                  {{ 'default.amount' | translate }}
+                </p>
+              </div>
+
+              <div
+                *ngIf="showEmployeeTable === true"
+                class="employee_table_wrapper">
+                <div
+                  class="operation-employerList list"
+                  *ngFor="let employee of employerList; let idx = index">
+                  <p class="operation-employerList__number employee">
+                    {{ idx + 1 }}
+                  </p>
+                  <div class="operation-employerList__operation">
+                    <p class="employee">
+                      {{ employee.lastName }} {{ employee.firstName }}
+                      {{ employee.midlleName }}
+                    </p>
+                    <p class="employee-number">{{ employee.iin }}</p>
+                  </div>
+                  <p
+                    class="operation-employerList__period employee"
+                    *ngIf="
+                      operationType === 'osms' ||
+                      operationType === 'social' ||
+                      operationType === 'retirement'
+                    ">
+                    {{
+                      helperService.formatDateMonthYear(
+                        helperService.formattedPeriod(employee.period)
+                      )
+                    }}
+                  </p>
+                  <p
+                    class="operation-employerList__period employee"
+                    *ngIf="operationType === 'salary'">
+                    {{ employee.account }}
+                  </p>
+                  <p class="operation-employerList__amount employee">
+                    {{ helperService.formatAmount(employee.amount) }} ₸
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="payment-details-footer"
+            [ngClass]="{
+              'payment-details-footer-open': showEmployeeTable,
+              'payment-details-footer-close': !showEmployeeTable
+            }">
+            <div class="payment-details-footer__btn" (click)="onEdit()">
+              {{ 'operations.default.edit' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="operationType === 'convertation'">
+  <div style="margin-bottom: 35px">
+    <ob-back-button [currentPage]="'currency_controll'"> </ob-back-button>
+  </div>
+  <div class="row mb-114">
+    <div class="col-smdt-9 col-dt-9 col-lgdt-8 g-custom">
+      <div class="payment-confirmation payment-content">
+        <!--      Title данных для конвертации-->
+        <p class="payment-confirmation__title">
+          {{ 'currencyControl.convertation.confirmationLabel' | translate }}
+        </p>
+        <!--      Title данных для конвертации-->
+
+        <div class="d-flex flex-row mb_24" *ngIf="refreshCount > 0">
+          <div class="d-flex flex-column justify-content-center">
+            <img src="assets/icons/ic_status_error1.svg" />
+          </div>
+          <div class="d-flex flex-column justify-content-center">
+            <p class="ml_16">
+              {{
+                'currencyControl.convertation.conversionRateUpdated' | translate
+              }}
+              {{ template.prefill?.rate }}
+              {{ helperService.formatCurrency(template?.counterCurrency) }}
+            </p>
+          </div>
+        </div>
+
+        <!--      Данные конвертации-->
+        <div class="payment-details">
+          <!--        Сумма списания-->
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'currencyControl.convertation.amountDebit' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__amount fw">
+                {{
+                  getFormattedAmountWithCurrency(
+                    template?.amountDebit,
+                    template?.accountDebitCurrency
+                  )
+                }}
+              </p>
+            </div>
+          </div>
+          <!--        Сумма списания-->
+
+          <!--        Сумма зачисления-->
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'currencyControl.convertation.amountCredit' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__amount fw">
+                {{
+                  getFormattedAmountWithCurrency(
+                    template?.amountCredit,
+                    template?.accountCreditCurrency
+                  )
+                }}
+              </p>
+            </div>
+          </div>
+          <!--        Сумма зачисления-->
+
+          <!--        По текущему курсу -->
+          <div
+            class="payment-details-row"
+            *ngIf="
+              template.currentRate !== null && template.individualRate === null
+            ">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'currencyControl.convertation.byCurrentRate' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__amount fw">
+                {{
+                  getFormattedAmountWithCurrency(
+                    template.prefill?.rate,
+                    template?.counterCurrency
+                  )
+                }}
+              </p>
+            </div>
+          </div>
+          <!--        По по текущему курсу-->
+
+          <!--        По индивидуальному курсу -->
+          <div
+            class="payment-details-row"
+            *ngIf="
+              template.currentRate !== null && template.individualRate !== null
+            ">
+            <div>
+              <p class="payment-details-row__label">
+                {{
+                  'currencyControl.convertation.byIndividualRate' | translate
+                }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__amount fw">
+                {{
+                  getFormattedAmountWithCurrency(
+                    template.prefill?.rate,
+                    template?.counterCurrency
+                  )
+                }}
+              </p>
+            </div>
+          </div>
+          <!--        По индивидуальному курсу-->
+
+          <!--        Таймер -->
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'currencyControl.convertation.refreshAfter' | translate }}
+              </p>
+            </div>
+            <ob-loader
+              [loading]="individualRateLoading"
+              class="mb-auto mt-auto">
+              <div class="d-flex flex-row">
+                <img src="assets/icons/ic_timer.svg" />
+                <p class="payment-details-row__amount fw">
+                  {{ getTime(convertationRefreshTime) }}
+                </p>
+              </div>
+            </ob-loader>
+          </div>
+          <!--        Таймер-->
+
+          <!--        Тип конвертации -->
+          <div
+            class="payment-details-row"
+            *ngIf="template.convertationType === 'fx'">
+            <div>
+              <p class="payment-details-row__label">
+                {{
+                  'currencyControl.convertation.convertationType' | translate
+                }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc fw">
+                {{ 'currencyControl.convertation.byFXRate' | translate }}
+              </p>
+            </div>
+          </div>
+          <!--        Тип конвертации -->
+
+          <!--        Номер документа-->
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'default.documentNumber' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc fw">
+                {{ template?.docNum }}
+              </p>
+            </div>
+          </div>
+          <!--        Номер документа-->
+
+          <!--        Дата документа-->
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'currencyControl.convertation.docDate' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc fw">
+                {{ formatDate(template?.docDate) }}
+              </p>
+            </div>
+          </div>
+          <!--        Дата документа->
+
+    <!--                Счет списания -->
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'operations.budget.account-desc' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc fw">
+                {{ template?.accountDebit }}
+              </p>
+            </div>
+          </div>
+          <!--                Счет списания-->
+
+          <!--        Счет зачисления-->
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'operations.budget.account-refill' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc fw">
+                {{ template?.accountCredit }}
+              </p>
+            </div>
+          </div>
+          <!--        Счет зачисления-->
+
+          <!--        Цель покупки-->
+          <div class="payment-details-row">
+            <div>
+              <p class="payment-details-row__label">
+                {{ 'currencyControl.convertation.purpose' | translate }}
+              </p>
+            </div>
+            <div>
+              <p class="payment-details-row__desc fw">
+                {{ template?.purpose.description }}
+              </p>
+            </div>
+          </div>
+          <!--        Цель покупки-->
+
+          <div
+            class="payment-details-footer"
+            [ngClass]="{
+              'payment-details-footer-open': showEmployeeTable,
+              'payment-details-footer-close': !showEmployeeTable
+            }">
+            <div class="payment-details-footer__btn" (click)="onEdit()">
+              {{ 'operations.default.edit' | translate }}
+            </div>
+          </div>
+        </div>
+        <!--      Данные конвертации-->
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="operationType === 'currency-transfer'">
+  <div style="margin-bottom: 35px">
+    <ob-back-button [currentPage]="'currency_controll'"></ob-back-button>
+  </div>
+  <div class="mb-114">
+    <div class="col-smdt-12 col-dt-9 col-lgdt-9">
+      <div class="payment-confirmation payment-content">
+        <p class="payment-confirmation__title">
+          {{ 'default.confirmation' | translate }}
+        </p>
+        <div class="payment-details">
+          <div class="payment-details-dropdown">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isSenderOpen = !isSenderOpen">
+              <p class="payment-details-dropdown__title">
+                {{ 'currencyControl.currencyTransfer.sender' | translate }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isSenderOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow_down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div class="payment-details-dropdown__content" *ngIf="isSenderOpen">
+              <!-- ID/УНК -->
+              <div class="payment-details-row" *ngIf="template?.passport">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.currencyTransfer.id-unk' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.passport }}
+                </p>
+              </div>
+              <!-- ID/УНК -->
+              <!-- Валюта -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'default.currency' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.currencySender }}
+                </p>
+              </div>
+              <!-- Валюта -->
+              <!-- Счет списания -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'operations.budget.account-desc' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.accountSender }}
+                </p>
+              </div>
+              <!-- Счет списания -->
+              <!-- Сумма перевода -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'operations.default.transferAmount' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{
+                    getFormattedAmountWithCurrency(
+                      template?.amount,
+                      template?.currencySender
+                    ) | amountPipe
+                  }}
+                </p>
+              </div>
+              <!-- Сумма перевода -->
+            </div>
+          </div>
+          <div class="payment-details-dropdown">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isRecipientOpen = !isRecipientOpen">
+              <p class="payment-details-dropdown__title">
+                {{ 'default.recipient' | translate }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isRecipientOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow_down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div
+              class="payment-details-dropdown__content"
+              *ngIf="isRecipientOpen">
+              <!-- ИНН -->
+              <div
+                class="payment-details-row"
+                *ngIf="
+                  template?.currencySender === 'RUB' &&
+                  template?.recipientInn !== '0'
+                ">
+                <p class="payment-details-row__label">
+                  {{ 'default.inn' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.recipientInn }}
+                </p>
+              </div>
+              <!-- ИНН -->
+              <!-- Номер паспорта -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.recipientPassportNum">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.passportNum' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.recipientPassportNum }}
+                </p>
+              </div>
+              <!-- Номер паспорта -->
+              <!-- Дата выдачи паспорта -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.recipientPassportDate">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.passportDate' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ formatDate(template?.recipientPassportDate) }}
+                </p>
+              </div>
+              <!-- Дата выдачи паспорта -->
+              <!-- Наименование -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'default.name' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.nameRecipient }}
+                </p>
+              </div>
+              <!-- Наименование -->
+              <!-- Счёт получателя -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.recipientAccount'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.accountRecipient }}
+                </p>
+              </div>
+              <!-- Счёт получателя -->
+              <!-- КБе -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'operations.default.kbe' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.kbe }}
+                </p>
+              </div>
+              <!-- КБе -->
+              <!-- КПП -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.recipientKpp && template?.currencySender">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.currencyTransfer.kpp' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.recipientKpp }}
+                </p>
+              </div>
+              <!-- КПП -->
+              <!-- Адрес получателя -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.recipientAddress'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.countryRecipient }}
+                  {{
+                    template?.cityRecipient
+                      ? ', ' + template?.cityRecipient
+                      : ''
+                  }}
+                  {{
+                    template?.recipientStreet
+                      ? ', ' + template?.recipientStreet
+                      : ''
+                  }}
+                  {{
+                    template?.recipientHouseNo
+                      ? ', ' + template?.recipientHouseNo
+                      : ''
+                  }}
+                  {{
+                    template?.recipientApartmentNo
+                      ? ', ' + template?.recipientApartmentNo
+                      : ''
+                  }}
+                </p>
+              </div>
+              <!-- Адрес получателя -->
+            </div>
+          </div>
+          <div class="payment-details-dropdown">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isBankRecipientOpen = !isBankRecipientOpen">
+              <p class="payment-details-dropdown__title">
+                {{ 'operations.default.bankRecipient' | translate }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isBankRecipientOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow_down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div
+              class="payment-details-dropdown__content"
+              *ngIf="isBankRecipientOpen">
+              <!-- Способ перевода -->
+              <div
+                class="payment-details-row"
+                *ngIf="
+                  template?.currencySender !== 'RUB' &&
+                  template?.currencySender !== 'KGS'
+                ">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.transfer-type' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ getCurrrencyTransferType() }}
+                </p>
+              </div>
+              <!-- Способ перевода -->
+              <!-- SWIFT банка получателя -->
+              <div
+                class="payment-details-row"
+                *ngIf="
+                  !this.template?.isFw_Sortcode &&
+                  template?.currencySender !== 'RUB' &&
+                  template?.currencySender !== 'KGS'
+                ">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.bank-recipient-swift'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.bicBankRecipient }}
+                </p>
+              </div>
+              <!-- SWIFT банка получателя -->
+              <!-- БИК банка получателя -->
+              <div
+                class="payment-details-row"
+                *ngIf="
+                  template?.currencySender === 'RUB' ||
+                  template?.currencySender === 'KGS'
+                ">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.bic-bank-recipient'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.bicBankRecipient }}
+                </p>
+              </div>
+              <!-- БИК банка получателя -->
+              <!-- Банк получатель -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.bankRecipient' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.nameBankRecipient }}
+                </p>
+              </div>
+              <!-- Банк получатель -->
+              <!-- SWIFT банка посредника -->
+              <div
+                class="payment-details-row"
+                *ngIf="
+                  template?.bicMiddleBank &&
+                  template?.currencySender !== 'RUB' &&
+                  template?.currencySender !== 'KGS'
+                ">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.middle-bank-swift'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.bicMiddleBank }}
+                </p>
+              </div>
+              <!-- SWIFT банка посредника -->
+              <!-- Банк посредник -->
+              <div class="payment-details-row" *ngIf="template?.nameMiddleBank">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.middle-bank' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.nameMiddleBank }}
+                </p>
+              </div>
+              <!-- Банк посредник -->
+            </div>
+          </div>
+          <div class="payment-details-dropdown" *ngIf="template?.budgetPayment">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isBudgetDetailsOpen = !isBudgetDetailsOpen">
+              <p class="payment-details-dropdown__title">
+                {{ 'operations.default.paymentToBudget' | translate }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isBudgetDetailsOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow-down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div
+              class="payment-details-dropdown__content"
+              *ngIf="isBudgetDetailsOpen">
+              <!-- Код типа операции -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.operation-type-code'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.hbOpTypeCodeDescription }}
+                  ({{ 'default.code' | translate }}:
+                  {{ template?.hbOpTypeCode }})
+                </p>
+              </div>
+              <!-- Код типа операции -->
+              <!-- Код бюджетной классификации (N4) -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.budget-cbc' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.cbc }}
+                </p>
+              </div>
+              <!-- Код бюджетной классификации (N4) -->
+              <!-- Код ОКТМО (N5) -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.oktmo-code' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.okatoCode }}
+                </p>
+              </div>
+              <!-- Код ОКТМО (N5) -->
+              <!-- Основание налогового платежа (N6) -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.budget-payment-reason'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.paymentReasonIndicatorDescription }}
+                  ({{ 'default.code' | translate }}:
+                  {{ template?.paymentReasonIndicator }})
+                </p>
+              </div>
+              <!-- Основание налогового платежа (N6) -->
+              <!-- Налоговый период (N7) -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.tax-period' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.taxPeriodIndicator }}
+                </p>
+              </div>
+              <!-- Налоговый период (N7) -->
+              <!-- Номер налового документа (N8) -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.budget-docNum' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.paymentDocNumber }}
+                </p>
+              </div>
+              <!-- Номер налового документа (N8) -->
+              <!-- Дата налогового документа (N9) -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.budget-docDate'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ formatDate(template?.paymentDocDate) }}
+                </p>
+              </div>
+              <!-- Дата налогового документа (N9) -->
+              <!-- Тип налового платежа (N10) -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.budget-payment-type'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.budgetInfoDescription }}
+                  ({{ 'default.code' | translate }}: {{ template?.budgetInfo }})
+                </p>
+              </div>
+              <!-- Тип налового платежа (N10) -->
+            </div>
+          </div>
+          <div class="payment-details-dropdown">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isDetailsOpen = !isDetailsOpen">
+              <p class="payment-details-dropdown__title">
+                {{ 'products.default.details' | translate }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isDetailsOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow-down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div
+              class="payment-details-dropdown__content"
+              *ngIf="isDetailsOpen">
+              <!-- КНП -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'operations.default.knp' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.knpName }}
+                  ({{ 'operations.default.knp' | translate }}:{{
+                    template?.knpCode
+                  }})
+                </p>
+              </div>
+              <!-- КНП -->
+              <!-- Код валютной операции -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.currencySender === 'RUB'">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.operationCode' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.codeVoDescription }}
+                  ({{ 'default.code' | translate }}: {{ template?.codeVo }})
+                </p>
+              </div>
+              <!-- Код валютной операции -->
+              <!-- Код назначения (KGS) -->
+              <div class="payment-details-row" *ngIf="template?.knpCodeKgs">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.purposeCode' | translate
+                  }}
+                  (KGS)
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.knpCodeKgs }}
+                </p>
+              </div>
+              <!-- Код назначения (KGS) -->
+              <!-- Код назначения (CNY) -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.currencySender === 'CNY'">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.purposeCode' | translate
+                  }}
+                  (CNY)
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.transferPurposeDescription }}
+                  ({{ 'default.code' | translate }}:
+                  {{ template?.transferPurpose }})
+                </p>
+              </div>
+              <!-- Код назначения (CNY) -->
+              <!-- Код назначения (UAE) -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.countryCodeRecipient === 'AE'">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.purposeCode' | translate
+                  }}
+                  (UAE)
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.transferPurposeDescription }}
+                  ({{ 'default.code' | translate }}:
+                  {{ template?.transferPurpose }})
+                </p>
+              </div>
+              <!-- Код назначения (UAE) -->
+              <!-- Назначение платежа -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'operations.payments.purpose' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.paymentInfo }}
+                </p>
+              </div>
+              <!-- Назначение платежа -->
+              <!-- Информация получателю (72) -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.infoToRecipient'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.infoRecipient }}
+                </p>
+              </div>
+              <!-- Информация получателю (72) -->
+              <!-- Счет списания комиссии -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.currencyTransfer.comissionAccount'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.accountFeePayment }}
+                </p>
+              </div>
+              <!-- Счет списания комиссии -->
+            </div>
+          </div>
+          <div class="payment-details-footer">
+            <div class="payment-details-footer__btn" (click)="onEdit()">
+              {{ 'operations.default.edit' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="operationType === 'contract-creation'">
+  <div style="margin-bottom: 35px">
+    <ob-back-button [currentPage]="'currency_controll'"></ob-back-button>
+  </div>
+  <div class="mb-114">
+    <div class="col-smdt-12 col-dt-9 col-lgdt-9">
+      <div class="payment-confirmation payment-content">
+        <p class="payment-confirmation__title">
+          {{ 'default.confirmation' | translate }}
+        </p>
+        <div class="payment-details">
+          <div class="payment-details-dropdown">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isSenderOpen = !isSenderOpen">
+              <p class="payment-details-dropdown__title">
+                {{ 'currencyControl.contract.data' | translate }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isSenderOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow_down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div class="payment-details-dropdown__content" *ngIf="isSenderOpen">
+              <!-- Сумма контракта -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.contract.sum' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{
+                    template?.approximatePrice
+                      ? (getFormattedAmountWithCurrency(
+                          template?.approximatePrice,
+                          template?.currency
+                        ) | amountPipe)
+                      : ('currencyControl.contract.toLabel' | translate)
+                  }}
+                </p>
+              </div>
+              <!-- Сумма контракта -->
+              <!-- Валюта -->
+              <div class="payment-details-row" *ngIf="template?.branchName">
+                <p class="payment-details-row__label">
+                  {{ 'default.reg-branch' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.branchName }}
+                </p>
+              </div>
+              <!-- Валюта -->
+              <!-- Филиал регистрации контракта -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'default.currency' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.currency }}
+                </p>
+              </div>
+              <!-- Филиал регистрации контракта -->
+              <!-- Номер контракта -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.contract.number' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{
+                    template?.contractNumber
+                      ? template?.contractNumber
+                      : ('default.missing' | translate)
+                  }}
+                </p>
+              </div>
+              <!-- Номер контракта -->
+              <!-- Дата контракта -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.contract.date' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ formatDate(template?.contractDate) }}
+                </p>
+              </div>
+              <!-- Дата контракта -->
+            </div>
+          </div>
+          <div
+            class="payment-details-dropdown"
+            *ngIf="template?.approximatePrice">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isDetailsOpen = !isDetailsOpen">
+              <p class="payment-details-dropdown__title">
+                {{ 'currencyControl.contract.detail' | translate }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isDetailsOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow_down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div
+              class="payment-details-dropdown__content"
+              *ngIf="isDetailsOpen">
+              <!-- Тип контракта -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.contract.type' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.contractTypeName | titlecase }}
+                </p>
+              </div>
+              <!-- Тип контракта -->
+              <!-- Предмет контракта -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.contractSubjectName">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.contract.subject' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.contractSubjectName }}
+                </p>
+              </div>
+              <!-- Предмет контракта -->
+              <!-- Срок репатриации -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.foreignRepatriationPeriod">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.contract.repatriation' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.foreignRepatriationPeriod }}
+                </p>
+              </div>
+              <!-- Срок репатриации -->
+            </div>
+          </div>
+          <div
+            class="payment-details-dropdown"
+            *ngIf="template?.approximatePrice">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isInopartnerOpen = !isInopartnerOpen">
+              <p class="payment-details-dropdown__title">
+                {{
+                  'currencyControl.contract.foreign-partner-data' | translate
+                }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isInopartnerOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow_down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div
+              class="payment-details-dropdown__content"
+              *ngIf="isInopartnerOpen">
+              <!-- Наименование инопартнера -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.contract.foreign-partner-name' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.foreignName }}
+                </p>
+              </div>
+              <!-- Наименование инопартнера -->
+              <!-- Страна инопартнера -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.foreignCountryName">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.contract.foreign-partner-country'
+                      | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.foreignCountryName }}
+                </p>
+              </div>
+              <!-- Страна инопартнера -->
+              <!-- Третье лицо -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.thirdPartyTypeName">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.contract.third-party-label' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.thirdPartyTypeName }}
+                </p>
+              </div>
+              <!-- Третье лицо -->
+              <!-- Наименование третьего лица -->
+              <div class="payment-details-row" *ngIf="template?.thirdPartyName">
+                <p class="payment-details-row__label">
+                  {{ 'currencyControl.contract.third-party-name' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.thirdPartyName }}
+                </p>
+              </div>
+              <!-- Наименование третьего лица -->
+              <!-- Страна регистрации третьего лица -->
+              <div
+                class="payment-details-row"
+                *ngIf="template?.thirdPartyCountryName">
+                <p class="payment-details-row__label">
+                  {{
+                    'currencyControl.contract.third-party-country' | translate
+                  }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.thirdPartyCountryName }}
+                </p>
+              </div>
+              <!-- Страна регистрации третьего лица -->
+            </div>
+          </div>
+          <div
+            class="payment-details-dropdown"
+            *ngIf="template?.approximatePrice">
+            <div
+              class="payment-details-dropdown__header"
+              (click)="isRecipientOpen = !isRecipientOpen">
+              <p class="payment-details-dropdown__title">
+                {{ 'currencyControl.contract.client-detail' | translate }}
+              </p>
+              <span>
+                <img
+                  src="assets/icons/ic_dark_arrow.svg"
+                  [ngClass]="
+                    isRecipientOpen
+                      ? 'arrow_up__confirmation'
+                      : 'arrow_down__confirmation'
+                  " />
+              </span>
+            </div>
+            <div
+              class="payment-details-dropdown__content"
+              *ngIf="isRecipientOpen">
+              <!-- Адрес -->
+              <div class="payment-details-row">
+                <p class="payment-details-row__label">
+                  {{ 'default.address' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.clientAddress }}
+                </p>
+              </div>
+              <!-- Адрес -->
+              <!-- Электронная почта -->
+              <div class="payment-details-row" *ngIf="template?.clientEmail">
+                <p class="payment-details-row__label">
+                  {{ 'default.email' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ template?.clientEmail }}
+                </p>
+              </div>
+              <!-- Электронная почта -->
+              <!-- Номер телефона -->
+              <div class="payment-details-row" *ngIf="template?.clientContacts">
+                <p class="payment-details-row__label">
+                  {{ 'default.phone-number' | translate }}
+                </p>
+                <p class="payment-details-row__desc">
+                  {{ getFormattedPhone(template?.clientContacts) }}
+                </p>
+              </div>
+              <!-- Номер телефона -->
+            </div>
+          </div>
+          <div class="payment-details-footer">
+            <div class="payment-details-footer__btn" (click)="onEdit()">
+              {{ 'operations.default.edit' | translate }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<ob-sign-footer
+  (save)="toSave()"
+  (sendToSign)="sendToSign()"
+  (signLater)="sendToSign()"
+  (directlySign)="toDirectlySign()"
+  [isSaveEnabled]="!isSave"
+  [hasRightToSign]="rightsToSign"
+  [operationType]="operationType"
+  [loading]="loading || isSendLoading || isSaveLoading"></ob-sign-footer>

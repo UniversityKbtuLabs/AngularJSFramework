@@ -1,0 +1,72 @@
+@import "/src/styles/variables.scss";
+
+.slider-modal {
+    width: 100%;
+    height: 100vh;
+    position: fixed;
+    top: 0;
+    transition: 0.5s;
+    opacity: 0;
+    z-index: -10;
+
+    &-active {
+        opacity: 1;
+        z-index: 100;
+        transition: 0.5s;
+    }
+}
+
+.bg {
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    transition: 0.5s;
+
+    &-active {
+        opacity: 1;
+        visibility: visible;
+        transition: 0.5s;
+    }
+}
+
+.slider {
+    width: 480px;
+    height: 100vh;
+    background-color: $color-white;
+    position: absolute;
+    top: 0;
+    right: -480px;
+    transition: 0.5s;
+
+    &-active {
+        right: 0;
+        transition: 0.5s;
+    }
+
+    &-header {
+        width: 100%;
+        border-bottom: 1px solid $color-pale-gray;
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        box-sizing: border-box;
+        padding: 23px 24px 25px;
+        
+        & > p {
+            color: $color-black;
+            font-size: $font-size-medium-large
+        }
+
+        & > img {
+            transform: scale(1.5);
+            cursor: pointer;
+        }
+    }
+
+    &-body {
+        box-sizing: border-box;
+        padding: 24px
+    }
+}
+

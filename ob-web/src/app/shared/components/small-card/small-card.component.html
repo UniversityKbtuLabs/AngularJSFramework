@@ -1,0 +1,8 @@
+<div class="account" (click)="redirectToPage(account.contractId)">
+  <h3 class="account-balance">
+    {{ balance }} <span>{{ currency }}</span>
+  </h3>
+  <p class="account-iban">{{ cutIban(iban) }}</p>
+
+  <img src="assets/icons/ic_arrow_right.svg" alt="arrow-icon" />
+</div>

@@ -1,0 +1,40 @@
+@import "/src/styles/variables.scss";
+.contact {
+  &-header {
+    margin-bottom: 24px;
+
+    &__title {
+      font-size: $font-size-medium;
+      font-weight: 700;
+      color: $color-black;
+    }
+  }
+
+  &-body {
+    &-detail {
+      display: flex;
+      margin-bottom: 16px;
+    }
+    &-info {
+      margin-left: 14px;
+      &__title {
+        font-size: $font-size-small;
+        font-weight: 500;
+        color: $color-gray-darker;
+        margin-bottom: 5px;
+      }
+      &__number {
+        font-size: $font-size-medium;
+        font-weight: 600;
+        color: $color-green;
+      }
+
+      &__without-info {
+        font-size:  $font-size-medium;
+        font-weight: 600;
+        padding-top: 8px;
+        color: $color-green;
+      }
+    }
+  }
+}

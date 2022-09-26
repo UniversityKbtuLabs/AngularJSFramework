@@ -1,0 +1,11 @@
+@import "/src/styles/variables.scss";
+
+.small-input {
+    width: 112px;
+    padding: 8px 0 8px 14px;
+    border: none;
+    background-color: #F4F4F4;
+    border-radius: 4px;
+    outline: none;
+    color: $color-gray-darker;
+}

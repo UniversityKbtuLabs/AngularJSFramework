@@ -1,0 +1,102 @@
+@import "/src/styles/variables.scss";
+
+.card-list {
+  overflow: hidden;
+  transition: 0.5s;
+  background-color: #fff;
+  border-radius: 12px;
+  margin-bottom: 24px;
+  padding: 24px;
+
+  &-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    cursor: pointer;
+
+    &__title {
+      font-size: $font-size-medium;
+      font-weight: bold;
+      color: $color-light-black;
+    }
+
+    &__img {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  &-add {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-top: 24px;
+
+    & > img {
+      margin-right: 16px;
+    }
+  }
+
+  &-body {
+    margin-top: 24px;
+
+    & > div:not(:last-child) {
+      border-bottom: 1px solid $color-border-gray;
+    }
+  }
+
+  &-error {
+    display: flex;
+    flex-direction: column;
+
+    &-img {
+      height: 16px;
+      width: 16px;
+    }
+
+    &-title {
+      margin-top: auto;
+      margin-bottom: auto;
+      font-weight: 700;
+      font-size: 14px;
+      line-height: 130%;
+      text-align: center;
+      letter-spacing: 0.02em;
+      color: #263238;
+    }
+
+    &-text {
+      font-weight: 500;
+      font-size: 12px;
+      line-height: 130%;
+      text-align: center;
+      letter-spacing: 0.02em;
+      color: #829199;
+    }
+  }
+}
+
+.all-accounts {
+  padding: 24px 24px;
+}
+
+.first-account {
+  padding: 16px 24px;
+}
+
+.mr {
+  &_8 {
+    margin-right: 8px;
+  }
+}
+
+.mt {
+  &_8 {
+    margin-top: 8px;
+  }
+
+  &_25 {
+    margin-top: 25px;
+  }
+}

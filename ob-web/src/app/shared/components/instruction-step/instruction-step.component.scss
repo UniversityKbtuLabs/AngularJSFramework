@@ -1,0 +1,61 @@
+@import "/src/styles/main.scss";
+.instruction-modal {
+  z-index: 1000;
+  box-shadow: 0px 1px 2px rgb(0 0 0 / 15%), 0px 4px 8px rgb(0 0 0 / 20%);
+  border-radius: 8px;
+  padding: 12px;
+  z-index: 1000;
+  position: relative;
+  top: 42px;
+  left: 20px;
+  background: #fff;
+  width: 365px;
+}
+.instruction-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+.instruction-footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  padding-top: 7px;
+  align-items: center;
+  span {
+    color: #88999c;
+  }
+
+  .btn-content {
+    display: flex;
+    flex-direction: row;
+
+    ._btn {
+      margin: 0 5px;
+    }
+  }
+}
+.mmodal-background {
+  // should be below the .modal but above all other elements
+  z-index: 900;
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: rgba(0, 0, 0, 0.4);
+}
+.instruction-modal:after {
+  content: "";
+  position: absolute;
+  left: -19px;
+  top: 18px;
+  width: 0;
+  height: 0;
+  border-left: 20px solid transparent;
+  border-right: 20px solid transparent;
+  border-top: 20px solid #fff;
+  clear: both;
+  transform: rotate(101grad);
+}

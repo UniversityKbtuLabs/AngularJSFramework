@@ -1,0 +1,136 @@
+@import "/src/styles/variables.scss";
+
+.stg_info_wrapper {
+    background: #FFFFFF;
+    border-radius: 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 24px 32px;
+  }
+  
+  .stg_info_label {
+    height: 21px;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 16px;
+    line-height: 130%;
+  }
+  
+  .stg_text1 {
+    min-width: 245px;
+    height: 19px;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #88999C;
+  }
+  
+  .stg_text2 {
+    height: 19px;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #2A353D;
+  }
+  
+  .stg_text3 {
+    width: 356px;
+    height: 18px;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #2A353D;
+  
+  }
+  
+  .stg_text4 {
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: $font-weight-bold;
+    font-size: 10px;
+    line-height: 150%;
+    letter-spacing: 0.01em;
+    color: #505C64;
+  }
+  
+  .stg_text5 {
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: $font-weight-bold;
+    font-size: 12px;
+    line-height: 150%;
+    letter-spacing: 0.01em;
+    color: #505C64;
+  
+  }
+  
+  .stg_link {
+    width: 183px;
+    height: 18px;
+    font-family: Manrope;
+    font-style: normal;
+    font-weight: bold;
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #11BB91;
+  
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  
+  .stg_download_btn {
+    width: 144px;
+    height: 56px;
+    padding: 14px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    background: #F3F6F8;
+    border-radius: 12px;
+  
+    &:hover {
+      cursor: pointer;
+    }
+  }
+  
+  .stg_download_btn_img {
+    width: 22px;
+    height: 26px;
+    margin-bottom: auto;
+    margin-top: auto;
+  }
+  
+  .cnt {
+    height: 168px;
+    margin-bottom: 25px;
+  }
+  
+  .cnt1 {
+    height: 246px;
+    margin-bottom: 25px;
+  }
+  
+  .cnt2 {
+    height: 411px;
+  }
+  
+  .cnt3 {
+    height: 138px;
+  }
+  
+.back-button{
+  margin-bottom: 35px;
+}

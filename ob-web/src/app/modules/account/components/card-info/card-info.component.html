@@ -1,0 +1,103 @@
+<div class="info">
+  <ob-loader class="d-flex flex-row flex-wrap" [loading]="loading || isLoading">
+    <div class="d-flex flex-column">
+      <div class="d-flex flex-row info-header">
+        <p class="info-header__title">{{ cardData?.name }}</p>
+        <!--        <img class="info-header__edit" src="assets/icons/ic_edit.svg" />-->
+        <!-- <p class="text-muted info-header__button">Переименовать</p> -->
+      </div>
+      <div class="info-main">
+        <div class="info-card">
+          <div class="d-flex flex-row">
+            <p class="info-title">
+              {{
+                getFormattedActualBalance(cardData?.amount || 0) | amountPipe
+              }}
+            </p>
+            <p class="ms-1 info-title_currency">
+              {{ helperService.formatCurrency(cardData?.currency) }}
+            </p>
+          </div>
+          <div class="d-flex flex-column">
+            <div class="d-flex flex-row flex-wrap justify-content-between">
+              <div class="info-subtitle_wrapper justify-content-start">
+                <p class="info-subtitle">
+                  {{ getContractName(cardData) }}
+                </p>
+              </div>
+              <div class="info-subtitle_wrapper justify-content-end">
+                <p class="info-subtitle">
+                  <span *ngIf="getCardExpire(cardData) !== ''">{{
+                    'default.before' | translate
+                  }}</span>
+                  {{ getCardExpire(cardData) }}
+                </p>
+              </div>
+            </div>
+            <div class="d-flex flex-row flex-wrap justify-content-between">
+              <p class="info-subtitle me-md-auto">
+                {{ getContractNumber(cardData) }}
+              </p>
+              <img
+                [src]="
+                  helperService.getCardType(
+                    cardData?.contractNumber ? cardData?.contractNumber : ''
+                  )
+                " />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="info-invalid" 
+        *ngIf="
+        cardData?.valid === 'N' ||
+        cardData?.valid === 'I' ||
+        cardData?.valid === 'D'
+        "
+      >
+        <img src="./assets/icons/blocked.svg" alt="block" />
+        <p class="info-invalid__text">
+          {{ 'cards.status.blocked' | translate }}
+        </p>
+      </div>
+
+      <div class="info-requisites" (click)="doAction('requisites')">
+        <p class="info-requisites-text">
+          {{ 'requisites.my-requisites' | translate }}
+        </p>
+      </div>
+
+      <!--      <div class="d-flex flex-row info-home">-->
+      <!--        <input type="checkbox" class="info-home-icon" />-->
+      <!--        <p class="info-home-text">Показать на Главной</p>-->
+      <!--      </div>-->
+      <!-- <div class="info-buttons"> // TODO НЕ УДАЛЯТЬ Расскоментим когда появятся сервисы
+            <div class="info-button">
+              <img src="./assets/icons/ic_star.svg" alt="favourite" />
+              <p class="text-muted">Сделать основным</p>
+            </div>
+
+            <div class="info-button">
+              <img src="./assets/icons/ic_home.svg" alt="home" />
+              <p class="text-muted">Показать на главной</p>
+            </div>
+          </div> -->
+    </div>
+    <div class="col-12 info-action-cards">
+      <div class="row">
+        <div *ngFor="let action of actions" class="info-action-card">
+          <ob-custom-card
+            *ngIf="action.type !== ''"
+            title="{{ action.title | translate }}"
+            imgUrl="{{ action.img }}"
+            (click)="doAction(action.type)"></ob-custom-card>
+          <ob-custom-card
+            className="opacity-50"
+            *ngIf="action.type === ''"
+            title="{{ action.title | translate }}"
+            imgUrl="{{ action.img }}"></ob-custom-card>
+        </div>
+      </div>
+    </div>
+  </ob-loader>
+</div>

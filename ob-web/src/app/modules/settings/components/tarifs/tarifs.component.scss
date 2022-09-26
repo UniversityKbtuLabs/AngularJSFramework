@@ -1,0 +1,355 @@
+@import '/src/styles/variables.scss';
+.tariffs {
+  &__container {
+    background: #FFFFFF;
+    border-radius: 12px;
+    padding: 24px 32px;
+  }
+
+  &__title {
+    font-size: $font-size-medium;
+    font-weight: $font-weight-bold;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: $color-light-black;
+    margin-bottom: 35px;
+  }
+  
+  &__info {
+    margin-bottom: 32px;
+    
+    &-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-bottom: 16px;
+
+      :first-child {
+        margin-right: 4px;
+      }
+    }
+
+    &-list {
+      padding-left: 32px;
+      margin-bottom: 16px;
+    }
+
+    &-btns {
+      margin-top: 24px;
+      .tariffs-btn:first-child {
+        margin-right: 24px;
+      }
+    }
+  }
+
+  &-btn {
+    border: none;
+    padding: 11px 28px;
+    border-radius: 12px;
+    
+    p {
+      letter-spacing: 0.02em;
+      line-height: 130%;
+      font-weight: $font-weight-bold;
+    }
+
+    &-green {
+      color: #fff;
+      background-color: $color-green;
+    }
+    &-red {
+      border: 1px solid $color-error-red;
+      background-color: #fff;
+      color: $color-error-red;
+    }
+  }
+
+  &__statistic {
+    
+    &__card {
+      &:not(:last-child) {
+        margin-bottom: 16px;
+      }
+    }
+  }
+
+  &__not-available {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 16px;
+    
+    p {
+      margin-top: 16px;
+      max-width: 484px;
+      text-align: center;
+      font-weight: $font-weight-bold;
+      font-size: $font-size-small;
+      line-height: 130%;
+      letter-spacing: 0.02em;
+    }
+  }
+}
+
+.text_bolder {
+  font-weight: bold;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: $color-light-black;
+}
+
+.text_light {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: $color-gray-middle;
+
+}
+
+.text_bold {
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: $color-light-black;
+}
+
+.text1 {
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 150%;
+  letter-spacing: 0.02em;
+  color: $color-gray-darker;
+}
+
+.text_green {
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: $color-green;
+}
+
+.text_higher {
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: $color-light-black;
+
+}
+
+.btn_green1 {
+  background: $color-green;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
+}
+
+.btn_green2 {
+  border: 1px solid $color-green;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: $color-green;
+}
+
+.line_wrapper {
+  height: 130px;
+  padding: 24px;
+  border: 1px solid #E1E9EA;
+  box-sizing: border-box;
+  border-radius: 12px;
+}
+
+.line {
+  width: 100%;
+  height: 7px;
+}
+
+.half_line1 {
+  background-color: $color-green;
+  border-bottom-left-radius: 50px;
+  border-top-left-radius: 50px;
+}
+
+.half_line2 {
+  background-color: #E5E5E5;
+  border-bottom-right-radius: 50px;
+  border-top-right-radius: 50px;
+}
+
+.br-50 {
+  border-radius: 50px;
+}
+
+.empty-tariff {
+  &__content {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 32px;
+    margin-bottom: 24px;
+  }
+  &__img {
+    margin-bottom: 8px;
+  }
+  &__text {
+    text-align: center;
+    margin-bottom: 16px;
+    p {
+      color: $color-gray-light-dark;
+    }
+  }
+}
+
+.tariffs__statistic__bottom {
+  display: flex;
+  justify-content: space-between;
+}
+
+.tariff-card {
+  padding: 32px;
+  background-color: $color-gray_main;
+  border-radius: 24px;
+  &__wrapper {
+    
+  }
+
+  &__header {
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-weight: $font-weight-extra-bold;
+    font-size: $font-size-h3-medium;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: $color-light-black;
+  }
+
+  &__line {
+    margin: 8px 0 16px;
+    height: 6px;
+    width: 100px;
+    background-color: #42D4B0;
+  }
+
+  &__subtitle {
+    font-size: $font-size-medium;
+    color: $color-gray-darker;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    font-weight: $font-weight-medium;
+  }
+
+  &__footer {
+    margin-top: 24px;
+  }
+
+  &__price {
+    margin-bottom: 24px;
+    font-size: $font-size-medium-large;
+    line-height: 32px;
+  }
+
+  &__btn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #fff;
+    background-color: $color-green;
+    height: 52px;
+    width: 100%;
+    border: none;
+    border-radius: 12px;
+  }
+}
+
+.info-modal {
+  .modal {
+    &-header {
+      padding-bottom: 24px;
+    }
+    &-title {
+      font-weight: $font-weight-extra-bold !important;
+      font-size: $font-size-medium-large;
+      letter-spacing: 0.01em;
+      line-height: 130%;
+    }
+    &-body {
+      padding: 32px;
+      .reason-list {
+        margin-left: 24px;
+        li:not(:last-child){
+          margin-bottom: 12px;
+        }
+      }
+    }
+  }
+}
+
+.mb {
+  &-8 {
+    margin-bottom: 8px;
+  }
+  &-16 {
+    margin-bottom: 16px;
+  }
+  &-20 {
+    margin-bottom: 20px;
+  }
+}
+
+.mr-4 {
+  margin-right: 4px;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.g-24 {
+  --bs-gutter-x: 24px !important;
+  --bs-gutter-y: 24px !important;
+}
+
+@media screen and (max-width: 1365px) {
+  .tariffs__container {
+    padding: 24px;
+  }
+}
+@media screen and (max-width: 1023px){
+  .tariffs__container {
+    padding: 16px;
+  }
+  .tariff-card {
+    padding: 16px;
+  }
+}
+@media screen and (max-width: 512px){
+  .line_wrapper {
+    height: auto;
+  }
+  .tariffs__statistic__bottom {
+    flex-direction: column;
+  }
+  .tariffs-btn {
+    padding: 11px 22px;
+  }
+  .tariffs-btn:first-child {
+    margin-right: 4px !important;
+  }
+}

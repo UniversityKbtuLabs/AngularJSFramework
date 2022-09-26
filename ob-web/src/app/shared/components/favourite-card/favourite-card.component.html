@@ -1,0 +1,5 @@
+<div class="inner-content">
+  <p [ngClass]="{ 'bold-header': !favourite }">{{ title }}</p>
+  <p [ngClass]="{ 'bold-header': favourite }">{{ total }}</p>
+  <p class="small-label">{{ subMessage }}</p>
+</div>

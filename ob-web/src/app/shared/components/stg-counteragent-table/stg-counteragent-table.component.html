@@ -1,0 +1,47 @@
+<div class="d-flex flex-column">
+  <div class="d-flex flex-row justify-content-between">
+    <div class="d-flex flex-row field_wrapper col">
+      <p class="col_title" (click)="sorting('counteragent')">
+        {{ 'default.contragent' | translate | uppercase }}
+      </p>
+      <img
+        src="./assets/icons/down_arrow.svg"
+        class="up_arrow"
+        *ngIf="isCounterAgentSort === true && counterAgentSort % 2 === 0" />
+      <img
+        src="./assets/icons/down_arrow.svg"
+        class="down_arrow"
+        *ngIf="isCounterAgentSort === true && counterAgentSort % 2 === 1" />
+    </div>
+    <div class="d-flex flex-row field_wrapper col1">
+      <p class="col_title" (click)="sorting('account')">
+        {{ 'operations.countragent.chet' | translate | uppercase }}
+      </p>
+      <img
+        src="./assets/icons/down_arrow.svg"
+        class="up_arrow"
+        *ngIf="isAccountSort === true && accountSort % 2 === 0" />
+      <img
+        src="./assets/icons/down_arrow.svg"
+        class="down_arrow"
+        *ngIf="isAccountSort === true && accountSort % 2 === 1" />
+    </div>
+  </div>
+  <div
+    class="d-flex flex-row justify-content-between"
+    *ngFor="let item of countragentList; let i = index">
+    <div class="d-flex flex-column wrapper col">
+      <p class="text_bold mb_4">{{ item.name }}</p>
+      <p class="text_light">{{ item.idn }}</p>
+    </div>
+    <div class="d-flex flex-column wrapper col1">
+      <div class="d-flex flex-row justify-content-between">
+        <div class="d-flex flex-column justify-content-between">
+          <p class="text_bold mb_4">{{ item.account }}</p>
+          <p class="text_light">{{ item.bankName }}</p>
+        </div>
+        <!--                <img src="./assets/icons/user_edit.svg">-->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-dt-4 col-smdt-4 col-tb-12">
+    <ob-credit-info [creditData]="data"> </ob-credit-info>
+    <!-- <ob-advertising-card></ob-advertising-card> -->
+  </div>
+
+  <div *ngIf="!isSettingsOpen" class="col-dt-8 col-smdt-8 col-tb-12">
+    <div>
+      <ob-credit-payment [data]="creditPaymentInfo"> </ob-credit-payment>
+      <ob-savings-table
+        [scheduleList]="creditPaymentInfo?.scheduleList"
+        [creditDetails]="data"
+        [id]="id"
+        [type]="'credit'">
+      </ob-savings-table>
+    </div>
+  </div>
+  <div *ngIf="isSettingsOpen" class="col-dt-8 col-tb-8">
+    <ob-settings></ob-settings>
+  </div>
+</div>

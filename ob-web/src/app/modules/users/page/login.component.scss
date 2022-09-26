@@ -1,0 +1,63 @@
+@import "/src/styles/variables.scss";
+
+.auth {
+  display: flex;
+  justify-content: center;
+  margin-top: 84px;
+  margin-bottom: 2%;
+
+  &-title {
+    font-weight: $font-weight-extra-bold;
+    font-size: 26px;
+    line-height: 130%;
+    margin-bottom: 32px;
+    color: $color-light-black;
+  }
+
+  &-body {
+    padding: 10px 50px;
+  }
+
+  .inner-container {
+    width: 544px;
+    background: #fff;
+    border-radius: 12px;
+    padding: 32px;
+    position: relative;
+  }
+
+  .tab-heading {
+    text-align: center;
+  }
+
+  &-back-button {
+    position: absolute;
+    top: -54px;
+    left: 0px;
+  }
+}
+::ng-deep.tab-content {
+  padding: 20px 0;
+}
+::ng-deep ob-sms {
+  .retype-btn{
+    margin-top: 24px;
+  }
+  .code_input_error{
+    margin-left: 0 !important;
+  }
+  
+}
+.bottom-container {
+  text-align: center;
+  cursor: pointer;
+
+  #first-text {
+    color: $color-gray-middle;
+  }
+  #second-text {
+    color: $color-green;
+    padding-top: 3pc;
+    font-weight: 600;
+  }
+}

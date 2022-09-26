@@ -1,0 +1,663 @@
+<div>
+  <section class="convertation_back_btn">
+    <ob-back-button [currentPage]="'currency_controll'"></ob-back-button>
+  </section>
+
+  <div class="row mb-114">
+    <div class="col-lgdt-8 col-dt-9 col-smdt-12" [formGroup]="convertationForm">
+      <div>
+        <div class="convertation_main">
+          <p class="convertation_main_title">
+            {{ 'operations.type.CURR_EXCHANGE_V2' | translate }}
+          </p>
+
+          <!-- Номер документа и дата -->
+          <div class="convertation-autofill mt_16">
+            <div class="convertation-autofill__text flex-column">
+              <div
+                class="convertation-autofill__secondary d-flex align-items-baseline">
+                <p
+                  class="align-self-center convertation-autofill__secondary"
+                  [ngStyle]="{
+                    color: !convertationFormControl.docNum.errors?.required
+                      ? ''
+                      : '#FF5721'
+                  }">
+                  {{
+                    'operations.payment-confirmation.doc-number' | translate
+                  }}:
+                </p>
+                <span
+                  class="ms-2 convertation-autofill__secondary"
+                  *ngIf="
+                    !convertationFormControl.docNum.errors?.required &&
+                    !isEditDocNum
+                  ">
+                  №{{ convertationFormControl.docNum.value }}
+                </span>
+                <input
+                  *ngIf="isEditDocNum"
+                  formControlName="docNum"
+                  maxlength="9"
+                  class="form-control convertation-autofill__docNum"
+                  [ngClass]="displayFieldClass('docNum')"
+                  obDocNumberPayment
+                  (docNumChange)="docNumChange($event)"
+                  (focusout)="editDocNum()"
+                  (keyup)="onDocNumKeyUp($event)"
+                  id="docNum" />
+              </div>
+              <div class="align-self-start">
+                <div class="convertation-autofill__docNum-error-container">
+                  <ob-field-error-display
+                    *ngIf="
+                      convertationFormControl.docNum.errors?.maxLengthExceeded
+                    "
+                    [displayError]="isFieldInvalid('docNum')"
+                    errorMsg="{{ 'error.documentNum-payments' | translate }}">
+                  </ob-field-error-display>
+                  <ob-field-error-display
+                    *ngIf="convertationFormControl.docNum.errors?.pattern"
+                    [displayError]="isFieldInvalid('docNum')"
+                    errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+                  </ob-field-error-display>
+                </div>
+              </div>
+            </div>
+            <div class="convertation-autofill__text">
+              <img
+                *ngIf="
+                  !isEditDocNum &&
+                  convertationFormControl.docNum.errors?.required
+                "
+                src="assets/icons/ic_edit1.svg"
+                alt="change-icon"
+                class="convertation-autofill__edit_icon"
+                (click)="editDocNum()" />
+              <img
+                *ngIf="
+                  !isEditDocNum &&
+                  !convertationFormControl.docNum.errors?.required
+                "
+                src="assets/icons/ic_edit.svg"
+                alt="change-icon"
+                class="convertation-autofill__edit_icon"
+                (click)="editDocNum()" />
+              <img
+                *ngIf="isEditDocNum"
+                src="assets/icons/ic_check_mark.svg"
+                alt="change-icon"
+                class="convertation-autofill__edit_icon"
+                (click)="editDocNum()" />
+            </div>
+            <div class="convertation-autofill__text">
+              <span class="convertation-autofill__secondary me-2">
+                {{ 'operations.default.createDate' | translate }}
+              </span>
+              <span class="convertation-autofill__main">{{
+                defaultPrefill?.docDate.split('-').reverse().join('.')
+              }}</span>
+            </div>
+          </div>
+          <!-- Номер документа и дата -->
+
+          <!-- <p class="convertation_main_section_title">
+            {{'currencyControl.convertation.convertationType'|translate}}
+          </p>
+          <ob-tab-selects
+            class="mt_16"
+            [list]="convertationTypeList"
+            (obSelectedDate)="changeConvertationType($event)"
+          ></ob-tab-selects> -->
+
+          <div>
+            <p class="convertation_main_section_title">
+              {{ 'currencyControl.convertation.fromWhereToWhere' | translate }}
+            </p>
+            <div class="convertation_main_input_section mt_16">
+              <!--                            Счет списания-->
+              <div
+                class="convertation_main_input_section_first_inp overrides-form"
+                id="bootstrap-overrides-debit-form">
+                <ng-select
+                  formControlName="accountDebit"
+                  class="custom-select"
+                  [clearable]="false"
+                  [searchable]="isSearchableSrc"
+                  [ngClass]="displayFieldClass('accountDebit')"
+                  required
+                  [loading]="accountListLoading"
+                  [notFoundText]="'default.notFound' | translate"
+                  (open)="onOpenOnCloseSrc(isSearchableSrc)"
+                  (close)="onOpenOnCloseSrc(isSearchableSrc)"
+                  placeholder="{{
+                    'operations.transfers.accountFrom' | translate
+                  }}"
+                  [readonly]="accountListLoading || isLoading"
+                  [inputAttrs]="{
+                    maxlength: '20'
+                  }"
+                  loadingText="{{ 'default.loading' | translate }}...">
+                  <ng-option
+                    *ngFor="let account of accountDebitList | accountListSorter"
+                    [value]="account.iban || account.accountIban"
+                    disabled="{{
+                      (account.iban || account.accountIban) ===
+                        convertationFormControl.accountCredit.value
+                    }}">
+                    <ob-select-account
+                      [description]="account | accountNumber"
+                      [title]="
+                        account.amountBalance || account.actualBalance || 0
+                      "
+                      [currency]="account.currency"
+                      [icon]="getIcon(account)"></ob-select-account>
+                  </ng-option>
+                </ng-select>
+                <div>
+                  <ob-field-error-display
+                    *ngIf="
+                      convertationFormControl.accountDebit.errors?.required
+                    "
+                    [displayError]="isFieldInvalid('accountDebit')"
+                    errorMsg="{{
+                      'error.required' | translate
+                    }}"></ob-field-error-display>
+                  <p *ngIf="isEmptyBalance" class="text-muted">
+                    {{ 'error.amount' | translate }}
+                  </p>
+                </div>
+              </div>
+              <!--                            Счет списания-->
+
+              <div
+                class="d-flex flex-row justify-content-center"
+                (click)="switchAccounts()">
+                <div class="d-flex flex-column justify-content-center">
+                  <img
+                    class="convertation_main_input_section_accountsSwitch"
+                    src="assets/icons/ic_switch_currency.svg" />
+                </div>
+              </div>
+
+              <!--              Счет пополнения-->
+              <div
+                class="convertation_main_input_section_second_inp overrides-form"
+                id="bootstrap-overrides-credit-form">
+                <ng-select
+                  formControlName="accountCredit"
+                  class="custom-select"
+                  [clearable]="false"
+                  [searchable]="isSearchableTarget"
+                  [ngClass]="displayFieldClass('accountCredit')"
+                  required
+                  [loading]="accountListLoading"
+                  [notFoundText]="'Не найдено'"
+                  (open)="onOpenOnCloseTarget(isSearchableTarget)"
+                  (close)="onOpenOnCloseTarget(isSearchableTarget)"
+                  placeholder="{{
+                    'operations.transfers.accountTo' | translate
+                  }}"
+                  [readonly]="accountListLoading || isLoading"
+                  [inputAttrs]="{
+                    maxlength: '20'
+                  }">
+                  <ng-option
+                    *ngFor="
+                      let account of accountCreditList | accountListSorter
+                    "
+                    [value]="account.iban || account.accountIban"
+                    disabled="{{
+                      (account.iban || account.accountIban) ===
+                        convertationFormControl.accountDebit.value
+                    }}">
+                    <ob-select-account
+                      [description]="account | accountNumber"
+                      [title]="
+                        account.amountBalance || account.actualBalance || 0
+                      "
+                      [currency]="account.currency"
+                      [icon]="getIcon(account)"></ob-select-account>
+                  </ng-option>
+                </ng-select>
+                <div>
+                  <ob-field-error-display
+                    *ngIf="
+                      convertationFormControl.accountCredit.errors?.required
+                    "
+                    [displayError]="isFieldInvalid('accountCredit')"
+                    errorMsg="{{
+                      'error.required' | translate
+                    }}"></ob-field-error-display>
+                </div>
+              </div>
+              <!--              Счет пополнения-->
+            </div>
+          </div>
+
+          <div class="mt_40">
+            <p class="convertation_main_section_title">
+              {{ 'currencyControl.convertation.sum' | translate }}
+            </p>
+            <div class="convertation_main_input_section mt_16">
+              <!--                Сумма списания -->
+              <div class="convertation_main_input_section_first_inp">
+                <div class="form-floating">
+                  <input
+                    formControlName="amountDebit"
+                    type="text"
+                    class="form-control base-input a2a_amount"
+                    id="paymentDebitPurpose"
+                    placeholder="Сумма списания"
+                    [ngClass]="displayFieldClass('amountDebit')"
+                    mask="separator.2"
+                    thousandSeparator=" "
+                    suffix="{{
+                      convertationFormControl.accountDebit.value &&
+                      convertationFormControl.amountDebit.value
+                        ? ' ' + getCurrency(getAccountDebit()?.currency)
+                        : ''
+                    }}"
+                    separatorLimit="999999999999999999"
+                    autocomplete="off"
+                    (focus)="amountDebitFocus()"
+                    (focusout)="amountDebitFocusOut()" />
+                  <label for="paymentDebitPurpose">
+                    {{ 'currencyControl.convertation.amountDebit' | translate }}
+                  </label>
+                </div>
+
+                <ob-field-error-display
+                  class="position-absolute"
+                  *ngIf="convertationFormControl.amountDebit.errors?.required"
+                  [displayError]="isFieldInvalid('amountDebit')"
+                  errorMsg="{{
+                    'error.required' | translate
+                  }}"></ob-field-error-display>
+                <p
+                  *ngIf="insufficientFunds"
+                  class="convertation_main_contract_text_rate mt_4 ml_8">
+                  {{ 'error.amount' | translate }}
+                </p>
+              </div>
+              <!--                Сумма списания-->
+
+              <!--                Сумма зачисления-->
+              <div class="convertation_main_input_section_second_inp">
+                <div class="form-floating">
+                  <input
+                    formControlName="amountCredit"
+                    type="text"
+                    class="form-control base-input a2a_amount"
+                    id="paymentCreditPurpose"
+                    placeholder="Сумма зачисления"
+                    [ngClass]="displayFieldClass('amountCredit')"
+                    mask="separator.2"
+                    suffix="{{
+                      convertationFormControl.accountCredit.value &&
+                      convertationFormControl.amountCredit.value
+                        ? ' ' + getCurrency(getAccountCredit()?.currency)
+                        : ''
+                    }}"
+                    thousandSeparator=" "
+                    separatorLimit="999999999999999999"
+                    autocomplete="off"
+                    (focus)="amountCreditFocus()"
+                    (focusout)="amountCreditFocusOut()" />
+                  <label for="paymentCreditPurpose">
+                    {{
+                      'currencyControl.convertation.amountCredit' | translate
+                    }}
+                  </label>
+                </div>
+
+                <ob-field-error-display
+                  class="position-absolute"
+                  *ngIf="convertationFormControl.amountCredit.errors?.required"
+                  [displayError]="isFieldInvalid('amountCredit')"
+                  errorMsg="{{
+                    'error.required' | translate
+                  }}"></ob-field-error-display>
+                <p
+                  *ngIf="
+                    convertationFormControl.amountCredit.value &&
+                    currentRate &&
+                    handShakeValue === null
+                  "
+                  class="convertation_main_contract_text_rate mt_4 ml_8">
+                  {{ 'currencyControl.convertation.byCurrentRate' | translate }}
+                  : {{ currentRate }}
+                  {{ getCurrency(initRate?.counterCurrency) }}
+                </p>
+                <p
+                  *ngIf="
+                    convertationFormControl.amountCredit.value &&
+                    currentRate &&
+                    handShakeValue !== null &&
+                    individualRate
+                  "
+                  class="convertation_main_contract_text_rate mt_4 ml_8">
+                  {{
+                    'currencyControl.convertation.byIndividualRate' | translate
+                  }}
+                  : {{ individualRate }}
+                  {{ getCurrency(initRate?.counterCurrency) }}
+                </p>
+              </div>
+              <!--                Сумма зачисления-->
+            </div>
+          </div>
+
+          <div
+            class="d-flex flex-column mt_16 left_border"
+            *ngIf="
+              convertationFormControl.accountCredit.value &&
+              convertationFormControl.accountDebit.value
+            ">
+            <div class="d-flex flex-row w-100">
+              <p class="convertation_main_rate_col_1 ml_12">
+                {{ 'currencyControl.convertation.currentRate' | translate }}
+              </p>
+              <div class="d-flex flex-row convertation_main_rate_col_2">
+                <ob-loader
+                  [loading]="currentRateLoading"
+                  class="mb-auto mt-auto">
+                  <div class="d-flex flex-row w-100">
+                    <p>
+                      {{ currentRate }}
+                      {{ getCurrency(initRate?.counterCurrency) }}
+                    </p>
+                  </div>
+                </ob-loader>
+              </div>
+            </div>
+            <div class="d-flex flex-row w-100 mt_8" *ngIf="showIndividualRate">
+              <p class="convertation_main_rate_col_1 ml_12">
+                {{ 'currencyControl.convertation.individualRate' | translate }}
+              </p>
+              <div class="d-flex flex-row convertation_main_rate_col_2">
+                <p *ngIf="individualRateLoading" class="mb-auto mt-auto">
+                  {{ 'currencyControl.convertation.calculate' | translate }}
+                </p>
+                <ob-loader
+                  [loading]="individualRateLoading"
+                  class="mb-auto mt-auto">
+                  <div class="d-flex flex-row w-100">
+                    <p>
+                      {{ handShakeValue?.offeredRate }}
+                      {{ getCurrency(initRate?.counterCurrency) }}
+                    </p>
+                  </div>
+                </ob-loader>
+              </div>
+            </div>
+            <div
+              class="d-flex flex-row w-100 mt_8"
+              *ngIf="individualRateLoading === false">
+              <p class="convertation_main_rate_col_1 ml_12">
+                {{ 'currencyControl.convertation.refreshAfter' | translate }}
+              </p>
+              <div class="d-flex flex-row convertation_main_rate_col_2">
+                <img src="assets/icons/ic_timer.svg" />
+                <p class="ml_4">{{ getTime(refreshTime) }}</p>
+              </div>
+            </div>
+            <div
+              class="d-flex flex-row w-100 mt_16"
+              *ngIf="showIndividualRate === false">
+              <p
+                class="convertation_main_rate_col_individual ml_12"
+                (click)="requestIndividualRate()">
+                {{
+                  'currencyControl.convertation.requestIndividualReate'
+                    | translate
+                }}
+              </p>
+            </div>
+            <div
+              class="d-flex flex-row w-100 mt_8"
+              *ngIf="showIndividualRate && individualRateLoading === true">
+              <p class="convertation_main_rate_col_1 ml_12">
+                {{ 'currencyControl.convertation.calculateAfter' | translate }}
+              </p>
+              <div class="d-flex flex-row convertation_main_rate_col_2">
+                <img src="assets/icons/ic_timer.svg" />
+                <p class="ml_4">{{ getTime(individualRateTime) }}</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt_40">
+            <p class="convertation_main_section_title">
+              {{ 'currencyControl.convertation.details' | translate }}
+            </p>
+            <div class="convertation_main_input_section mt_16">
+              <!-- Контракт -->
+              <div
+                class="budget-inputs-inner convertation_main_input_section_first_inp"
+                id="bootstrap-overrides-region">
+                <ng-select
+                  formControlName="contractNumber"
+                  class="custom-select floating-label contractSelect"
+                  (change)="onContractSelect($event)"
+                  [searchable]="isSearchableContract"
+                  [clearable]="true"
+                  [loading]="valconContractsLoading"
+                  placeholder="{{ getContractPlaceholder() }}"
+                  [ngClass]="displayFieldClass('contractNumber')"
+                  notFoundText="{{ 'default.not_found' | translate }}"
+                  (open)="onOpenContract(isSearchableContract)"
+                  (close)="onOpenContract(isSearchableContract)"
+                  loadingText="{{ 'default.loading' | translate }}...">
+                  <ng-option
+                    *ngFor="let item of valconContracts"
+                    [value]="item">
+                    <div class="d-flex flex-column">
+                      <div class="d-flex flex-row">
+                        <p class="convertation_main_contract_text1">
+                          {{ item.contractNumber }}
+                        </p>
+                        <p class="convertation_main_contract_text1">
+                          , {{ item.amount }}
+                          {{ helperService.formatCurrency(item.currency) }}
+                        </p>
+                      </div>
+                      <div>
+                        <p class="convertation_main_contract_text2">
+                          {{ item?.contractDate }}
+                        </p>
+                      </div>
+                    </div>
+                  </ng-option>
+                </ng-select>
+              </div>
+              <!-- Контракт -->
+
+              <!-- Цель покупки валюты -->
+              <div
+                class="convertation_main_input_section_second_inp"
+                id="bootstrap-overrides-purpose">
+                <ng-select
+                  formControlName="purpose"
+                  class="custom-select floating-label"
+                  (change)="onPurposeSelect($event)"
+                  [editableSearchTerm]="true"
+                  [searchable]="isSearchablePurpose"
+                  [clearable]="true"
+                  [loading]="purposesLoading"
+                  placeholder="{{
+                    'currencyControl.convertation.purposeOfBuyingCurrency'
+                      | translate
+                  }}"
+                  required
+                  [ngClass]="displayFieldClass('purpose')"
+                  notFoundText="{{ 'default.not_found' | translate }}"
+                  (open)="onOpenPurpose(isSearchablePurpose)"
+                  (close)="onOpenPurpose(isSearchablePurpose)"
+                  loadingText="{{ 'default.loading' | translate }}...">
+                  <ng-option
+                    class="convertation_main_purpose_text"
+                    *ngFor="let item of purposeList"
+                    [value]="item"
+                    >{{
+                      helperService.capitalizeFirstLetter(item?.description)
+                    }}
+                  </ng-option>
+                </ng-select>
+                <ob-field-error-display
+                  *ngIf="convertationFormControl.purpose.errors?.required"
+                  [displayError]="isFieldInvalid('purpose')"
+                  errorMsg="{{ 'error.required' | translate }}">
+                </ob-field-error-display>
+              </div>
+              <!-- Цель покупки валюты -->
+            </div>
+          </div>
+
+          <div
+            class="d-flex flex-column mt_16 left_border"
+            *ngIf="convertationFormControl.contractNumber.value">
+            <div class="d-flex flex-row ml_12">
+              <p class="convertation_main_contract_text3">
+                {{ 'currencyControl.convertation.contractBalance' | translate }}
+              </p>
+              <p class="convertation_main_contract_text1 ml_4">
+                {{ getContractAmount() }} {{ getContractCurrency() }}
+              </p>
+            </div>
+          </div>
+
+          <div
+            class="d-flex flex-row mt_24"
+            *ngIf="
+              defaultPrefill?.sellBuyCur === true ||
+              defaultPrefill?.amountUsd > 50000
+            ">
+            <img src="assets/icons/ic_status_warning.svg" />
+            <div class="d-flex flex-column justify-content-center ml_16">
+              <p>
+                {{ 'currencyControl.convertation.agreement' | translate }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-dt-3 col-smdt-12">
+      <div>
+        <div class="convertation_info">
+          <p class="convertation_info_title">
+            {{ 'default.information' | translate }}
+          </p>
+
+          <div
+            class="d-flex flex-row justify-content-between clickable mt_27"
+            (click)="fxRateInfoShow()">
+            <p class="convertation_info_item_title">
+              {{ 'currencyControl.convertation.halykFXRate' | translate }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                convertation_info_item_arrow_down: fxRateInfo === false,
+                convertation_info_item_arrow_up: fxRateInfo === true
+              }" />
+          </div>
+          <p
+            class="convertation_info_item_text mt_11"
+            *ngIf="fxRateInfo === true">
+            {{ 'currencyControl.convertation.halykFXRateInfo' | translate }}
+          </p>
+
+          <hr
+            *ngIf="fxRateInfo === true"
+            class="convertation_info_item_line mt_16" />
+
+          <div
+            class="d-flex flex-row justify-content-between clickable mt_18"
+            (click)="standartRateInfoShow()">
+            <p class="convertation_info_item_title">
+              {{ 'currencyControl.convertation.standartRate' | translate }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                convertation_info_item_arrow_down: standartRateInfo === false,
+                convertation_info_item_arrow_up: standartRateInfo === true
+              }" />
+          </div>
+          <p
+            class="convertation_info_item_text mt_11"
+            *ngIf="standartRateInfo === true">
+            {{ 'currencyControl.convertation.standartRateInfo' | translate }}
+          </p>
+
+          <hr
+            *ngIf="standartRateInfo === true"
+            class="convertation_info_item_line mt_16" />
+
+          <div
+            class="d-flex flex-row justify-content-between clickable mt_18"
+            (click)="treasuryInfoShow()">
+            <p class="convertation_info_item_title">
+              {{ 'currencyControl.convertation.treasuryContacts' | translate }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                convertation_info_item_arrow_down: treasuryInfo === false,
+                convertation_info_item_arrow_up: treasuryInfo === true
+              }" />
+          </div>
+          <div class="mt_11" *ngIf="treasuryInfo === true">
+            <p class="convertation_info_item_text">
+              {{
+                'currencyControl.convertation.treasuryContactsInfo' | translate
+              }}
+            </p>
+            <ul class="ml_16">
+              <li class="convertation_info_item_phone mt_4">+7 727 330 1281</li>
+              <li class="convertation_info_item_phone mt_4">+7 727 259 0392</li>
+              <li class="convertation_info_item_phone mt_4">+7 727 330 1449</li>
+            </ul>
+          </div>
+
+          <hr
+            *ngIf="treasuryInfo === true"
+            class="convertation_info_item_line mt_16" />
+
+          <div
+            class="d-flex flex-row justify-content-between clickable mt_18"
+            (click)="cashInfoShow()">
+            <p class="convertation_info_item_title">
+              {{ 'currencyControl.convertation.cashConvertation' | translate }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                convertation_info_item_arrow_down: cashInfo === false,
+                convertation_info_item_arrow_up: cashInfo === true
+              }" />
+          </div>
+          <p
+            class="convertation_info_item_text mt_11"
+            *ngIf="cashInfo === true">
+            {{
+              'currencyControl.convertation.cashConvertationInfo' | translate
+            }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<ob-payment-footer
+  [operationType]="'convertation'"
+  [convertationDebit]="getDebitFooter()"
+  [convertationCredit]="getCreditFooter()"
+  [isSave]="true"
+  [isSign]="true"
+  (toSign)="onSubmit()"
+  [loading]="
+    isLoading || accountListLoading || valconContractsLoading || purposesLoading
+  "></ob-payment-footer>

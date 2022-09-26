@@ -1,0 +1,116 @@
+<div
+  dropdown
+  [autoClose]="true"
+  (isOpenChange)="onOpenChange($event)"
+  #dropdown="bs-dropdown">
+  <!--  <div-->
+  <!--    class="icon icon_grid_small"-->
+  <!--    dropdownToggle-->
+  <!--    type="button"-->
+  <!--    (click)="onClick()"-->
+  <!--    aria-controls="dropdown-actions"-->
+  <!--  ></div>-->
+  <img
+    class="icon"
+    src="assets/icons/ic_grid_small.svg"
+    (click)="onClick()"
+    dropdownToggle
+    aria-controls="dropdown-actions"
+    [ngClass]="{ hide: isHide() }" />
+  <ul
+    id="dropdown-actions"
+    *dropdownMenu
+    class="dropdown-menu dropdown-menu-right"
+    role="menu"
+    aria-labelledby="dropdown-actions">
+    <li
+      *ngIf="
+        (status === 'NEWDOC' || (status === 'DRAFT' && !signRights)) &&
+        type !== 'product-statements'
+      "
+      (click)="preSendToSign()"
+      class="actions__item">
+      <p>{{ 'operations.payments.btn-sign' | translate }}</p>
+    </li>
+    <li
+      *ngIf="
+        (status === 'SIGN_DEAL' || status === 'DRAFT') &&
+        signRights &&
+        canSign() &&
+        !isSignedByMe()
+      "
+      (click)="
+        status !== 'DRAFT' ? confirmPayment() : preSendToSign('directSign')
+      "
+      class="actions__item">
+      <p>{{ 'operations.payments.sign' | translate }}</p>
+    </li>
+    <li
+      *ngIf="
+        (status === 'NEWDOC' || status === 'DRAFT') &&
+        type !== 'product-statements'
+      "
+      (click)="changeDocument()"
+      class="actions__item">
+      <p>{{ 'default.change' | translate }}</p>
+    </li>
+    <li
+      *ngIf="
+        (status === 'IN_PROGRESS' ||
+          status === 'APPROVED' ||
+          status === 'FULFILLED' ||
+          status === 'TRANSFER' ||
+          status === 'REJECTED' ||
+          status === 'REFUSED' ||
+          status === 'REJECTION') &&
+        type !== 'product-statements'
+      "
+      class="actions__item"
+      (click)="changeDocument()">
+      <p>{{ 'default.repeat' | translate }}</p>
+    </li>
+    <li
+      *ngIf="
+        status !== 'DRAFT' &&
+        operation.type !== 'PAY_P2P' &&
+        operation.type !== 'ACCOUNT_CREATE' &&
+        operation.type !== 'CURR_EXCHANGE_FX' &&
+        operation.type !== 'DEPOSIT_OPEN' &&
+        operation.type !== 'ACCOUNT_STATEMENT' &&
+        operation.type !== 'CORP_CARD_ISSUE' &&
+        type !== 'product-statements'
+      "
+      class="actions__item"
+      (click)="savePdfReport(operation.type)">
+      <p>
+        {{ 'default.download' | translate }}
+      </p>
+    </li>
+    <li
+      *ngIf="operation.type === 'DEPOSIT_OPEN'"
+      class="actions__item"
+      (click)="downloadDeposit('request')">
+      <p>{{ 'products.default.download-request' | translate }}</p>
+    </li>
+    <li
+      *ngIf="operation.type === 'DEPOSIT_OPEN' && status === 'FULFILLED'"
+      class="actions__item"
+      (click)="downloadDeposit('conformation')">
+      <p>{{ 'products.default.download-conformation' | translate }}</p>
+    </li>
+    <li
+      *ngIf="
+        status === 'NEWDOC' ||
+        status === 'SIGN_DEAL' ||
+        status === 'REJECTION' ||
+        status === 'DRAFT' ||
+        status === 'REJECTED' ||
+        status === 'REFUSED' ||
+        status === 'FAILURE'
+      "
+      class="actions__item"
+      (click)="deleteDocument()">
+      <p>{{ 'operations.default.delete' | translate }}</p>
+    </li>
+  </ul>
+</div>

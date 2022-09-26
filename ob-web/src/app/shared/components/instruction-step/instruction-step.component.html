@@ -1,0 +1,19 @@
+<div class="instruction-modal">
+  <div class="instruction-header">
+    <h6>{{ title }}</h6>
+    <span class="icon icon_delete" (click)="skipAll()"></span>
+  </div>
+  <div class="instruction-body">{{ desc }}</div>
+  <div class="instruction-footer">
+    <span>{{ step }}/9</span>
+    <div class="btn-content">
+      <button class="_btn btn-basic" (click)="skipAll()">
+        {{ 'home.welcome.welcome-modal.btnOne' | translate }}
+      </button>
+      <button class="_btn btn-main" (click)="nextStep()">
+        {{ 'home.welcome.welcome-modal.btnThird' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<div class="mmodal-background"></div>

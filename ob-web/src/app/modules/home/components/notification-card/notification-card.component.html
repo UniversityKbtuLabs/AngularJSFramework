@@ -1,0 +1,12 @@
+<div class="notification-card" (click)="onClick()">
+  <div class="notification-icon">
+    <div class="notification-icon-container">
+      <img src="./assets/icons/ic_edit.svg" alt="" />
+    </div>
+  </div>
+  <div class="notification-container">
+    <p class="notification-title">{{ title }} ({{ count }})</p>
+    <p class="notification-text">{{ description }}</p>
+    <a role="button" class="notification-btn">{{ btnTitle }}</a>
+  </div>
+</div>

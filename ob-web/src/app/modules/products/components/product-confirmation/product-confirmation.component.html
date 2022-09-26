@@ -1,0 +1,190 @@
+<div class="row mb-114" style="margin: 0">
+  <section class="come-back">
+    <ob-back-button [currentPage]="'product'"></ob-back-button>
+  </section>
+  <div class="product-confirmation col-smdt-12 col-dt-8 col-lgdt-8">
+    <h1 class="title mb-32">{{ 'sms.confirmation' | translate }}</h1>
+    <div class="confirmation-dropdown">
+      <div
+        class="confirmation-dropdown__header"
+        (click)="isCardTypeOpen = !isCardTypeOpen">
+        <p class="confirmation-dropdown__title">
+          {{ 'products.cards.card-type' | translate }}
+        </p>
+        <span>
+          <img
+            src="assets/icons/ic_dark_arrow.svg"
+            [ngClass]="isCardTypeOpen ? 'arrow_up' : 'arrow_down'" />
+        </span>
+      </div>
+      <div class="confirmation-dropdown__content" *ngIf="isCardTypeOpen">
+        <div class="confirmation-dropdown__content-text">
+          <span class="confirmation-dropdown__content-main">
+            <p>{{ 'accounts.card' | translate }}</p>
+          </span>
+          <span class="confirmation-dropdown__content-secondary">
+            <p *ngIf="data?.aimOfOpen === 'hospitalityExpensesIE'">
+              {{ 'cards.ip' | translate }}
+            </p>
+            <p *ngIf="data?.aimOfOpen === 'hospitalityExpensesLE'">
+              {{ 'cards.business' | translate }}
+            </p>
+          </span>
+        </div>
+        <div class="confirmation-dropdown__content-text">
+          <span class="confirmation-dropdown__content-main">
+            <p>{{ 'products.cards.card-type' | translate }}</p>
+          </span>
+          <span class="confirmation-dropdown__content-secondary">
+            <p>{{ 'cards.physical' | translate }}</p>
+          </span>
+        </div>
+        <div class="confirmation-dropdown__content-text">
+          <span class="confirmation-dropdown__content-main">
+            <p>{{ 'products.cards.payment-system' | translate }}</p>
+          </span>
+          <span class="confirmation-dropdown__content-secondary">
+            <p *ngIf="data?.cardType === 'mastercard'">MasterCard</p>
+            <p *ngIf="data?.cardType === 'visa'">VISA</p>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="confirmation-dropdown">
+      <div
+        class="confirmation-dropdown__header"
+        (click)="isReceiverOpen = !isReceiverOpen">
+        <p class="confirmation-dropdown__title">
+          {{ 'operations.default.destination' | translate }}
+        </p>
+        <span>
+          <img
+            src="assets/icons/ic_dark_arrow.svg"
+            [ngClass]="isReceiverOpen ? 'arrow_up' : 'arrow_down'" />
+        </span>
+      </div>
+      <div class="confirmation-dropdown__content" *ngIf="isReceiverOpen">
+        <div class="confirmation-dropdown__content-text" *ngIf="employeeName">
+          <span class="confirmation-dropdown__content-main">
+            <p>{{ 'products.cards.creating-for' | translate }}</p>
+          </span>
+          <span class="confirmation-dropdown__content-secondary">
+            <p>{{ employeeName }}</p>
+          </span>
+        </div>
+        <div class="confirmation-dropdown__content-text">
+          <span class="confirmation-dropdown__content-main">
+            <p>{{ 'default.idn-bin' | translate }}</p>
+          </span>
+          <span class="confirmation-dropdown__content-secondary">
+            <p>{{ data?.iin }}</p>
+          </span>
+        </div>
+        <div class="confirmation-dropdown__content-text">
+          <span class="confirmation-dropdown__content-main">
+            <p>{{ 'default.phone' | translate }}</p>
+          </span>
+          <span class="confirmation-dropdown__content-secondary">
+            <p>{{ getFormattedPhone(data?.phoneNum) }}</p>
+          </span>
+        </div>
+        <div class="confirmation-dropdown__content-text">
+          <span class="confirmation-dropdown__content-main">
+            <p>{{ 'products.cards.code-word' | translate }}</p>
+          </span>
+          <span class="confirmation-dropdown__content-secondary">
+            <p>{{ data?.codeWord }}</p>
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="confirmation-dropdown">
+      <div
+        class="confirmation-dropdown__header"
+        (click)="isGettingTypeOpen = !isGettingTypeOpen">
+        <p class="confirmation-dropdown__title">
+          {{ 'products.cards.getting-type' | translate }}
+        </p>
+        <span>
+          <img
+            src="assets/icons/ic_dark_arrow.svg"
+            [ngClass]="isGettingTypeOpen ? 'arrow_up' : 'arrow_down'" />
+        </span>
+      </div>
+      <div class="confirmation-dropdown__content" *ngIf="isGettingTypeOpen">
+        <ng-template [ngIf]="data?.departmentAddress">
+          <div class="confirmation-dropdown__content-text">
+            <span class="confirmation-dropdown__content-main">
+              <p>{{ 'products.cards.getting-type' | translate }}</p>
+            </span>
+            <span class="confirmation-dropdown__content-secondary">
+              <p>{{ 'products.default.bank-department' | translate }}</p>
+            </span>
+          </div>
+          <div class="confirmation-dropdown__content-text">
+            <span class="confirmation-dropdown__content-main">
+              <p>{{ 'products.cards.department-address' | translate }}</p>
+            </span>
+            <span class="confirmation-dropdown__content-secondary">
+              <p>{{ data?.departmentAddress?.branchAddress }}</p>
+            </span>
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="data?.deliveryAddress">
+          <div class="confirmation-dropdown__content-text">
+            <span class="confirmation-dropdown__content-main">
+              <p>{{ 'products.cards.getting-type' | translate }}</p>
+            </span>
+            <span class="confirmation-dropdown__content-secondary">
+              <p>{{ 'products.cards.delivery' | translate }}</p>
+            </span>
+          </div>
+          <div class="confirmation-dropdown__content-text">
+            <span class="confirmation-dropdown__content-main">
+              <p>{{ 'default.address' | translate }}</p>
+            </span>
+            <span class="flex confirmation-dropdown__content-secondary">
+              <p>
+                г. {{ data?.deliveryAddress?.city }}, ул.
+                {{ data?.deliveryAddress?.street }},
+                {{ data?.deliveryAddress?.building }}
+              </p>
+              <span *ngIf="data?.deliveryAddress?.apartment"
+                ><p>, {{ data?.deliveryAddress?.apartment }}</p></span
+              >
+            </span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="confirmation-edit" (click)="onEdit()">
+      {{ 'operations.default.edit' | translate }}
+    </div>
+  </div>
+</div>
+<div class="footer">
+  <div class="footer-container">
+    <ob-loader [loading]="loading">
+      <div class="footer-container-buttons">
+        <ng-template [ngIf]="rightsToSign">
+          <button
+            class="_btn btns footer-container-buttons__sign-active"
+            (click)="toDirectlySign()"
+            [disabled]="isSendLoading">
+            <div>{{ 'operations.payments.sign' | translate }}</div>
+            <div *ngIf="isSendLoading" class="loader"></div>
+          </button>
+        </ng-template>
+        <ng-template [ngIf]="!rightsToSign">
+          <button
+            class="_btn btns footer-container-buttons__sign-active"
+            (click)="sendToSign()"
+            [disabled]="isSendLoading">
+            <div>{{ 'operations.payments.btn-sign' | translate }}</div>
+            <div *ngIf="isSendLoading" class="loader"></div>
+          </button>
+        </ng-template>
+      </div>
+    </ob-loader>
+  </div>
+</div>

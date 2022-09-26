@@ -1,0 +1,136 @@
+<div class="wrapper">
+  <div class="click-area" (click)="isStatusOpen = !isStatusOpen"></div>
+  <ng-template [ngIf]="type === 'status'">
+    <ng-template [ngIf]="!isStatusOpen">
+      <div class="status align-items-center">
+        <div class="status-img">
+          <img src="{{ getImgSrc(list[0]) }}" alt="status" />
+        </div>
+
+        <div [ngClass]="getClassName(list[0])">
+          <p class="status-title">{{ getTitle(list[0][0]) | translate }}</p>
+          <p
+            class="failure failure-message"
+            *ngIf="getClassName(list[0]) === 'failure'">
+            {{ getRejectedMessage() }}
+          </p>
+        </div>
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="isStatusOpen">
+      <div>
+        <div class="status-list">
+          <div class="line" *ngIf="list.length > 1"></div>
+          <div class="status" *ngFor="let status of list">
+            <div class="status-img">
+              <img
+                src="{{ getImgSrc(status) }}"
+                alt="status"
+                *ngIf="!isFinished" />
+              <img
+                src="./assets/icons/approved.svg"
+                alt="status"
+                *ngIf="isFinished" />
+            </div>
+
+            <div [ngClass]="getClassName(status)">
+              <p
+                class="status-title"
+                [ngClass]="{
+                  'default-text':
+                    isFinished && getClassName(status) !== 'approved'
+                }">
+                {{ getTitle(status[0]) | translate }}
+              </p>
+              <p class="status-subtitle">
+                {{ status[1].replaceAll('-', '.') }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div [ngClass]="getClassName(list[0])">
+          <p
+            class="failure failure-message"
+            *ngIf="getClassName(list[0]) === 'failure'">
+            {{ getRejectedMessage() }}
+          </p>
+        </div>
+      </div>
+    </ng-template>
+  </ng-template>
+  <!-- <ng-template [ngIf]="type==='signers'">
+    <div style="width: 100%;">
+      <p class="title">{{ 'operations.default.signers' | translate }} ({{list.length}})</p>
+
+      <ng-template [ngIf]="isStatusOpen">
+        <div class="status-list signers">
+          <div class="status" *ngFor="let signer of list">
+            <div class="status-img">
+              <img src="{{getImgSrc(signer)}}" alt="status">
+            </div>
+      
+            <div [ngClass]="getClassName(signer)">
+              <p class="status-title">{{ getTitle(signer.name) }}</p>
+              <p class="status-subtitle" [ngClass]="signer.status ? 'status-finished' : ''">{{ signer.label }}</p>
+            </div>
+          </div>
+        </div>
+        
+      </ng-template>
+    </div>
+  </ng-template> -->
+  <ng-template [ngIf]="type === 'signers'">
+    <div style="width: 100%">
+      <p class="title">
+        {{ 'operations.default.signers' | translate }} ({{ list.length }})
+      </p>
+
+      <ng-template [ngIf]="isStatusOpen">
+        <div class="status-list signers">
+          <div class="status" *ngFor="let signer of list">
+            <div class="status-img">
+              <img src="{{ getImgSrc(signer) }}" alt="status" />
+            </div>
+
+            <div [ngClass]="getClassName(signer)">
+              <div *ngIf="!signer.content?.name">
+                <p class="status-title">{{ getTitle(signer.content) }}</p>
+                <p
+                  class="status-subtitle"
+                  [ngClass]="signer.status ? 'status-finished' : ''">
+                  {{ signer.label }}
+                </p>
+              </div>
+              <div *ngIf="signer.content?.name">
+                <p class="status-title">
+                  {{ signer.content?.name }}
+                  <span class="status-role"
+                    >({{ signer.content?.description }})</span
+                  >
+                </p>
+                <p
+                  class="status-subtitle"
+                  [ngClass]="signer.status ? 'status-finished' : ''">
+                  {{ signer.label }},
+                  <span *ngIf="signer.content?.date"
+                    >{{
+                      getformattedDate(signer.content?.date.split(' ')[0])
+                    }},</span
+                  >
+                  <span *ngIf="signer.content?.date">
+                    {{ signer.content?.date.split(' ')[1] }}</span
+                  >
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </ng-template>
+    </div>
+  </ng-template>
+  <span (click)="isStatusOpen = !isStatusOpen">
+    <img
+      src="assets/icons/down_arrow.svg"
+      [ngClass]="isStatusOpen ? 'arrow_up' : 'arrow_down'" />
+  </span>
+</div>

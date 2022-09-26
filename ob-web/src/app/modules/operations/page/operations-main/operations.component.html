@@ -1,0 +1,99 @@
+<div class="row justify-content-center">
+  <div class="col-dt-12 col-smdt-12">
+    <section class="operation mb-24">
+      <p class="title">{{ 'default.my-operations' | translate }}</p>
+
+      <div class="operation-type">
+        <div *ngFor="let payment of payments; let idx = index">
+          <ng-template
+            [ngIf]="
+              payment.router && payment.router !== '/operations/payment/import'
+            ">
+            <ob-custom-card
+              title="{{ payment.title | translate }}"
+              imgUrl="{{ payment.img }}"
+              [routerLink]="payment.router"></ob-custom-card>
+          </ng-template>
+          <ng-template [ngIf]="!payment.router">
+            <ob-custom-card
+              title="{{ payment.title | translate }}"
+              imgUrl="{{ payment.img }}"></ob-custom-card>
+          </ng-template>
+          <ng-template [ngIf]="payment.router === '/operations/payment/import'">
+            <ob-custom-card
+              title="{{ payment.title | translate }}"
+              imgUrl="{{ payment.img }}"
+              [route]="payment.router"></ob-custom-card>
+          </ng-template>
+        </div>
+
+        <div *ngFor="let transfer of transfers; let idx = index">
+          <ob-custom-card
+            ng
+            *ngIf="transfer.router !== ''"
+            title="{{ transfer.title | translate }}"
+            imgUrl="{{ transfer.img }}"
+            [routerLink]="transfer.router"></ob-custom-card>
+          <ob-custom-card
+            ng
+            *ngIf="transfer.router === ''"
+            title="{{ transfer.title | translate }}"
+            imgUrl="{{ transfer.img }}"
+            [className]="'opacity-50'"></ob-custom-card>
+        </div>
+      </div>
+    </section>
+    <section class="operation mb-24">
+      <p class="title">{{ 'default.currency-operations' | translate }}</p>
+
+      <div class="operation-type">
+        <div *ngFor="let cc of currency_control; let idx = index">
+          <ob-custom-card
+            *ngIf="cc.router !== ''"
+            title="{{ cc.title | translate }}"
+            imgUrl="{{ cc.img }}"
+            [routerLink]="cc.router"></ob-custom-card>
+          <ob-custom-card
+            ng
+            *ngIf="cc.router === ''"
+            title="{{ cc.title | translate }}"
+            imgUrl="{{ cc.img }}"
+            [className]="'opacity-50'"></ob-custom-card>
+        </div>
+      </div>
+    </section>
+    <section class="operation mb-24">
+      <p class="title">{{ 'default.money-operations' | translate }}</p>
+
+      <div class="operation-type">
+        <div *ngFor="let c of cash; let idx = index">
+          <ob-custom-card
+            *ngIf="c.router !== ''"
+            title="{{ c.title | translate }}"
+            imgUrl="{{ c.img }}"
+            [routerLink]="c.router"></ob-custom-card>
+          <ob-custom-card
+            ng
+            *ngIf="c.router === ''"
+            title="{{ c.title | translate }}"
+            imgUrl="{{ c.img }}"
+            [className]="'opacity-50'"></ob-custom-card>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <!--  <div class="col-dt-4 col-smdt-4">-->
+  <!--    <div class="operation-calendar"></div>-->
+  <!--  </div>-->
+</div>
+
+<div class="operation-table">
+  <p class="operation-table__title">
+    {{ 'home.welcome.operation' | translate }}
+  </p>
+
+  <ob-account-history
+    [listType]="'operations-history'"
+    id="operationTable"></ob-account-history>
+</div>

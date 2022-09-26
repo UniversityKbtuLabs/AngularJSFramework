@@ -1,0 +1,890 @@
+<div class="row mb-114">
+  <div
+    class="col-dt-9 col-smdt-8 col-tb-8 col-lgdt-8 g-custom"
+    [formGroup]="counteragentForm">
+    <div class="contragent payment-content">
+      <h1 class="title">{{ 'operations.countragent.title' | translate }}</h1>
+
+      <!-- Номер документа и дата -->
+      <section class="contragent-autofill">
+        <div class="contragent-autofill__text">
+          <div
+            class="contragent-autofill__secondary d-flex align-items-baseline">
+            <p
+              class="align-self-center contragent-autofill__secondary"
+              [ngStyle]="{
+                color: !counteragentFormControl.docNum.errors?.required
+                  ? ''
+                  : '#FF5721'
+              }">
+              {{ 'operations.payment-confirmation.doc-number' | translate }}:
+            </p>
+            <span
+              class="ms-2 contragent-autofill__secondary"
+              *ngIf="
+                !counteragentFormControl.docNum.errors?.required &&
+                !isEditDocNum
+              ">
+              №{{ counteragentFormControl.docNum.value }}
+            </span>
+            <input
+              *ngIf="isEditDocNum"
+              formControlName="docNum"
+              maxlength="9"
+              class="form-control contragent-autofill__docNum"
+              [ngClass]="displayFieldClass('docNum')"
+              obDocNumberPayment
+              (docNumChange)="docNumChange($event)"
+              (focusout)="editDocNum()"
+              (keyup)="onDocNumKeyUp($event)"
+              id="docNum" />
+          </div>
+          <div class="align-self-start">
+            <div class="contragent-autofill__docNum-error-container">
+              <ob-field-error-display
+                *ngIf="counteragentFormControl.docNum.errors?.maxLengthExceeded"
+                [displayError]="isFieldInvalid('docNum')"
+                errorMsg="{{ 'error.documentNum-payments' | translate }}">
+              </ob-field-error-display>
+              <ob-field-error-display
+                *ngIf="counteragentFormControl.docNum.errors?.pattern"
+                [displayError]="isFieldInvalid('docNum')"
+                errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+              </ob-field-error-display>
+            </div>
+          </div>
+          <div class="contragent-autofill__text">
+            <img
+              *ngIf="
+                !isEditDocNum && counteragentFormControl.docNum.errors?.required
+              "
+              src="assets/icons/ic_edit1.svg"
+              alt="change-icon"
+              class="contragent-autofill__edit_icon"
+              (click)="editDocNum()" />
+            <img
+              *ngIf="
+                !isEditDocNum &&
+                !counteragentFormControl.docNum.errors?.required
+              "
+              src="assets/icons/ic_edit.svg"
+              alt="change-icon"
+              class="contragent-autofill__edit_icon"
+              (click)="editDocNum()" />
+            <img
+              *ngIf="isEditDocNum"
+              src="assets/icons/ic_check_mark.svg"
+              alt="change-icon"
+              class="contragent-autofill__edit_icon"
+              (click)="editDocNum()" />
+          </div>
+        </div>
+        <div class="contragent-autofill__text">
+          <span class="contragent-autofill__secondary me-2">
+            {{ 'operations.default.createDate' | translate }}
+          </span>
+          <span class="contragent-autofill__main">{{
+            prefill?.docDate.split('-').reverse().join('.')
+          }}</span>
+        </div>
+      </section>
+      <!-- Номер документа и дата -->
+
+      <!-- Получатель -->
+      <section class="contragent-section">
+        <p class="contragent-subtitle">
+          {{ 'default.contragent' | translate }}
+        </p>
+        <div class="row">
+          <!-- ИИН -->
+          <div
+            class="col-dt-6 col-tb-6 col-mb-12 mb-16 contragent-inputs__element"
+            id="bootstrap-overrides-bin">
+            <ng-select
+              formControlName="bin"
+              class="knp-cbc-select floating-label padding-disabled"
+              [searchable]="isSearchableBin"
+              [ngClass]="displayFieldClass('bin')"
+              [clearable]="true"
+              (search)="onSearchBin($event)"
+              [editableSearchTerm]="true"
+              (change)="onBinChange($event)"
+              notFoundText="{{ 'error.empty-data' | translate }}"
+              placeholder="{{ 'operations.countragent.idn' | translate }}"
+              required
+              dropdownPosition="bottom"
+              (open)="onBinOpen()"
+              (close)="onBinClose()"
+              (blur)="onBinClose()"
+              [(ngModel)]="counteragentBin"
+              (ngModelChange)="counteragentBinChange()"
+              [loading]="isSearchingBin"
+              id="bin"
+              [inputAttrs]="{
+                maxlength: '12'
+              }"
+              (keypress)="passOnlyNumbers($event)"
+              (paste)="passOnlyNumbers($event)"
+              loadingText="{{ 'default.loading' | translate }}...">
+              <ng-option
+                *ngFor="let company of counterAgentList"
+                [value]="company"
+                disabled="{{
+                  company.account === counteragentFormControl.selectedAcc.value
+                }}">
+                <!-- <ul class="container-ul"> -->
+                <!-- <li *ngFor="let item of counteragent" (click)="selectedItem(item.account)"> -->
+                <p class="container-ul__title">{{ company.name }}</p>
+                <div class="container-el">
+                  <p class="container-el__name">
+                    <span class="container-el__label">{{
+                      'operations.countragent.chet' | translate
+                    }}</span>
+                    {{ company.account }}
+                  </p>
+                  <div class="container-ul_info">
+                    <p class="container-el__name">
+                      <span class="container-el__label">{{
+                        'operations.countragent.bank' | translate
+                      }}</span>
+                      <span
+                        class="icon icon_{{
+                          company.bankBic
+                        }} container-ul_img"></span>
+                      {{ company.bankName }}
+                    </p>
+                  </div>
+                  <p class="container-el__name">
+                    <span class="container-el__label">{{
+                      'operations.countragent.bin' | translate
+                    }}</span>
+                    {{ company.idn }}
+                  </p>
+                </div>
+                <!-- </li> -->
+                <!-- </ul> -->
+                <!-- <ob-knp-cbc
+                  [knp]="company.knp"
+                  [cbc]="company.cbc"
+                  [cbcName]="company.cbcName"
+                  searchTitle="{{ 'operations.budget.knp-cbc' | translate }}"
+                ></ob-knp-cbc> -->
+              </ng-option>
+            </ng-select>
+            <ob-field-error-display
+              *ngIf="counteragentFormControl.bin.errors?.required"
+              [displayError]="isFieldInvalid('bin')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="
+                counteragentFormControl.bin.errors?.minlength ||
+                counteragentFormControl.bin.errors?.maxlength
+              "
+              [displayError]="isFieldInvalid('bin')"
+              errorMsg="{{ 'error.iin' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <!-- ИИН -->
+          <div
+            class="col-dt-6 col-tb-6 col-mb-12 mb-16 contragent-inputs__element">
+            <!-- Наименование контрагента -->
+            <div class="form-floating">
+              <input
+                formControlName="counteragent"
+                class="form-control base-input"
+                [ngClass]="displayFieldClass('counteragent')"
+                autocomplete="off"
+                type="text"
+                required="required"
+                placeholder="{{ 'default.name' | translate }}"
+                id="counteragent" />
+              <label for="floatingInput">{{
+                'default.name' | translate
+              }}</label>
+            </div>
+            <ob-field-error-display
+              *ngIf="counteragentFormControl.counteragent.errors?.required"
+              [displayError]="isFieldInvalid('counteragent')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <!-- Наименование контрагента -->
+        </div>
+
+        <div class="row">
+          <!-- <div class="col-dt-6 col-tb-6 col-mb-12 mb-16"> -->
+          <div
+            class="col-dt-6 col-tb-6 col-mb-12 mb-16 contragent-inputs__element">
+            <!-- Счет контрагента -->
+            <div class="form-floating">
+              <!-- appInput="account" -->
+              <!-- <ng-template [ngIf]="isAccountInfoLoading">
+
+              </ng-template> -->
+
+              <input
+                formControlName="account"
+                class="form-control base-input"
+                [ngClass]="displayFieldClass('account')"
+                autocomplete="off"
+                type="text"
+                required="required"
+                placeholder="{{ 'operations.countragent.account' | translate }}"
+                maxlength="20"
+                id="account" />
+
+              <label for="floatingInput">{{
+                'operations.countragent.account' | translate
+              }}</label>
+            </div>
+
+            <p
+              *ngIf="this.counteragentForm.get('account').hasError('pattern')"
+              class="invalid">
+              {{ 'error.required_account_symbol' | translate }}
+            </p>
+
+            <p
+              *ngIf="
+                (this.counteragentForm.get('account').touched &&
+                  !this.counteragentForm.get('account').pristine &&
+                  this.counteragentForm.get('account').hasError('required')) ||
+                ((this.counteragentForm.get('account').value ||
+                  this.counteragentForm.get('account').value === 0) &&
+                  this.counteragentForm.get('account').hasError('required'))
+              "
+              class="invalid">
+              {{ 'error.required' | translate }}
+            </p>
+
+            <p
+              *ngIf="this.counteragentForm.get('account').hasError('minLength')"
+              class="invalid">
+              {{ 'error.minLengthError' | translate }}
+            </p>
+            <p
+              *ngIf="this.counteragentForm.get('account').hasError('specChars')"
+              class="invalid">
+              {{ 'error.symbol' | translate }}
+            </p>
+            <p
+              *ngIf="
+                this.counteragentForm.get('account').hasError('similarAccounts')
+              "
+              class="invalid">
+              {{ 'error.similarAccounts' | translate }}
+            </p>
+
+            <!-- <ob-field-error-display
+              *ngIf="counteragentFormControl.account.errors?.required"
+              [displayError]="isFieldInvalid('account')"
+              errorMsg="{{ 'error.required' | translate }}"
+            >
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="counteragentFormControl.account.errors?.minlength"
+              [displayError]="isFieldInvalid('account')"
+              errorMsg="{{ 'error.account' | translate }}"
+            >
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="counteragentFormControl.account.errors?.pattern"
+              [displayError]="isFieldInvalid('account')"
+              errorMsg="{{ 'error.onlyDigitalsAndLetters' | translate }}"
+            >
+            </ob-field-error-display> -->
+            <!-- Счет контрагента -->
+          </div>
+          <!-- КБЕ -->
+          <div
+            class="col-dt-6 col-tb-6 col-mb-12 mb-16 contragent-inputs__element">
+            <div
+              class="form-floating"
+              [tooltip]="tooltipKbe"
+              [delay]="100"
+              #pop="bs-tooltip"
+              [isDisabled]="isSearchableBin || isDisableKbeTooltip"
+              (click)="pop.hide()"
+              (keypress)="pop.hide()">
+              <input
+                formControlName="kbe"
+                class="form-control base-input"
+                [ngClass]="displayFieldClass('kbe')"
+                autocomplete="off"
+                type="text"
+                placeholder="{{ 'operations.countragent.kbe' | translate }}"
+                mask="00"
+                id="kbe"
+                (focus)="disableTooltip('kbe')"
+                (blur)="enableTooltip('kbe')"
+                (mouseover)="enableTooltip('kbe')" />
+              <label for="floatingInput">{{
+                'operations.countragent.kbe' | translate
+              }}</label>
+            </div>
+            <ng-template #tooltipKbe>
+              <ob-tooltip [type]="'kbe'"></ob-tooltip>
+            </ng-template>
+            <!-- <ob-field-error-display
+              *ngIf="counteragentFormControl.account.errors?.required"
+              [displayError]="isFieldInvalid('account')"
+              errorMsg="{{ 'error.required' | translate }}"
+            >
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="counteragentFormControl.account.errors?.minlength"
+              [displayError]="isFieldInvalid('account')"
+              errorMsg="{{ 'error.account' | translate }}"
+            >
+            </ob-field-error-display> -->
+            <p
+              *ngIf="this.counteragentForm.get('kbe').hasError('pattern')"
+              class="invalid">
+              {{ 'error.filledIncorrectly' | translate }}
+            </p>
+            <p
+              *ngIf="
+                (this.counteragentForm.get('kbe').touched &&
+                  !this.counteragentForm.get('kbe').pristine &&
+                  this.counteragentForm.get('kbe').hasError('required')) ||
+                ((this.counteragentForm.get('kbe').value ||
+                  this.counteragentForm.get('kbe').value === 0) &&
+                  this.counteragentForm.get('kbe').hasError('required'))
+              "
+              class="invalid">
+              {{ 'error.required' | translate }}
+            </p>
+          </div>
+          <!-- КБЕ -->
+        </div>
+
+        <ng-template [ngIf]="this.counteragentForm.get('bankName').value">
+          <div class="row pd-10">
+            <div
+              class="contragent-section-info col-dt-12 col-tb-12 col-mb-12 mb-16">
+              <div class="contragent-section-detail">
+                <span class="contragent-section-detail__content bankInfo">
+                  <ng-template
+                    [ngIf]="this.counteragentForm.get('bankBic').value">
+                    <span
+                      class="icon bankInfo-icon icon_{{
+                        this.counteragentForm.get('bankBic').value
+                      }}"
+                      obCheckIcon
+                      [bankBic]="
+                        this.counteragentForm.get('bankBic').value
+                      "></span>
+                  </ng-template>
+                  {{ this.counteragentForm.get('bankName').value }}</span
+                >
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </section>
+
+      <!-- Получатель -->
+
+      <!-- Счет отправителя и сумма платежа-->
+      <section class="contragent-section">
+        <p class="contragent-subtitle">
+          {{ 'operations.default.pay' | translate }}
+        </p>
+
+        <div class="row contragent-inputs">
+          <!-- Счет отправителя -->
+          <div
+            class="col-dt-6 col-tb-6 col-mb-12 mb-16 contragent-inputs__element">
+            <!-- [editableSearchTerm]="true" -->
+            <ng-select
+              formControlName="selectedAcc"
+              class="custom-select account-withdraw"
+              [searchable]="false"
+              [clearable]="false"
+              placeholder="{{
+                'operations.default.withdrawalAccount' | translate
+              }}"
+              [ngClass]="displayFieldClass('selectedAcc')"
+              notFoundText="{{ 'error.empty-data' | translate }}"
+              required
+              dropdownPosition="bottom"
+              [loading]="isAccountsLoading"
+              id="selectedAcc"
+              [readonly]="isAccountsLoading"
+              (open)="onOpenSelectedAccount()"
+              (close)="onCloseSelectedAccount()"
+              loadingText="{{ 'default.loading' | translate }}...">
+              <ng-option
+                *ngFor="let account of accounts"
+                [value]="account?.iban"
+                disabled="{{
+                  account.iban === counteragentFormControl.account.value
+                }}">
+                <ob-select-account
+                  [description]="account.iban"
+                  [title]="account.actualBalance"
+                  [icon]="getIcon(account.currency)"
+                  [currency]="account.currency"
+                  [selected]="
+                    account?.iban ===
+                    getIn(counteragentFormControl, [
+                      'selectedAcc',
+                      'value',
+                      'iban'
+                    ])
+                  "></ob-select-account>
+              </ng-option>
+            </ng-select>
+            <ob-field-error-display
+              [displayError]="isFieldInvalid('selectedAcc')"
+              errorMsg="{{ 'error.account_not_selected' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <!-- Счет отправителя -->
+          <!-- Сумма платежа-->
+          <div
+            class="col-dt-6 col-tb-6 col-mb-12 mb-16 contragent-inputs__element">
+            <div class="form-floating">
+              <input
+                class="form-control base-input"
+                [ngClass]="displayFieldClass('sum')"
+                autocomplete="off"
+                type="text"
+                required="required"
+                placeholder="{{ 'operations.countragent.amount' | translate }}"
+                formControlName="sum"
+                mask="separator.2"
+                thousandSeparator=" "
+                separatorLimit="999999999999999999"
+                suffix=" ₸"
+                id="sum" />
+              <label for="floatingInput">{{
+                'operations.countragent.amount' | translate
+              }}</label>
+            </div>
+
+            <div>
+              <ob-field-error-display
+                *ngIf="counteragentFormControl.sum.errors?.required"
+                [displayError]="isFieldInvalid('sum')"
+                errorMsg="{{ 'error.required' | translate }}">
+              </ob-field-error-display>
+              <ob-field-error-display
+                *ngIf="counteragentFormControl.sum.errors?.incorrectSum"
+                [displayError]="isFieldInvalid('sum')"
+                errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+              </ob-field-error-display>
+            </div>
+
+            <p *ngIf="insufficientFunds" class="text-muted">
+              {{ 'error.amount' | translate }}
+            </p>
+
+            <!-- <ob-field-error-display
+              *ngIf="insufficientFunds"
+              [displayError]="isFieldInvalid('sum')"
+              errorMsg="{{ '' | translate }}"
+            >
+            </ob-field-error-display> -->
+          </div>
+          <!-- Сумма платежа-->
+        </div>
+        <!-- Срочный платеж -->
+        <ng-template [ngIf]="counteragentFormControl.bankBic.value">
+          <div class="row contragent-inputs mb-40">
+            <div
+              class="contragent-general-term col-dt-6 col-tb-6 col-mb-12 mt-2"
+              *ngIf="counteragentFormControl.bankBic.value !== 'HSBKKZKX'">
+              <div
+                class="contragent-general-term__toggle"
+                (click)="checkUrgentAvailable()">
+                <div class="material-switch">
+                  <input
+                    formControlName="quickPayment"
+                    class="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    id="switch-quick-payment"
+                    [attr.disabled]="!isUrgentAvailable ? true : null" />
+                  <label
+                    class="form-check-label"
+                    for="switch-quick-payment"></label>
+                </div>
+              </div>
+              <div class="contragent-general-term__text">
+                <p class="contragent-autofill__dark">
+                  {{ 'operations.countragent.urgent' | translate }}
+                </p>
+                <p class="contragent-autofill__small">
+                  {{ 'operations.countragent.urgentInfo' | translate }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <!-- Срочный платеж -->
+      </section>
+      <!-- Счет отправителя и сумма платежа-->
+
+      <section>
+        <p class="contragent-subtitle">
+          {{ 'operations.payments.paymentDetails' | translate }}
+        </p>
+        <!-- КНП -->
+        <div class="row contragent-inputs">
+          <div
+            class="col-dt-6 col-tb-6 col-mb-12 mb-16 contragent-inputs__element"
+            id="bootstrap-overrides">
+            <div
+              class="form-floating"
+              [tooltip]="tooltipKnp"
+              [delay]="100"
+              #pop3="bs-tooltip"
+              [isDisabled]="
+                isSearchableKnp ||
+                isSearchableBin ||
+                isSelectedAccountOpen ||
+                isDisablePurposeTooltip
+              "
+              (click)="pop3.hide()"
+              (keypress)="pop3.hide()">
+              <ng-select
+                formControlName="knp"
+                class="knp-cbc-select floating-label"
+                [ngClass]="displayFieldClass('knp')"
+                [searchable]="isSearchableKnp"
+                [editableSearchTerm]="true"
+                (search)="onSearchKnp($event)"
+                (change)="onChangeKnp($event)"
+                notFoundText="{{ 'error.empty-data' | translate }}"
+                placeholder="{{ 'operations.default.knp' | translate }}"
+                required
+                dropdownPosition="top"
+                (open)="onOpenKnp()"
+                (close)="onCloseKnp()"
+                (blur)="onCloseKnp()"
+                [loading]="isSearchingKnp"
+                id="knp"
+                loadingText="{{ 'default.loading' | translate }}...">
+                <ng-option *ngFor="let knpItem of knpList" [value]="knpItem">
+                  <ob-knp
+                    [knpCode]="knpItem.code"
+                    [knpName]="knpItem.name"
+                    searchTitle="{{
+                      'operations.default.knpLong' | translate
+                    }}"></ob-knp>
+                </ng-option>
+              </ng-select>
+            </div>
+            <ng-template #tooltipKnp>
+              <ob-tooltip [type]="'knp'"></ob-tooltip>
+            </ng-template>
+            <ob-field-error-display
+              *ngIf="counteragentFormControl.knp.errors?.required"
+              [displayError]="isFieldInvalid('knp')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="
+                isKnpInvalid || counteragentFormControl.knp.errors?.pattern
+              "
+              [displayError]="isFieldInvalid('knp')"
+              errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="counteragentFormControl.knp.errors?.invalidSymbol"
+              [displayError]="isFieldInvalid('knp')"
+              errorMsg="{{ 'error.symbol' | translate }}">
+            </ob-field-error-display>
+          </div>
+        </div>
+        <!-- КНП -->
+        <ng-template [ngIf]="description">
+          <div class="row pd-10">
+            <div
+              class="contragent-section-info col-dt-10 col-tb-10 col-mb-12 mb-24"
+              style="height: 100%">
+              <div class="contragent-section-detail">
+                <p class="contragent-section-detail__content">
+                  {{ description }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="row contragent-inputs">
+          <!-- Назначение платежа -->
+          <div
+            class="col-dt-12 col-tb-12 col-mb-12 contragent-inputs__element-textarea">
+            <div
+              class="form-floating"
+              [tooltip]="tooltipPurpose"
+              [delay]="100"
+              #pop2="bs-tooltip"
+              [isDisabled]="
+                isSearchableKnp ||
+                isSearchableBin ||
+                isSelectedAccountOpen ||
+                isDisablePurposeTooltip
+              "
+              (click)="pop2.hide()"
+              (keypress)="pop2.hide()">
+              <textarea
+                class="form-control contragent-inputs__textarea"
+                [ngClass]="displayFieldClass('purpose')"
+                placeholder="{{ 'operations.countragent.purpose' | translate }}"
+                id="floatingTextarea"
+                formControlName="purpose"
+                (blur)="onTextareaBlur()"
+                (focus)="onTextareaFocus()"
+                #textPurpose
+                [rows]="getHeight(textPurpose.value) || 2"
+                maxlength="420"
+                (click)="pop2.hide()"
+                (mouseenter)="enableTooltip('purpose')"
+                (mouseover)="enableTooltip('purpose')">
+              </textarea>
+              <label
+                class="contragent-inputs__textarea-label"
+                for="floatingTextarea"
+                >{{ 'operations.countragent.purpose' | translate }}</label
+              >
+              <div
+                [ngStyle]="{
+                  'margin-top': isPurposeInputBlur ? '0px' : '1px'
+                }"></div>
+            </div>
+            <ng-template #tooltipPurpose>
+              <ob-tooltip [type]="'purpose'"></ob-tooltip>
+            </ng-template>
+            <div class="contragent-inputs__textarea-bottom">
+              <div>
+                <ob-field-error-display
+                  *ngIf="counteragentFormControl.purpose.errors?.required"
+                  [displayError]="isFieldInvalid('purpose')"
+                  errorMsg="{{ 'error.required' | translate }}">
+                </ob-field-error-display>
+                <ob-field-error-display
+                  *ngIf="counteragentFormControl.purpose.errors?.maxlength"
+                  [displayError]="isFieldInvalid('purpose')"
+                  errorMsg="{{ 'error.purpose' | translate }}">
+                </ob-field-error-display>
+                <ob-field-error-display
+                  *ngIf="counteragentFormControl.purpose.errors?.invalidSymbol"
+                  [displayError]="isFieldInvalid('purpose')"
+                  errorMsg="{{ 'error.symbol' | translate }}{{
+                    prohibitedSymbols
+                  }}">
+                </ob-field-error-display>
+              </div>
+              <p class="contragent-inputs__textarea-length">
+                {{ textPurpose.value.length }}/420
+              </p>
+            </div>
+          </div>
+          <!-- Назначение платежа -->
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="col-dt-3 col-smdt-4 col-tb-4 col-lgdt-3">
+    <!-- <div class="recommendation payment-content">
+      <p class="payment-content__right-heading">Рекомендация</p>
+      <p class="recommendation__text">
+        По Вашему тарифу осталось 2 бесплатных платежа в тенге
+      </p> -->
+    <!--      <ob-button-->
+    <!--        [label]="'Увеличить лимит'"-->
+    <!--        [className]="'btn-outline-green height-medium br-12 p-24 w-100'"-->
+    <!--        [disabled]="true"-->
+    <!--      ></ob-button>-->
+    <!-- <button disabled class="counteragent-check__btn">Увеличить лимит</button>
+    </div> -->
+
+    <div
+      class="information payment-content info"
+      [ngClass]="{ divide: kbeInfo && knpInfo }">
+      <p class="payment-content__right-heading">
+        {{ 'default.information' | translate }}
+      </p>
+      <div class="information-content">
+        <div
+          class="d-flex flex-row justify-content-between information-content__click_area"
+          (click)="kbeInfoShow()">
+          <p class="information-content__title">
+            {{ 'operations.countragent.info_title_kbe' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': kbeInfo === false,
+              'information-content__arrow_up': kbeInfo === true
+            }" />
+        </div>
+        <div class="information-content__container" *ngIf="kbeInfo === true">
+          <p class="information-content__text mb-1">
+            {{ 'operations.countragent.info_text_kbe' | translate }}
+          </p>
+          <p class="information-content__text">
+            {{ 'operations.countragent.info_text_kbe2' | translate }}:
+          </p>
+          <ul>
+            <li>
+              {{ 'operations.countragent.info_text_kbe_too' | translate }}
+            </li>
+            <li>{{ 'operations.countragent.info_text_kbe_ip' | translate }}</li>
+            <li>{{ 'operations.countragent.info_text_kbe_ik' | translate }}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="information-content">
+        <div
+          class="d-flex flex-row justify-content-between information-content__click_area"
+          (click)="knpInfoShow()">
+          <p class="information-content__title">
+            {{ 'operations.countragent.info_title_knp' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': knpInfo === false,
+              'information-content__arrow_up': knpInfo === true
+            }" />
+        </div>
+        <p class="information-content__text" *ngIf="knpInfo === true">
+          {{ 'operations.countragent.info_text_knp' | translate }}
+        </p>
+      </div>
+    </div>
+
+    <!--    Проверка контрагента  -->
+    <ng-template [ngIf]="!isProduction">
+      <div class="counteragent-check payment-content">
+        <p class="payment-content__right-heading">
+          {{ 'operations.countragent.counteragent_check' | translate }}
+        </p>
+        <button
+          *ngIf="checkInfo === false"
+          (click)="checkAndGetInfo()"
+          class="counteragent-check__btn">
+          {{ 'operations.countragent.check' | translate }}
+        </button>
+        <ob-loader *ngIf="checkInfo === true" [loading]="checkInfoLoading">
+          <div
+            class="counteragent-check__info"
+            *ngIf="
+              checkInfoErrorCount !== 3 &&
+              companyNotFound === false &&
+              wasChecked === true
+            ">
+            <div class="counteragent-check__info__waschecked">
+              <p class="counteragent-check__info__waschecked__text">
+                {{ 'default.last-check' | translate }}
+                {{
+                  formatDate(
+                    helperFulfilled[helperFulfilled.length - 1]?.docDate
+                  )
+                }}
+              </p>
+            </div>
+            <div class="counteragent-check__info__report">
+              <img
+                src="assets/icons/ic_pdf.svg"
+                class="counteragent-check__info__report__icon" />
+              <p class="counteragent-check__info__report__download">
+                Скачать отчёт
+              </p>
+            </div>
+          </div>
+          <div
+            class="counteragent-check__info"
+            *ngIf="
+              checkInfoErrorCount !== 3 &&
+              companyNotFound === false &&
+              wasChecked === false
+            ">
+            <p class="counteragent-check__info__name">
+              {{ counteragentCheckInfo?.name }}
+            </p>
+            <div
+              class="counteragent-check__info__warning"
+              *ngIf="counteragentCheckInfo?.reliabilityList.length !== 0">
+              <img
+                src="assets/icons/ic_status_error.svg"
+                class="counteragent-check__info__warning__icon" />
+              <p class="counteragent-check__info__warning__text">
+                {{ 'operations.countragent.warning-text' | translate }}
+              </p>
+            </div>
+            <div
+              class="counteragent-check__info__negatives"
+              *ngIf="counteragentCheckInfo?.reliabilityList.length !== 0">
+              <p class="counteragent-check__info__negatives__number">
+                {{ 'operations.countragent.company-in' | translate }}
+                {{ counteragentCheckInfo?.reliabilityList.length }}
+                {{ 'operations.countragent.negative-list' | translate }}:
+              </p>
+              <ul class="counteragent-check__info__negatives__list">
+                <li
+                  class="counteragent-check__info__negatives__item"
+                  *ngFor="
+                    let item of counteragentCheckInfo?.reliabilityList;
+                    let idx = index
+                  ">
+                  {{ item.type.name }}
+                </li>
+              </ul>
+            </div>
+            <div class="counteragent-check__info__report">
+              <img
+                src="assets/icons/ic_pdf.svg"
+                class="counteragent-check__info__report__icon" />
+              <p class="counteragent-check__info__report__download">
+                Скачать отчёт
+              </p>
+            </div>
+          </div>
+          <div
+            *ngIf="checkInfoErrorCount === 3"
+            class="counteragent-check__info__error">
+            <img
+              src="assets/icons/ic_status_error.svg"
+              class="counteragent-check__info__error__icon" />
+            <p class="counteragent-check__info__error__text">
+              {{ 'operations.countragent.counteragent-check' | translate }}
+            </p>
+          </div>
+          <div
+            *ngIf="companyNotFound === true"
+            class="counteragent-check__info__error">
+            <img
+              src="assets/icons/ic_status_error1.svg"
+              class="counteragent-check__info__error__icon" />
+            <p class="counteragent-check__info__error__text">
+              {{ 'operations.countragent.no-info' | translate }}
+            </p>
+          </div>
+          <button
+            (click)="checkAgain()"
+            class="counteragent-check__info__error__btn">
+            {{ 'operations.countragent.check_again' | translate }}
+          </button>
+        </ob-loader>
+      </div>
+    </ng-template>
+    <!--    Проверка контрагента  -->
+  </div>
+</div>
+<ob-payment-footer
+  [operationType]="'payment'"
+  [commission]="commission"
+  [sum]="convertToFixed()"
+  (toSave)="FieldsValidation('save')"
+  (toSign)="FieldsValidation('sign')"
+  [isSave]="true"
+  [isSign]="true"
+  [loading]="loading"
+  [saveLoading]="isSaveLoading"></ob-payment-footer>

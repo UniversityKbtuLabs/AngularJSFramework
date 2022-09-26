@@ -1,0 +1,235 @@
+<div class="d-flex flex-column tariffs__container">
+  <p class="tariffs__title" [ngClass]="{ 'mb-20': isCorpClient }">
+    {{ 'settings.tarif.title' | translate }}
+  </p>
+  <ob-loader
+    [loading]="
+      isTariffGroupsLoading || (corpClientCheckLoading && isCorpClient)
+    ">
+    <ng-template [ngIf]="activeTariff">
+      <div class="tariffs__info">
+        <div class="tariffs__info-row">
+          <p class="text_light">{{ 'settings.tarif.name' | translate }}:</p>
+          <p class="text_bolder">{{ activeTariff?.name }}</p>
+        </div>
+        <div class="tariffs__info-row">
+          <p class="text_light">{{ 'settings.tarif.info' | translate }}:</p>
+          <p class="text_bold">
+            {{ getFormattedAmount(activeTariff.finalCost) | amountPipe }} ₸
+            {{ 'settings.tarif.forMonth' | translate | lowercase }}
+          </p>
+        </div>
+        <ul class="tariffs__info-list">
+          <li class="text1">
+            {{ 'settings.tarif.writeOff' | translate }}:
+            {{ formatDate(chargeDate) }}
+          </li>
+          <li class="text1">
+            {{ 'settings.tarif.subscriptionType' | translate }}:
+            {{ activeTariff?.period }} {{ getTextMonths(activeTariff?.period) }}
+          </li>
+          <!-- <li class="text1">{{ 'settings.tarif.expiryDate' | translate }}:</li> -->
+        </ul>
+        <p class="text_green pointer" (click)="navigateToDetails()">
+          {{ 'settings.notification.more' | translate }}
+        </p>
+        <div class="tariffs__info-btns">
+          <ng-template [ngIf]="!isProduction">
+            <button
+              *ngIf="!isCorpClient"
+              class="tariffs-btn tariffs-btn-green"
+              (click)="navigateToAll()">
+              <p>{{ 'settings.tarif.changeTariff' | translate }}</p>
+            </button>
+          </ng-template>
+          <button
+            class="tariffs-btn tariffs-btn-red"
+            (click)="openDisableConfirmation()">
+            <p>{{ 'settings.tarif.disable' | translate }}</p>
+          </button>
+        </div>
+      </div>
+      <div class="tariffs__statistic">
+        <ob-loader [loading]="isStatisticsLoading">
+          <ng-template [ngIf]="statisticsList.length > 0">
+            <p class="text_bold mb-16">
+              {{ 'settings.tarif.remainder' | translate }} {{ remainderDate }}
+            </p>
+            <!-- <p class="text_light">{{ 'settings.tarif.update' | translate }}:</p> -->
+            <div
+              class="tariffs__statistic__card line_wrapper"
+              *ngFor="let item of statisticsList">
+              <p class="text_higher mb-16">{{ item?.tariffCondition }}</p>
+              <div class="d-flex flex-row line mb-16">
+                <div
+                  class="half_line1"
+                  [ngClass]="{ 'br-50': item.left === 0 }"
+                  [ngStyle]="{
+                    width: getGreenLineWidth(item.count, item.left) + '%'
+                  }"></div>
+                <div
+                  class="half_line2"
+                  [ngClass]="{ 'br-50': item.count === 0 }"
+                  [ngStyle]="{
+                    width: 100 - getGreenLineWidth(item.count, item.left) + '%'
+                  }"></div>
+              </div>
+              <div class="tariffs__statistic__bottom">
+                <div class="d-flex flex-row align-items-center">
+                  <p class="text1 mr-4">
+                    {{ 'settings.tarif.used' | translate }}:
+                  </p>
+                  <p class="text_bold">
+                    {{ item.count }} {{ 'settings.tarif.from' | translate }}
+                    {{ item.left }}
+                  </p>
+                </div>
+                <div class="d-flex flex-row align-items-center">
+                  <p class="text1 mr-4">
+                    {{ 'settings.tarif.reminder' | translate }}:
+                  </p>
+                  <p class="text_bold">{{ item.left - item.count }}</p>
+                </div>
+              </div>
+            </div>
+          </ng-template>
+        </ob-loader>
+
+        <!-- <div class="d-flex flex-column justify-content-between line_wrapper">
+          <p class="text_higher">{{ 'settings.tarif.freeTransfer' | translate }}:</p>
+          <div class="d-flex flex-row line">
+            <div class="half_line1" [ngStyle]="{width: 30 + '%'}"></div>
+            <div class="half_line2" [ngStyle]="{width: 70 + '%'}"></div>
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <div class="d-flex flex-row">
+              <p class="text1">{{ 'settings.tarif.used' | translate }}:</p>
+              <p class="text_bold">108 {{ 'settings.tarif.from' | translate }} 220 :</p>
+            </div>
+            <div class="d-flex flex-row">
+              <p class="text1">{{ 'settings.tarif.reminder' | translate }}:</p>
+              <p class="text_bold">12</p>
+            </div>
+          </div>
+        </div>
+        <div class="d-flex flex-column justify-content-between line_wrapper">
+          <p class="text_higher">{{ 'settings.tarif.paymentType' | translate }}:</p>
+          <div class="d-flex flex-row line">
+            <div class="half_line1" [ngStyle]="{width: 60 + '%'}"></div>
+            <div class="half_line2" [ngStyle]="{width: 40 + '%'}"></div>
+          </div>
+          <div class="d-flex flex-row justify-content-between">
+            <div class="d-flex flex-row">
+              <p class="text1">{{ 'settings.tarif.used' | translate }}:</p>
+              <p class="text_bold">108 {{ 'settings.tarif.from' | translate }} 220 :</p>
+            </div>
+            <div class="d-flex flex-row">
+              <p class="text1">{{ 'settings.tarif.reminder' | translate }}:</p>
+              <p class="text_bold">12</p>
+            </div>
+          </div>
+        </div> -->
+      </div>
+    </ng-template>
+    <ng-template [ngIf]="!activeTariff && !isCorpClient">
+      <div class="">
+        <div class="empty-tariff__content">
+          <img src="./assets/icons/empty_list.svg" class="empty-tariff__img" />
+          <div class="empty-tariff__text">
+            <p>{{ 'settings.tarif.noActiveTariff' | translate }}</p>
+            <p>{{ 'settings.tarif.chooseFromList' | translate }}</p>
+          </div>
+          <p class="text_green pointer" (click)="openModal(whySubscribeModal)">
+            {{ 'settings.tarif.whySubscribeTariff' | translate }}
+          </p>
+        </div>
+        <div style="margin-bottom: 16px">
+          <p class="text_bolder">
+            {{ 'settings.tarif.chooseTariff' | translate }}
+          </p>
+        </div>
+      </div>
+
+      <div class="tariff-card__wrapper row g-24">
+        <div
+          *ngFor="let item of tariffGroupNameList"
+          class="col-dt-6 col-tb-6 col-mb-12 col-lgdt-6">
+          <div class="tariff-card">
+            <div class="tariff-card__header">
+              <div class="tariff-card__title">
+                {{ tariffGroupList[item][0].name | titlecase }}
+              </div>
+              <div
+                class="tariff-card__line"
+                [ngStyle]="getLineColor(item)"></div>
+              <div
+                class="tariff-card__subtitle"
+                [innerText]="tariffGroupList[item][0].description"></div>
+            </div>
+            <div class="tariff-card__body"></div>
+            <div class="tariff-card__footer">
+              <div class="tariff-card__price">
+                <span class="tariff-card__title"
+                  >{{ 'default.from' | translate }}
+                  {{
+                    getFormattedAmount(tariffGroupList[item][0].finalCost)
+                      | amountPipe
+                  }}
+                  ₸</span
+                >
+                / {{ 'general.time.month' | translate | lowercase }}
+              </div>
+              <button
+                class="tariff-card__btn"
+                (click)="navigateToConnect(item)">
+                {{ 'products.default.connect' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <div *ngIf="isCorpClient && !activeTariff" class="tariffs__not-available">
+      <img
+        src="./assets/icons/exclamation_illustration.svg"
+        alt="not available" />
+      <p>{{ 'settings.tarif.notAvailable' | translate }}</p>
+    </div>
+  </ob-loader>
+</div>
+
+<ng-template #whySubscribeModal>
+  <div class="info-modal">
+    <div class="modal-header">
+      <p class="modal-title">
+        {{ 'settings.tarif.whySubscribeTariff' | translate }}
+      </p>
+      <button
+        type="button"
+        class="btn-close close pull-right"
+        aria-label="Close"
+        (click)="modalRef?.hide()">
+        <span aria-hidden="true" class="visually-hidden">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <ul class="reason-list">
+        <li>
+          <p>{{ 'settings.tarif.reasonToSubscribe1' | translate }}</p>
+        </li>
+        <li>
+          <p>{{ 'settings.tarif.reasonToSubscribe2' | translate }}</p>
+        </li>
+        <li>
+          <p>{{ 'settings.tarif.reasonToSubscribe3' | translate }}</p>
+        </li>
+        <li>
+          <p>{{ 'settings.tarif.reasonToSubscribe4' | translate }}</p>
+        </li>
+        <li>
+          <p>{{ 'settings.tarif.reasonToSubscribe5' | translate }}</p>
+        </li>
+      </ul>
+    </div>
+  </div>
+</ng-template>

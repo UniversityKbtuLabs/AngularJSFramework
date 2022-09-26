@@ -1,0 +1,101 @@
+@import "/src/styles/variables.scss";
+@import "/src/styles/main";
+
+.topup {
+    box-sizing: border-box;
+    padding: 35px 25px;
+
+    &-header {
+        display: flex;
+        align-items: center;
+        & > p {
+            width: 20%;
+        }
+    }
+
+    &-body {
+        display: flex;
+        align-items: center;
+        margin-top: 43px;
+
+        & > p {
+            width: 20%;
+            font-size: $font-size-medium;
+        }
+    }
+
+    &-form {
+        & > p {
+            font-size: $font-size-h3-large;
+            margin-bottom: 21px;
+        }
+
+        &__small-text {
+            display: flex;
+            align-items: center;
+            color: $color-black;
+            margin-bottom: 17px;
+
+            & > p {
+                width: 320px;
+                font-size: $font-size-small;
+            }
+
+            & > span {
+                text-align: right;
+                font-weight: 700;
+                font-size: $font-size-small;
+            }
+        } 
+
+        &__large-text {
+            display: flex;
+            align-items: center;
+            color: $color-black;
+
+            & > p {
+                font-size: $font-size-medium;
+                width: 320px;
+            }
+
+            & > span {
+                font-size: $font-size-medium;
+                text-align: right;
+                font-weight: $font-weight-bold;
+            }
+        }
+
+        &__inputs {
+            display: flex;
+            justify-content: space-between;
+            width: 60%;
+        }
+
+        &__checkbox {
+            padding-bottom: 48px;
+            border-bottom: 1px solid $color-pale-gray;
+        }
+
+        &__info {
+            display: flex;
+            margin-bottom: 16px;
+        }
+
+        &__main {
+            color: $color-black;
+            margin-left: 11px;
+        }
+
+        &__secondary {
+            color: $color-gray-middle;
+            font-size: $font-size-small;
+            display: flex;
+            align-items: center;
+            margin-right: 23px;
+
+            & > img {
+                margin-left: 11px;
+            }
+        }
+    }
+}

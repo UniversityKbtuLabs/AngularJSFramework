@@ -1,0 +1,25 @@
+@import '/src/styles/variables.scss';
+
+.settings {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 32px;
+  background-color: #fff;
+  border-radius: 12px;
+
+  &-back {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 26px;
+
+    & > img {
+      margin-right: 4px;
+    }
+
+    & > p {
+      font-weight: 700;
+      font-size: $font-size-medium;
+    }
+  }
+}

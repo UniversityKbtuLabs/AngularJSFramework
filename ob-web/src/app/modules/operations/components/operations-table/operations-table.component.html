@@ -1,0 +1,22 @@
+<div>
+  <p class="date">{{ 'default.today' | translate }}, 10 ноября</p>
+  <table class="table">
+    <tbody>
+      <tr *ngFor="let d of data; let idx = index">
+        <th scope="row">
+          <img [src]="d.logo" alt="logo_{{ idx + 1 }}" />
+        </th>
+        <td>
+          <p class="bold">{{ d.title }}</p>
+          <small class="secondary">{{ d.subtitle }}</small>
+        </td>
+        <td>
+          <img [src]="d.status" alt="status_{{ idx + 1 }}" />
+        </td>
+        <td>
+          <p class="bold">{{ d.total }}</p>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>

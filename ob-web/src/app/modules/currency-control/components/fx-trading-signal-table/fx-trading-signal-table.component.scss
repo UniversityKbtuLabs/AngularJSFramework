@@ -1,0 +1,177 @@
+.signal_table {
+  padding: 32px;
+  background: #ffffff;
+  border-radius: 12px;
+  height: 437px;
+
+  &_title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #263238;
+    margin-bottom: 24px;
+  }
+
+  &_main {
+    width: 100%;
+    height: 320px;
+    overflow-y: auto;
+    padding-right: 20px;
+
+    table {
+      width: 100%;
+
+      tr {
+        display: flex;
+        flex-direction: row;
+        margin-bottom: 24px;
+        cursor: pointer;
+
+        &:last-child {
+          margin-bottom: 0px;
+        }
+
+        td {
+          display: flex;
+          flex-direction: row;
+        }
+      }
+    }
+    &_col_1 {
+      width: 50%;
+      justify-content: flex-start;
+
+      img {
+        width: 36px;
+        height: 36px;
+      }
+
+      div {
+        margin-left: 16px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+      }
+    }
+
+    &_col_2 {
+      width: 50%;
+      justify-content: flex-end;
+
+      &_wrapper {
+        margin-right: 16px;
+      }
+    }
+  }
+
+  &_empty {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+
+    img {
+      margin-top: 56px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 48px;
+      height: 48px;
+    }
+    p {
+      margin-top: 8px;
+      font-weight: 500;
+      font-size: 14px;
+      color: #829199;
+    }
+  }
+
+  &_text {
+    &_amount {
+      font-weight: 700;
+      font-size: 14px;
+      color: #263238;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    &_created {
+      font-weight: 500;
+      font-size: 12px;
+      color: #829199;
+      text-align: right;
+      margin-left: auto;
+    }
+
+    &_wait {
+      font-weight: 500;
+      font-size: 12px;
+      color: #829199;
+    }
+
+    &_done {
+      font-weight: 500;
+      font-size: 12px;
+      color: #11bb91;
+    }
+  }
+}
+
+.img_wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+
+  img {
+    width: 24px;
+    height: 24px;
+  }
+}
+
+.img_wrapper:hover {
+  cursor: pointer;
+}
+
+.dropdown {
+  &_body_invisible {
+    display: none;
+    position: absolute;
+    left: 0;
+    z-index: 1;
+  }
+
+  &_body_visible {
+    display: block;
+    position: relative;
+    background-color: #fff;
+    color: #000;
+    z-index: 10;
+    padding: 10px;
+    margin-bottom: -58px;
+    margin-left: -145px;
+    width: 165px;
+    box-shadow: 0px 0px 32px rgba(80, 92, 100, 0.05),
+      0px 4px 20px rgba(42, 53, 61, 0.1);
+    border-radius: 8px;
+  }
+  &_btn {
+    height: 39px;
+    background-color: #ffffff;
+    margin-right: auto;
+    border: none;
+    outline: none;
+    padding: 10px 16px 10px 16px;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #263238;
+  }
+}
+
+::ng-deep modal-container .edit_fx_trading_signal_modal {
+  padding-top: 160px !important;
+
+  .modal-content {
+    width: 450px !important;
+  }
+}

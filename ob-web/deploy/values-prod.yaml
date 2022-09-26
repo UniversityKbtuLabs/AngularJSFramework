@@ -1,0 +1,109 @@
+service:
+  enabled: true
+
+  # -- number of service replicas. Individual for public and internal
+  replicaCount: 2
+
+  # -- define spring profiles for service. Internal profile would be added if internal: enabled
+  SPRING_PROFILES_ACTIVE: ''
+
+  # -- set time zone
+  TZ: Asia/Almaty
+
+  # -- deploy service with public profile.
+  public:
+    enabled: true
+
+  # -- deploy service with internal profile.
+  internal:
+    enabled: false
+
+  # -- application container port. Please dont use ports under 1024
+  httpPort: 8080
+
+  # -- image settings. No need to change.
+  image:
+    # main image to build services
+    repository: $IMAGE_PATH
+    pullPolicy: IfNotPresent
+    # Overrides the image tag whose default is the chart appVersion.
+    tag: '$VERSION'
+  imagePullSecrets: []
+
+  # -- specifies configmaps and/or secrets to get env variables from
+  envFrom: {}
+  #  - configMapRef:
+  #      name: my-app-configmap
+  #  - secretRef:
+  #      name: my-app-secret
+  nameOverride: ''
+  fullnameOverride: ''
+
+  # -- Specifies your custom environment variables. They would be added to both internal & public deployment
+  extraEnv:
+    {}
+    #- name: My_VAR
+    #  value: my_value
+
+  # -- extra labels for service's pods. Change business process of app instead of "test". Different infrastructure labels will be added by prepare task in CI. No need to define them here
+  extraLabels:
+    process/obweb: ''
+
+  # -- health check probes.
+  probes:
+    path: /
+    # Custom probe port. Default is container http port
+    #port: metrics
+
+  # -- Configs of ingresses
+  ingress:
+    - name: 'restricted'
+      className: 'protected'
+      annotations:
+        nginx.ingress.kubernetes.io/rewrite-target: /
+        nginx.ingress.kubernetes.io/whitelist-source-range: '10.0.0.0/8,172.16.0.0/12'
+      hosts:
+        - host: beta.onlinebank.kz
+          paths:
+            - path: /
+              pathType: ImplementationSpecific
+
+      tls: []
+      #  - secretName: chart-example-tls
+      #    hosts:
+      #      - chart-example.local
+    #- name: "internal"
+    #  internal: true
+    #  className: "private"
+    #  annotations:
+    #    nginx.ingress.kubernetes.io/whitelist-source-range: "10.0.0.0/8"
+    #    nginx.ingress.kubernetes.io/rewrite-target:/$1$2$3
+    #  hosts:
+    #    - host: public.test.onlinebank.kz
+    #      paths:
+    #        - path: "/appname/(restricted|sections|here)(/|$)(.*)"
+    #          pathType: ImplementationSpecific
+
+  # -- pods resources configs.
+  resources:
+    {}
+    #limits:
+    #  memory: 1024Mi
+    #requests:
+    #  cpu: 150m
+    #  memory: 768Mi
+  securityContext:
+    capabilities:
+      drop:
+        - ALL
+    readOnlyRootFilesystem: false
+    runAsNonRoot: true
+    runAsUser: 65532
+
+  #initContainers:
+  #  - name: init
+  #    image: "$IMAGE_PATH-init:$VERSION"
+  #    imagePullPolicy: Always
+  #    envFrom:
+  #      - secretRef:
+  #          name: backend-onboarding-secret

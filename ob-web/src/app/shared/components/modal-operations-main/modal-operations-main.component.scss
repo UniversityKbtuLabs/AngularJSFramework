@@ -1,0 +1,59 @@
+@import "/src/styles/variables.scss";
+
+.action {
+
+    &__container {
+        margin-bottom: 24px;
+    }
+
+    &__title {
+        font-size: $font-size-medium;
+        font-weight: 700;
+        margin-bottom: 16px;
+    }
+
+    &__text {
+        font-size: $font-size-small;
+        margin-bottom: 16px;
+    }
+
+    &__content {
+        display: grid !important;
+        grid-template-columns: repeat(auto-fill, minmax(216px, 1fr));
+        grid-column-gap: 12px;
+        grid-row-gap: 12px;
+    }
+}
+
+.isDragging {
+    border: 1px $color-gray-middle dashed !important;
+    border-radius: 12px;
+}
+
+.dragEnter {
+    border: 1px $color-green dashed !important;
+    border-radius: 12px;
+}
+
+.modal-footer {
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+    padding-top: 24px;
+}
+.modal-header{
+    padding: 0;
+    border-bottom: 0;
+    padding-bottom: 32px;
+}
+.modal-body {
+    padding: 0;
+}
+
+.modal-operations {
+    padding: 32px;
+}
+
+.draggable-item {
+    border: 1px transparent solid;
+}

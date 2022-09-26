@@ -1,0 +1,155 @@
+<div class="buttons" *ngIf="operationInfo.type !== 'DEPOSIT_OPEN'">
+  <ng-template
+    [ngIf]="
+      (status === 'NEWDOC' && !isSignedByMe()) ||
+      (status === 'DRAFT' && !signRights)
+    ">
+    <div [ngClass]="returnClassName()">
+      <ob-button
+        *ngIf="
+          (status === 'NEWDOC' && !isSignedByMe()) ||
+          (status === 'DRAFT' && !signRights)
+        "
+        label="{{ 'buttons.actions.send-to-signature' | translate }}"
+        [className]="'btn btn-success height-medium br-12 p-24'"
+        [onClick]="sendToSign"></ob-button>
+    </div>
+  </ng-template>
+
+  <ng-template
+    [ngIf]="
+      (status === 'SIGN_DEAL' || status === 'DRAFT') &&
+      signRights &&
+      canSign() &&
+      !isSignedByMe()
+    ">
+    <!-- Кнопка подписания -->
+    <div
+      [ngClass]="
+        (status === 'SIGN_DEAL' || status === 'DRAFT') && signRights
+          ? ''
+          : 'hidden'
+      ">
+      <ob-button
+        label="{{ 'buttons.actions.sign' | translate }}"
+        [className]="'btn btn-success height-medium br-12 p-24'"
+        [onClick]="
+          status !== 'DRAFT' ? confirmPayment : directlySignDraft
+        "></ob-button>
+    </div>
+    <!-- Кнопка подписания -->
+  </ng-template>
+
+  <div [ngClass]="status === 'NEWDOC' || status === 'DRAFT' ? '' : 'hidden'">
+    <!-- Кнопка изменения черновика -->
+    <ob-button
+      *ngIf="status === 'NEWDOC' || status === 'DRAFT'"
+      label="{{ 'buttons.actions.edit' | translate }}"
+      [className]="'btn btn-green height-medium br-12 p-24'"
+      [onClick]="changeDocument"></ob-button>
+    <!-- Кнопка изменения черновика -->
+  </div>
+
+  <div
+    [ngClass]="
+      status === 'IN_PROGRESS' ||
+      status === 'APPROVED' ||
+      status === 'FULFILLED' ||
+      status === 'TRANSFER' ||
+      status === 'REJECTED' ||
+      status === 'REFUSED' ||
+      status === 'REJECTION'
+        ? ''
+        : 'hidden'
+    ">
+    <!-- Кнопка повтора операции -->
+    <ob-button
+      *ngIf="
+        (status === 'IN_PROGRESS' ||
+          status === 'APPROVED' ||
+          status === 'FULFILLED' ||
+          status === 'TRANSFER' ||
+          status === 'REJECTED' ||
+          status === 'REFUSED' ||
+          status === 'REJECTION') &&
+        operationInfo.type !== 'PAY_P2P'
+      "
+      label="{{ 'buttons.actions.repeat' | translate }}"
+      [className]="'btn btn-success height-medium br-12 p-24'"
+      [onClick]="changeDocument"></ob-button>
+    <!-- Кнопка повтора операции -->
+  </div>
+
+  <!-- Кнопка скачивания -->
+  <div
+    [ngClass]="
+      status !== 'DRAFT' && operationInfo.type !== 'PAY_P2P' ? '' : 'hidden'
+    ">
+    <!-- временно скрыта кнопка скачивания для p2p (нет сервиса) -->
+    <ob-button
+      *ngIf="status !== 'DRAFT' && operationInfo.type !== 'PAY_P2P'"
+      label="{{ 'buttons.actions.download' | translate }}"
+      [className]="
+        isAccountUrl
+          ? 'btn-success btn height-medium br-12 p-24'
+          : 'btn-green btn height-medium br-12 p-24'
+      "
+      [onClick]="savePdfReport"></ob-button>
+  </div>
+  <!-- Кнопка скачивания -->
+
+  <!-- <div
+    [ngClass]="status === 'APPROVED' || status === 'FULFILLED'? '' : 'hidden'"
+  >
+    <ob-button
+      *ngIf="status === 'APPROVED' || status === 'FULFILLED'" 
+      [label]="'Отправить на почту'"
+      [className]="'btn btn-green height-medium br-12 p-24'"
+      [onClick]="sendToEmail"
+    ></ob-button>
+  </div> -->
+
+  <!-- Кнопка удаления -->
+  <div
+    [ngClass]="
+      status === 'NEWDOC' ||
+      status === 'SIGN_DEAL' ||
+      status === 'REJECTION' ||
+      status === 'DRAFT' ||
+      status === 'REJECTED' ||
+      status === 'REFUSED'
+        ? ''
+        : 'hidden'
+    ">
+    <ob-button
+      *ngIf="
+        status === 'NEWDOC' ||
+        status === 'SIGN_DEAL' ||
+        status === 'REJECTION' ||
+        status === 'DRAFT' ||
+        status === 'REJECTED' ||
+        status === 'REFUSED'
+      "
+      [label]="'operations.default.delete' | translate"
+      [className]="'btn btn-green height-medium br-12 p-24'"
+      [onClick]="deleteDocument"></ob-button>
+  </div>
+  <!-- Кнопка удаления -->
+</div>
+
+<div
+  class="buttons product-sign"
+  *ngIf="
+    operationInfo.type === 'DEPOSIT_OPEN' &&
+    status === 'SIGN_DEAL' &&
+    signRights &&
+    canSign() &&
+    !isSignedByMe()
+  ">
+  <div [ngClass]="status === 'SIGN_DEAL' && signRights ? '' : 'hidden'">
+    <ob-button
+      label="{{ 'buttons.actions.sign' | translate }}"
+      [className]="'btn btn-success height-medium br-12 p-24'"
+      [onClick]="confirmPayment"></ob-button>
+  </div>
+</div>

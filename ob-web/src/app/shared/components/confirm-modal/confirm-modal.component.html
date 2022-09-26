@@ -1,0 +1,30 @@
+<div class="confirm_modal">
+  <div class="confirm_modal_header">
+    <h4 class="confirm_modal_header_title">
+      {{ 'sms.confirmation' | translate }}
+    </h4>
+    <img
+      class="confirm_modal_header_close"
+      src="assets/icons/ic_cancel.svg"
+      (click)="cancel()" />
+  </div>
+
+  <div class="confirm_modal_body">
+    <p class="confirm_modal_body_text">
+      {{ text }}
+    </p>
+  </div>
+
+  <div class="confirm_modal_footer">
+    <ob-button
+      label="{{
+        btnConfirm ? btnConfirm : ('general.actions.yes' | translate)
+      }}"
+      [className]="'btn-delete'"
+      (click)="confirm()"></ob-button>
+    <ob-button
+      label="{{ btnCancel ? btnCancel : ('general.actions.no' | translate) }}"
+      [className]="'btn-cancel ms-3'"
+      (click)="cancel()"></ob-button>
+  </div>
+</div>

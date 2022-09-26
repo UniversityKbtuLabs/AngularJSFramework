@@ -1,0 +1,122 @@
+<ob-loader [loading]="exchangeService.exchangeLoadingStatus | async">
+  <ng-template [ngIf]="exchangeData && exchangeData.length > 0">
+    <div>
+      <p class="exchange-title">
+        {{ 'exchange.onlineRates' | translate }} - {{ getCurrentDate() }}
+      </p>
+
+      <ng-template [ngIf]="page !== 'currency_control'">
+        <div class="exchange-header">
+          <div>
+            <div class="row">
+              <div class="col exchange-title">
+                {{ 'exchange.currency' | translate }}
+              </div>
+              <div class="col exchange-title">
+                {{ 'exchange.buy' | translate }}
+              </div>
+              <div class="col exchange-title">
+                {{ 'exchange.sell' | translate }}
+              </div>
+            </div>
+          </div>
+
+          <div *ngFor="let currency of exchangeData" class="exchange-data">
+            <div class="row exchange-row">
+              <div class="col exchange-item">
+                <div class="exchange-item">
+                  <img
+                    class="exchange_img_flag"
+                    src="./assets/icons/{{
+                      currency.mainCurrency.toLowerCase()
+                    }}flag.svg"
+                    alt="{{ currency.mainCurrency }} flag" />
+                  <p>{{ currency.mainCurrency }}</p>
+                </div>
+              </div>
+              <div class="col exchange-item">
+                <div class="wrapper">
+                  <p>{{ currency.buyPrice }}</p>
+                  <img
+                    src="assets/icons/{{
+                      getExchangeRate(currency.buyChange)
+                    }}.svg"
+                    alt="exchange rate" />
+                </div>
+              </div>
+              <div class="col exchange-item">
+                <div class="wrapper">
+                  <p>{{ currency.sellPrice }}</p>
+                  <img
+                    src="assets/icons/{{
+                      getExchangeRate(currency.sellChange)
+                    }}.svg"
+                    alt="exchange rate" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="exchange-footer" *ngIf="!isProduction">
+          <p class="exchange-footer-btn" (click)="goToHalykFXPage()">
+            Halyk FX
+          </p>
+        </div>
+      </ng-template>
+
+      <ng-template [ngIf]="page === 'currency_control'">
+        <div class="d-flex flex-row mt_8">
+          <div
+            *ngFor="let currency of exchangeData"
+            class="exchange_item_row mr_62">
+            <img
+              alt="{{ currency.mainCurrency }} flag"
+              class="exchange_img_flag"
+              src="./assets/icons/{{
+                currency.mainCurrency.toLowerCase()
+              }}flag.svg" />
+            <p class="exchange_item_row_text ml_10">
+              {{ getCurrency(currency.mainCurrency) }} {{ currency.buyPrice }}
+            </p>
+            <img
+              alt="exchange rate"
+              class="exchange_img_arrow ml_4"
+              src="assets/icons/{{ getExchangeRate(currency.buyPrice) }}.svg" />
+            <p class="exchange_item_row_text">-</p>
+            <p class="exchange_item_row_text ml_10">
+              {{ currency.sellPrice }}
+            </p>
+            <img
+              alt="exchange rate"
+              class="exchange_img_arrow ml_4"
+              src="assets/icons/{{
+                getExchangeRate(currency.sellChange)
+              }}.svg" />
+          </div>
+        </div>
+      </ng-template>
+      <!-- <ob-button
+        [label]="'exchange.halykFx' | translate"
+        [className]="'btn-secondary height-medium br-12 p-24 w-100 label-bold'"
+        [onClick]="redirectTo()"
+        [disabled]="true"
+      ></ob-button> -->
+    </div>
+  </ng-template>
+
+  <ng-template [ngIf]="!exchangeData || exchangeData.length === 0">
+    <div class="exchange-error mt_25">
+      <div class="d-flex flex-row justify-content-center">
+        <img
+          class="exchange-error-img mr_8"
+          src="assets/icons/ic_status_error1.svg" />
+        <p class="exchange-error-title">
+          {{ 'errorPage.tryLater' | translate }}
+        </p>
+      </div>
+      <p class="exchange-error-text mt_8">
+        {{ 'errorPage.serviceNotWork' | translate }}
+      </p>
+    </div>
+  </ng-template>
+</ob-loader>

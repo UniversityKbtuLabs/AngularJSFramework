@@ -1,0 +1,30 @@
+<div class="error_page">
+  <div class="error_page_back_button">
+    <ob-back-button [currentPage]="'account'"></ob-back-button>
+  </div>
+  <div class="row">
+    <div class="col-dt-12 col-smdt-12">
+      <div class="error_page_body">
+        <img
+          src="assets/icons/error_page_icon.svg"
+          class="error_page_body_icon" />
+
+        <p class="error_page_body_title">
+          {{ 'errorPage.tryLater' | translate }}
+        </p>
+
+        <p class="error_page_body_text">
+          {{ 'errorPage.serviceNotWork' | translate }}
+        </p>
+
+        <hr class="error_page_body_line" />
+
+        <button class="error_page_body_btn" (click)="toAllAccounts()">
+          <p class="error_page_body_btn_text">
+            {{ 'buttons.toAllAccounts' | translate }}
+          </p>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

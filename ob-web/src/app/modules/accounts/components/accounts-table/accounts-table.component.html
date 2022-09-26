@@ -1,0 +1,20 @@
+<div id="table">
+  <div class="table-calendar">
+    <p class="table-calendar-title">{{ 'default.period' | translate }}</p>
+    <ob-input-calendar (selectedDate)="setFromDate($event)"></ob-input-calendar>
+    <div style="margin-right: 10px"></div>
+    <ob-input-calendar (selectedDate)="setToDate($event)"></ob-input-calendar>
+
+    <ob-label-with-icon
+      [iconClass]="'icon_download'"
+      title="{{ 'default.extract' | translate }}"
+      (click)="openSlider('discharge')"></ob-label-with-icon>
+
+    <ob-label-with-icon
+      [iconClass]="'icon_download'"
+      title="{{ 'default.filter' | translate }}"
+      (click)="openSlider('operationsFilter')"></ob-label-with-icon>
+  </div>
+
+  <!-- <ob-table [columnDefs]="columnDefs" [rowData]="rowData"></ob-table> -->
+</div>
