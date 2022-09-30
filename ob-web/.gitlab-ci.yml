@@ -1,7 +1,0 @@
-include:
-  - project: 'gitlab-ci-templates/core'
-    ref: master
-    file: 'onlinebank-fe/main.yml'
-
-variables:
-  DIST_PATH: dist/ob-web/

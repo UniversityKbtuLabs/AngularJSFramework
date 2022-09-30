@@ -1,0 +1,12 @@
+<div class="comments">
+  <h1 class="comments_title">
+    Comments
+  </h1>
+  <div class="comments_list">
+    <div class="comments_item" *ngFor="let comment of dish?.comments">
+      <p>{{comment.text}}</p>
+      <p>{{comment.rating}}</p>
+      <p>-- {{comment.author}} {{comment.date | date}}</p>
+    </div>
+  </div>
+</div>

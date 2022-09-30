@@ -1,0 +1,111 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.text {
+  &_black {
+    color: #000000;
+  }
+
+  &_bold_black {
+    color: #000000;
+    font-weight: bold;
+  }
+}
+
+.title {
+  align-self: center;
+  color: #000000;
+  font-weight: bold;
+
+  &_wrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &_line {
+    width: 100%;
+    border-bottom: 1px solid #000000;
+  }
+}
+
+.dish {
+  &_menu {
+    width: 70%;
+    padding-left: 15%;
+    padding-right: 15%;
+  }
+
+  &_tile {
+    border-radius: 20px;
+
+    &:hover {
+      cursor: pointer;
+      opacity: 0.8;
+    }
+  }
+
+  &_info {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    column-gap: 16px;
+    width: 70%;
+    padding-left: 15%;
+    padding-right: 15%;
+
+    &_main {
+      width: 300px;
+    }
+
+    &_buttons {
+      display: flex;
+      flex-direction: row;
+      column-gap: 24px;
+      padding: 0px 10px;
+    }
+
+    &_btn {
+      padding: 10px 24px;
+      border-radius: 4px;
+      border: none;
+      outline: none;
+
+      &:hover {
+        cursor: pointer;
+        opacity: 0.8;
+      }
+    }
+
+    &_comments {
+      width: 500px;
+    }
+  }
+}
+
+.mt {
+  &_36 {
+    margin-top: 36px;
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .dish {
+    &_info {
+      display: flex;
+      flex-direction: column;
+      row-gap: 24px;
+
+      &_main {
+        width: 100%;
+      }
+
+      &_comments {
+        width: 100%;
+      }
+    }
+  }
+}

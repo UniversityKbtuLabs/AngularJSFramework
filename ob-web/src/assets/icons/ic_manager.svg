@@ -1,6 +1,0 @@
-<svg width="36" height="36" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-<rect width="36" height="36" rx="12" fill="white"/>
-<path d="M25 27H10C10 25 10.3295 19.5 17.5 19.5C24.6705 19.5 25 25 25 27Z" stroke="#11BB91" stroke-width="1.5"/>
-<path fill-rule="evenodd" clip-rule="evenodd" d="M16.5 21.5V20H18.5V21.5H16.5ZM16.5 26.5L17 22H18L18.5 26.5H16.5Z" fill="#11BB91"/>
-<circle cx="17.5" cy="13" r="4.25" stroke="#11BB91" stroke-width="1.5"/>
-</svg>

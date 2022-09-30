@@ -1,0 +1,29 @@
+.comments {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 12px 24px;
+  box-shadow: 0px 0px 32px rgb(80 92 100 / 5%), 0px 4px 20px rgb(42 53 61 / 5%);
+
+  &_title {
+    font-weight: bold;
+    font-size: 20px;
+    margin-bottom: 24px;
+  }
+
+  &_list {
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+  }
+
+  &_item {
+    display: flex;
+    flex-direction: column;
+    row-gap: 4px;
+
+    p {
+      margin: 0px;
+    }
+  }
+}

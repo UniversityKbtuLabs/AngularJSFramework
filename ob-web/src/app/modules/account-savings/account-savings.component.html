@@ -1,9 +1,0 @@
-<div class="account_savings" *ngIf="isErrorPage === false">
-  <div class="account_savings-back-button">
-    <ob-back-button [currentPage]="'account'"></ob-back-button>
-  </div>
-  <ob-deposit *ngIf="type === 'deposit'"> </ob-deposit>
-  <ob-credit *ngIf="type === 'credit'"> </ob-credit>
-</div>
-<ob-error-page *ngIf="isErrorPage === true" [breadCrumbs]="'account'">
-</ob-error-page>
