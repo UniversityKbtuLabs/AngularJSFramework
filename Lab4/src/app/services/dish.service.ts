@@ -72,4 +72,12 @@ export class DishService {
 
   constructor() {
   }
+
+  getDish(id: string): Dish {
+    return this.dishes.filter((dish) => (dish.id === id))[0];
+  }
+
+  getFeaturedDish(): Dish {
+    return this.dishes.filter((dish) => dish.featured)[0];
+  }
 }

@@ -1,12 +1,34 @@
-<div class="comments">
-  <h1 class="comments_title">
-    Comments
-  </h1>
-  <div class="comments_list">
-    <div class="comments_item" *ngFor="let comment of dish?.comments">
-      <p>{{comment.text}}</p>
-      <p>{{comment.rating}}</p>
-      <p>-- {{comment.author}} {{comment.date | date}}</p>
+<div class="back_btn_wrapper">
+  <button mat-button (click)="goToMenu()" class="back_btn">Back</button>
+</div>
+<div fxFlex *ngIf="dish" class="mt_36 dish_info">
+  <mat-card class="dish_info_main">
+    <mat-card-header>
+      <mat-card-title>
+        <h3>{{dish.name | uppercase}}</h3>
+      </mat-card-title>
+    </mat-card-header>
+    <img mat-card-image src="{{dish.image}}" alt="{{dish.name}}">
+    <mat-card-content>
+      <p>{{dish.description}}</p>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="dish_info_buttons">
+        <button mat-button class="dish_info_btn">LIKE</button>
+        <button mat-button class="dish_info_btn">SHARE</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+  <div class="comments">
+    <h1 class="comments_title">
+      Comments
+    </h1>
+    <div class="comments_list">
+      <div class="comments_item" *ngFor="let comment of dish?.comments">
+        <p>{{comment.text}}</p>
+        <p>{{comment.rating}}</p>
+        <p>-- {{comment.author}} {{comment.date | date}}</p>
+      </div>
     </div>
   </div>
 </div>

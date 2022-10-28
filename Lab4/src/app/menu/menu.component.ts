@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {Dish} from "../shared/models/Dish";
 import {DishService} from "../services/dish.service";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-menu',
@@ -12,7 +13,7 @@ export class MenuComponent implements OnInit {
   public dishes: Dish[] = [];
   public selectedDish: Dish | undefined;
 
-  constructor(private dishService: DishService) {
+  constructor(private dishService: DishService, private router: Router) {
   }
 
   ngOnInit(): void {
@@ -20,8 +21,9 @@ export class MenuComponent implements OnInit {
     this.selectedDish = this.dishes[0];
   }
 
-  selectDish(dish: Dish) {
+  goToDishPage(dish: Dish) {
     this.selectedDish = dish;
+    this.router.navigate([`dishdetail/${dish.id}`])
   }
 }
 

@@ -7,34 +7,12 @@
 
   <div fxFlex class="dish_menu">
     <mat-grid-list cols="2" rowHeight="200px">
-      <mat-grid-tile *ngFor="let dish of dishes" class="dish_tile" (click)="selectDish(dish)">
+      <mat-grid-tile *ngFor="let dish of dishes" class="dish_tile" (click)="goToDishPage(dish)">
         <img height="200px" src="{{dish.image}}" alt="{{dish.name}}">
         <mat-grid-tile-footer>
           <h1>{{dish.name | uppercase}}</h1>
         </mat-grid-tile-footer>
       </mat-grid-tile>
     </mat-grid-list>
-  </div>
-
-  <div fxFlex *ngIf="selectedDish" class="mt_36 dish_info">
-    <mat-card class="dish_info_main">
-      <mat-card-header>
-        <mat-card-title>
-          <h3>{{selectedDish.name | uppercase}}</h3>
-        </mat-card-title>
-      </mat-card-header>
-      <img mat-card-image src="{{selectedDish.image}}" alt="{{selectedDish.name}}">
-      <mat-card-content>
-        <p>{{selectedDish.description}}</p>
-      </mat-card-content>
-      <mat-card-actions>
-        <div class="dish_info_buttons">
-          <button mat-button class="dish_info_btn">LIKE</button>
-          <button mat-button class="dish_info_btn">SHARE</button>
-        </div>
-      </mat-card-actions>
-    </mat-card>
-
-    <app-dishtail class="dish_info_comments" [dish]="selectedDish"></app-dishtail>
   </div>
 </div>
