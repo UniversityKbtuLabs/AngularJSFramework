@@ -1,0 +1,16 @@
+<div class="operation-button-wrapper">
+  <ob-button
+    label="{{ 'home.instructions.stepThreeTitle' | translate }}"></ob-button>
+
+  <ob-dropdown
+    *ngFor="let operation of operations; let idx = index"
+    [list]="operation.actions"
+    [onClick]="doAction">
+    <div class="operation-button">
+      <img
+        src="assets/icons/{{ operation.icon }}.svg"
+        alt="ob-operation-logo" />
+      <p>{{ operation.value }}</p>
+    </div>
+  </ob-dropdown>
+</div>

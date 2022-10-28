@@ -1,0 +1,15 @@
+<div class="tab-selects">
+  <div
+    *ngFor="let item of list"
+    [ngClass]="item.code === selected ? 'active' : ''"
+    class="{{
+      loading
+        ? item.code === selected
+          ? 'tab-selects-item__active-loading'
+          : 'tab-selects-item__loading'
+        : 'tab-selects-item'
+    }}"
+    (click)="onClick(item.code)">
+    <span class="">{{ item.label }}</span>
+  </div>
+</div>

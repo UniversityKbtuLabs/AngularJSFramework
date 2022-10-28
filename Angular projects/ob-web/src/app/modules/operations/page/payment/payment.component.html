@@ -1,0 +1,26 @@
+<div>
+  <section class="come-back">
+    <ob-back-button [currentPage]="'operation'"> </ob-back-button>
+  </section>
+
+  <div class="payment">
+    <ob-counteragent-payment
+      *ngIf="paymentType === 'counteragent'"
+      [id]="id"></ob-counteragent-payment>
+    <ob-budget-payment
+      *ngIf="paymentType === 'budget'"
+      [id]="id"></ob-budget-payment>
+    <ob-common-payment
+      *ngIf="paymentType === 'retirement'"
+      [id]="id"></ob-common-payment>
+    <ob-common-payment
+      *ngIf="paymentType === 'osms'"
+      [id]="id"></ob-common-payment>
+    <ob-common-payment
+      *ngIf="paymentType === 'salary'"
+      [id]="id"></ob-common-payment>
+    <ob-common-payment
+      *ngIf="paymentType === 'social'"
+      [id]="id"></ob-common-payment>
+  </div>
+</div>

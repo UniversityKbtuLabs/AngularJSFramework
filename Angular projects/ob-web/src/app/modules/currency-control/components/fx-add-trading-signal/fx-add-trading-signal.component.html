@@ -1,0 +1,75 @@
+<div class="add_signal" [formGroup]="addSignalForm">
+  <ob-loader [loading]="currencyRatesLoading">
+    <p class="add_signal_text_title">
+      {{ 'currencyControl.halykFX.addTradingSignal' | translate }}
+    </p>
+
+    <ob-f-x-currency-select
+      class="d-flex flex-row w-100 mt_24"
+      (currencyBuy)="changeCurrencyBuy($event)"
+      (currencySell)="changeCurrencySell($event)"
+      [currecySelectClassName]="'currency_section_main_width100'">
+    </ob-f-x-currency-select>
+
+    <!--                Ожидаемая цена-->
+    <div class="form-floating mt_24">
+      <input
+        formControlName="expectedAmount"
+        type="text"
+        class="form-control base-input"
+        id="paymentDebitPurpose"
+        placeholder="{{ formatCurrecyForPlaceholder() }}"
+        mask="separator.2"
+        thousandSeparator=" "
+        suffix="{{ formatCurrecyForInput() }}"
+        separatorLimit="999999999999999999"
+        autocomplete="off" />
+      <label
+        for="paymentDebitPurpose"
+        *ngIf="addSignalFormControl.expectedAmount.value">
+        {{ formatCurrecyForPlaceholder() }}
+      </label>
+    </div>
+    <!--                Ожидаемая цена-->
+
+    <!--    Дата отслеживания-->
+    <div class="d-flex flex-row mt_16">
+      <input
+        type="text"
+        class="form-control add_signal_calendar_input"
+        bsDatepicker
+        placement="bottom"
+        [ngClass]="{ 'invalid-period': periodError }"
+        [bsConfig]="{
+          isAnimated: true,
+          dateInputFormat: 'DD.MM.YYYY',
+          startView: 'day',
+          minMode: 'day',
+          adaptivePosition: true,
+          containerClass: 'calendar',
+          showWeekNumbers: false
+        }"
+        placeholder="{{ 'currencyControl.halykFX.trackingDate' | translate }}"
+        [(ngModel)]="trackingDate"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="changeDate($event)"
+        #dp1="bsDatepicker" />
+      <span class="add_signal_calendar_icon" (click)="dp1.toggle()">
+        <img src="./assets/icons/ic_calendar2.svg" alt="" />
+      </span>
+    </div>
+    <!--    Дата отслеживания-->
+
+    <div class="d-flex flex-row justify-content-center">
+      <button class="add_signal_btn mt_24" (click)="addTradingSignal()">
+        <p>
+          {{ 'currencyControl.halykFX.addTradingSignal' | translate }}
+        </p>
+      </button>
+    </div>
+
+    <p class="add_signal_text_notify mt_16">
+      {{ 'currencyControl.halykFX.willNotify' | translate }}
+    </p>
+  </ob-loader>
+</div>

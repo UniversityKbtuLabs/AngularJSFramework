@@ -1,0 +1,28 @@
+@import "/src/styles/variables.scss";
+
+.success-request {
+    width: 100%;
+    height: 80vh;
+    display: flex;
+    flex-flow: column;
+    justify-content: center;
+    align-items: center;
+
+    & > img {
+        margin-bottom: 40px;
+    }
+
+    &-title {
+        font-size: $font-size-h3-large;
+        color: $color-black;
+        font-weight: bold;
+        margin-bottom: 24px;
+    }
+
+    &-description {
+        font-size: $font-size-medium;
+        color: $color-black;
+        font-weight: 500;
+        margin-bottom: 40px;
+    }
+}

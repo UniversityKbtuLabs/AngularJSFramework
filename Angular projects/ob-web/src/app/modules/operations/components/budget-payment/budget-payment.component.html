@@ -1,0 +1,440 @@
+<div class="row mb-114">
+  <div class="col-dt-8 col-smdt-8 col-tb-8 g-custom" [formGroup]="budgetForm">
+    <div class="budget payment-content">
+      <h1 class="title">{{ paymentTitle | translate }}</h1>
+
+      <section class="budget-autofill">
+        <div class="budget-autofill__text">
+          <span class="budget-autofill__secondary d-flex align-items-baseline">
+            <p
+              class=""
+              [ngStyle]="{
+                color: !budgetFormControl.docNum.errors?.required
+                  ? ''
+                  : '#FF5721'
+              }">
+              {{ 'operations.payment-confirmation.doc-number' | translate }}:
+            </p>
+            <div
+              class="ms-1 budget-autofill__secondary"
+              *ngIf="
+                !budgetFormControl.docNum.errors?.required && !isEditDocNum
+              ">
+              №{{ budgetFormControl.docNum.value }}
+            </div>
+            <input
+              *ngIf="isEditDocNum"
+              formControlName="docNum"
+              maxlength="9"
+              class="form-control budget-autofill__docNum"
+              [ngClass]="displayFieldClass('docNum')"
+              obDocNumberPayment
+              (focusout)="editDocNum()"
+              id="docNum"
+              (docNumChange)="docNumChange($event)"
+              (keyup)="onDocNumKeyUp($event)" />
+          </span>
+          <div class="align-self-start">
+            <div class="budget-autofill__docNum-error-container">
+              <ob-field-error-display
+                *ngIf="budgetFormControl.docNum.errors?.maxLengthExceeded"
+                [displayError]="isFieldValid('docNum')"
+                errorMsg="{{ 'error.documentNum-payments' | translate }}">
+              </ob-field-error-display>
+              <ob-field-error-display
+                *ngIf="budgetFormControl.docNum.errors?.pattern"
+                [displayError]="isFieldValid('docNum')"
+                errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+              </ob-field-error-display>
+            </div>
+          </div>
+          <div class="budget-autofill__text">
+            <img
+              *ngIf="!isEditDocNum && budgetFormControl.docNum.errors?.required"
+              src="assets/icons/ic_edit1.svg"
+              alt="change-icon"
+              class="budget-autofill__edit_icon"
+              (click)="editDocNum()" />
+            <img
+              *ngIf="
+                !isEditDocNum && !budgetFormControl.docNum.errors?.required
+              "
+              src="assets/icons/ic_edit.svg"
+              alt="change-icon"
+              class="budget-autofill__edit_icon"
+              (click)="editDocNum()" />
+            <img
+              *ngIf="isEditDocNum"
+              src="assets/icons/ic_check_mark.svg"
+              alt="change-icon"
+              class="budget-autofill__edit_icon"
+              (click)="editDocNum()" />
+          </div>
+        </div>
+        <div class="budget-autofill__text">
+          <span class="budget-autofill__secondary">
+            {{ 'operations.default.createDate' | translate }}
+          </span>
+          <span class="budget-autofill__main">{{
+            template?.docDate.split('-').reverse().join('.')
+          }}</span>
+        </div>
+      </section>
+      <section class="budget-section">
+        <p class="budget-subtitle">
+          {{ 'operations.default.destination' | translate }}
+        </p>
+
+        <!-- Получатель -->
+        <div class="row budget-row">
+          <!-- Регион -->
+          <div
+            class="budget-inputs-inner col-dt-6 col-smdt-6 col-mb-12 mb-16"
+            id="bootstrap-overrides-region">
+            <ng-select
+              formControlName="region"
+              class="custom-select floating-label"
+              (change)="onRegionSelect()"
+              [editableSearchTerm]="true"
+              [searchable]="isSearchableRegion"
+              [clearable]="true"
+              (search)="searchField($event, 'region')"
+              placeholder="{{ 'operations.budget.region' | translate }}"
+              [ngClass]="displayFieldClass('region')"
+              notFoundText="{{ 'default.not_found' | translate }}"
+              required
+              (open)="onOpenRegion(isSearchableRegion)"
+              (close)="onOpenRegion(isSearchableRegion)"
+              id="region"
+              loadingText="{{ 'default.loading' | translate }}...">
+              <ng-option
+                *ngFor="let item of regionList"
+                [value]="item.parentName"
+                >{{ item.parentName }}
+              </ng-option>
+            </ng-select>
+            <ob-field-error-display
+              *ngIf="budgetFormControl.region.errors?.required"
+              [displayError]="isFieldValid('region')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <!-- Регион -->
+          <!-- УГД -->
+          <div
+            class="budget-inputs-inner col-dt-6 col-smdt-6 col-mb-12"
+            id="bootstrap-overrides-region">
+            <ng-select
+              formControlName="ugd"
+              class="custom-select floating-label"
+              [clearable]="true"
+              (change)="selectUgd()"
+              [editableSearchTerm]="true"
+              [searchable]="isSearchableUGD"
+              (search)="searchField($event, 'ugd')"
+              placeholder="{{ 'operations.budget.ugd' | translate }}"
+              [ngClass]="displayFieldClass('ugd')"
+              notFoundText="{{ 'error.empty-data' | translate }}"
+              required
+              (open)="onOpenUGD(isSearchableUGD)"
+              (close)="onOpenUGD(isSearchableUGD)"
+              id="ugdSelect"
+              [loading]="isUgdListLoading"
+              loadingText="{{ 'default.loading' | translate }}...">
+              <ng-option *ngFor="let item of ugdList" [value]="item?.name"
+                >{{ item.name }}
+              </ng-option>
+            </ng-select>
+
+            <ob-field-error-display
+              *ngIf="budgetFormControl.ugd.errors?.required"
+              [displayError]="isFieldValid('ugd')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <!-- УГД -->
+        </div>
+
+        <div class="row pd-10" *ngIf="budgetForm.controls['ugd'].value">
+          <div
+            class="contragent-section-info col-dt-12 col-tb-12 col-mb-12 mb-16">
+            <div class="contragent-section-detail">
+              <p class="contragent-section-detail__label w-168">
+                {{ 'operations.payments.bank-name' | translate }}
+              </p>
+              <span class="contragent-section-detail__content">{{
+                template?.bankNameRecipient
+              }}</span>
+            </div>
+            <div class="contragent-section-detail">
+              <p class="contragent-section-detail__label w-168">
+                {{ 'operations.payments.chet' | translate }}
+              </p>
+              <span class="contragent-section-detail__content"
+                >{{ template?.accountRecipient }}
+              </span>
+            </div>
+            <div class="contragent-section-detail">
+              <p class="contragent-section-detail__label w-168">
+                {{ 'operations.payments.bic' | translate }}
+              </p>
+              <span class="contragent-section-detail__content">{{
+                template?.bicBankRecipient
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </section>
+      <!-- Счет списания и сумма -->
+      <section class="budget-section">
+        <p class="budget-subtitle">
+          {{ 'operations.budget.account-desc' | translate }}
+        </p>
+        <div class="row">
+          <div class="budget-inputs-inner col-dt-6 col-smdt-6 col-mb-12 mb-16">
+            <ng-select
+              formControlName="selectedAcc"
+              class="custom-select account-withdraw"
+              [clearable]="false"
+              (change)="changeSelectedAccount()"
+              [searchable]="isSearchableAccount"
+              [ngClass]="displayFieldClass('selectedAcc')"
+              placeholder="{{
+                'operations.default.withdrawalAccount' | translate
+              }}"
+              required
+              notFoundText="{{ 'default.not_found' | translate }}"
+              (open)="onOpenAccSelect(isSearchableAccount)"
+              (close)="onOpenAccSelect(isSearchableAccount)"
+              [loading]="isAccountsLoading"
+              loadingText="{{ 'default.loading' | translate }}...">
+              <ng-option
+                *ngFor="let account of accounts"
+                [value]="account?.iban">
+                <ob-select-account
+                  [description]="account.iban"
+                  [title]="account.actualBalance"
+                  [icon]="getIcon(account.currency)"
+                  [currency]="account.currency"></ob-select-account>
+              </ng-option>
+            </ng-select>
+            <ob-field-error-display
+              *ngIf="budgetFormControl.selectedAcc.errors?.required"
+              [displayError]="isFieldValid('selectedAcc')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <!-- сумма -->
+          <div class="budget-inputs-inner col-dt-6 col-smdt-6 col-mb-12">
+            <div class="form-floating">
+              <input
+                class="form-control base-input"
+                [ngClass]="displayFieldClass('sum')"
+                autocomplete="off"
+                type="text"
+                required="required"
+                placeholder="{{ 'operations.countragent.amount' | translate }}"
+                formControlName="sum"
+                mask="separator.2"
+                thousandSeparator=" "
+                suffix=" ₸"
+                separatorLimit="999999999999999999" />
+              <label for="floatingInput">{{
+                'operations.countragent.amount' | translate
+              }}</label>
+            </div>
+            <ob-field-error-display
+              *ngIf="budgetFormControl.sum.errors?.required"
+              [displayError]="isFieldValid('sum')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+            <p
+              *ngIf="budgetFormControl.sum.errors?.insufficientFunds"
+              class="text-muted m-1">
+              {{ 'error.amount' | translate }}
+            </p>
+          </div>
+          <!-- сумма -->
+        </div>
+      </section>
+      <!-- Счет списания -->
+      <!-- Детали платежа -->
+      <section>
+        <p class="budget-subtitle">
+          {{ 'operations.payments.paymentDetails' | translate }}
+        </p>
+
+        <div class="row budget-row">
+          <div
+            class="budget-inputs-inner col-dt-6 col-smdt-6 col-mb-12 mb-16"
+            id="bootstrap-overrides-knp-cbc">
+            <div
+              class="form-floating"
+              [tooltip]="tooltipKnp"
+              [delay]="100"
+              #pop3="bs-tooltip"
+              [isDisabled]="
+                isSearchableAccount ||
+                isSearchableKnpCbc ||
+                isSearchableRegion ||
+                isSearchableUGD
+              "
+              (click)="pop3.hide()"
+              (keypress)="pop3.hide()">
+              <ng-select
+                #ngSelectKnpCbc
+                formControlName="cbcKnpId"
+                id="knp_kbk"
+                class="knp-cbc-select budget-payment floating-label"
+                [ngClass]="displayFieldClass('cbcKnpId')"
+                [searchable]="isSearchableKnpCbc"
+                [clearable]="true"
+                (search)="knpCbcSearch($event)"
+                (change)="knpCbcSelected($event)"
+                notFoundText="{{ 'error.empty-data' | translate }}"
+                placeholder="{{
+                  (isSearchableKnpCbc || budgetFormControl.cbcKnpId.value
+                    ? 'operations.budget.knp-cbc'
+                    : 'operations.budget.knp-cbc-placeholder'
+                  ) | translate
+                }}"
+                required
+                dropdownPosition="top"
+                (open)="clearInputField()"
+                (close)="knpCbcSrcClose()"
+                (blur)="knpCbcSrcClose()"
+                [loading]="isSearchingKnp"
+                loadingText="{{ 'default.loading' | translate }}...">
+                <ng-option
+                  *ngFor="let knpItem of filteredKnp"
+                  [value]="knpItem?.id">
+                  <ob-knp-cbc
+                    [knp]="knpItem.knp"
+                    [cbc]="knpItem.cbc"
+                    [cbcName]="knpItem.cbcName"
+                    [knpName]="knpItem.knpName"
+                    searchTitle="{{
+                      'operations.budget.knp-cbc' | translate
+                    }}"></ob-knp-cbc>
+                </ng-option>
+              </ng-select>
+            </div>
+            <ng-template #tooltipKnp>
+              <ob-tooltip [type]="'knp_kbk'"></ob-tooltip>
+            </ng-template>
+            <ob-field-error-display
+              *ngIf="budgetFormControl.cbcKnpId.errors?.required"
+              [displayError]="isFieldValid('cbcKnpId')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="budgetFormControl.cbcKnpId.errors?.invalidObj"
+              [displayError]="isFieldValid('cbcKnpId')"
+              errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <div class="budget-inputs-inner col-dt-6 col-smdt-6 col-mb-12">
+            <div style="position: relative" class="form-floating">
+              <input
+                id="datepicker"
+                type="text"
+                class="form-control base-input capitalize"
+                bsDatepicker
+                placement="top"
+                [bsConfig]="{
+                  isAnimated: true,
+                  dateInputFormat: 'MMMM YYYY',
+                  startView: 'month',
+                  minMode: 'month',
+                  adaptivePosition: false,
+                  containerClass: 'period-calendar'
+                }"
+                [readonly]="true"
+                style="background-color: #fff"
+                formControlName="period"
+                placeholder="{{ 'default.period' | translate }}" />
+              <span class="icon-calendar" (click)="openDatepicker()">
+                <img src="./assets/icons/ic_calendar2.svg" alt="" />
+              </span>
+              <label for="floatingInput">{{
+                'default.period' | translate
+              }}</label>
+            </div>
+          </div>
+        </div>
+        <!-- Подсказка для кнп и кбк -->
+        <div class="row pd-10" *ngIf="budgetForm.controls['cbcKnpId'].value">
+          <div class="contragent-section-info col-dt-12 col-tb-12 col-mb-12">
+            <div class="contragent-section-detail">
+              <p class="contragent-section-detail__label w-168">
+                {{ 'operations.default.knpLong' | translate }}
+              </p>
+              <span class="contragent-section-detail__content">
+                {{ knpDescription }}</span
+              >
+            </div>
+            <div class="contragent-section-detail">
+              <p class="contragent-section-detail__label w-168">
+                {{ 'operations.default.cbcLong' | translate }}
+              </p>
+              <span class="contragent-section-detail__content">
+                {{ cbcDescription }}</span
+              >
+            </div>
+          </div>
+        </div>
+        <!-- Подсказка для кнп и кбк -->
+      </section>
+      <!-- Детали платежа -->
+    </div>
+  </div>
+  <div class="col-dt-4 col-smdt-4 col-tb-4">
+    <div class="payment-content info">
+      <div class="information-content">
+        <p class="information-content__right-heading">
+          {{ 'default.information' | translate }}
+        </p>
+        <div
+          class="d-flex flex-row justify-content-between align-items-center information-content__click_area"
+          (click)="deductionTypeInfoShow()">
+          <p class="information-content__title">
+            {{ 'operations.budget.info_title_deduction' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': deductionTypeInfo === false,
+              'information-content__arrow_up': deductionTypeInfo === true
+            }" />
+        </div>
+        <p class="information-content__text" *ngIf="deductionTypeInfo === true">
+          {{ 'operations.budget.info_text_deduction' | translate }}
+        </p>
+      </div>
+      <!--      <ob-button-->
+      <!--        [label]="'Увеличить лимит'"-->
+      <!--        [className]="'btn-outline-green height-medium br-12 p-24 w-100'"-->
+      <!--        [disabled]="true"-->
+      <!--      ></ob-button>-->
+      <!--      <button disabled class="counteragent-check__btn">Увеличить лимит</button>-->
+    </div>
+
+    <!--    <div class="counteragent-check payment-content">-->
+    <!--      <p class="payment-content__right-heading">-->
+    <!--        Проверка наличия налоговой задолженности-->
+    <!--      </p>-->
+    <!--      <button disabled class="counteragent-check__btn">Проверить</button>-->
+    <!--    </div>-->
+  </div>
+</div>
+<ob-payment-footer
+  [operationType]="'payment'"
+  [commission]="commission"
+  [sum]="convertToFixed()"
+  (toSave)="ValidateAllFields('save')"
+  (toSign)="ValidateAllFields('sign')"
+  [isSave]="true"
+  [isSign]="true"
+  [loading]="loading"
+  [saveLoading]="isSaveLoading">
+</ob-payment-footer>

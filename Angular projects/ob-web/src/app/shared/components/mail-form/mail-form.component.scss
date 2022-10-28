@@ -1,0 +1,21 @@
+@import "/src/styles/variables.scss";
+@import "/src/styles/main";
+
+.mail-form {
+    &-title {
+        font-size: $font-size-small;
+        font-weight: 500;
+        color: $color-black;
+        margin-bottom: 16px;
+    }
+
+    &-input {
+        margin-bottom: 38px;
+    }
+}
+
+.mail-button {
+    height: 49px;
+    border-radius: 12px;
+    overflow: hidden;
+}

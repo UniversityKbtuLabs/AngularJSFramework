@@ -1,0 +1,19 @@
+@import "/src/styles/main";
+
+.inner-content {
+  @include flex-default(flex, column, left);
+  padding: 16px;
+  border: 1px solid $color-pale-gray;
+  width: 264px;
+  border-radius: 8px;
+  margin-right: 24px;
+
+  .bold-header {
+    font-size: $font-size-medium;
+    font-weight: 700;
+  }
+}
+.favourite-card {
+  border: 1px solid $color-pale-gray;
+  border-radius: 8px;
+}

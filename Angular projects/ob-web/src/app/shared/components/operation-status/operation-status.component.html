@@ -1,0 +1,24 @@
+<ng-template [ngIf]="getClassName(status, 'clName') !== 'sign' || !signers">
+  <div
+    class="status"
+    [ngClass]="[
+      getClassName(status, 'clName'),
+      className.length > 0 ? 'status-mt' : ''
+    ]">
+    <!-- <img [src]="getClassName(status, 'icon')" alt="status" /> -->
+    <p>{{ getClassName(status, 'label') | translate }}</p>
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="status === 'NEWDOC' && signers">
+  <div class="status" [ngClass]="className.length > 0 ? 'status-mt' : ''">
+    <p class="onsign" *ngIf="signers.signedLength > 0">
+      {{ 'operations.status.signed' | translate }} {{ signers.signedLength }}/{{
+        signersInfo.length
+      }}
+    </p>
+    <p class="sign" *ngIf="signers.signedLength === 0">
+      {{ 'status.to-sign' | translate }}
+    </p>
+  </div>
+</ng-template>

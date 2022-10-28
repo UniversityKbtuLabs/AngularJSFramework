@@ -1,0 +1,75 @@
+<div class="stg_info_wrapper">
+  <p class="stg_info_label">{{ 'settings.company.companyInfo' | translate }}</p>
+  <div class="d-flex flex-column">
+    <div class="stg_info_item mb-12">
+      <p class="stg_text1">{{ 'default.name' | translate }}</p>
+      <p class="stg_text2">{{ toNormalName(currentContract.name) }}</p>
+    </div>
+    <div class="stg_info_item mb-12">
+      <p class="stg_text1">{{ 'default.bin' | translate }}</p>
+      <p class="stg_text2">{{ currentContract.bin }}</p>
+    </div>
+    <div class="stg_info_item">
+      <p class="stg_text1">{{ 'settings.company.contract' | translate }}</p>
+      <p class="stg_text2">{{ currentContract.contractNum }}</p>
+    </div>
+  </div>
+</div>
+<div class="stg_info_wrapper">
+  <div class="d-flex flex-column mb-24">
+    <p class="stg_info_label">{{ 'settings.company.userInfo' | translate }}</p>
+    <div class="d-flex flex-column">
+      <div class="stg_info_item mb-12">
+        <p class="stg_text1">{{ 'operations.default.fio' | translate }}</p>
+        <p class="stg_text2">{{ toNormalName(user.name) }}</p>
+      </div>
+      <div
+        class="stg_info_item"
+        *ngIf="signatureGroupId && signatureGroupId !== 0">
+        <p class="stg_text1">
+          {{ 'settings.company.signPermission' | translate }}
+        </p>
+        <p class="stg_text2" *ngIf="signatureGroupId === 1">
+          {{ 'settings.company.firstSign' | translate }}
+        </p>
+        <p class="stg_text2" *ngIf="signatureGroupId === 2">
+          {{ 'settings.company.secondSign' | translate }}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="d-flex flex-column">
+    <p class="stg_info_label">
+      {{ 'settings.company.authorizations' | translate }}
+    </p>
+    <div class="d-flex flex-column justify-content-between">
+      <div
+        class="stg_info_item"
+        [ngClass]="user.loggedInBy === 'signature' ? 'mb-18' : 'mb-12'">
+        <p class="stg_text1">{{ 'settings.company.authType' | translate }}</p>
+        <ng-template [ngIf]="user.loggedInBy === 'signature'">
+          <p class="stg_text2">
+            {{ 'settings.company.regWithEsp' | translate }}
+          </p>
+        </ng-template>
+        <ng-template
+          [ngIf]="user.loggedInBy === 'sms' || user.loggedInBy === 'app'">
+          <p class="stg_text2">
+            {{ 'settings.company.regWithPhone' | translate }}
+          </p>
+        </ng-template>
+      </div>
+      <div class="d-flex flex-row" *ngIf="user.loggedInBy === 'signature'">
+        <p class="stg_link" (click)="!isConnecting ? connectWs() : ''">
+          {{ 'login.change-password' | translate }}
+        </p>
+      </div>
+      <!-- <div class="d-flex flex-row">
+        <p class="stg_text1">{{ 'settings.company.limit' | translate }}</p>
+        <p class="stg_text2">
+          {{ 'settings.company.limitDes' | translate }}
+        </p>
+      </div> -->
+    </div>
+  </div>
+</div>

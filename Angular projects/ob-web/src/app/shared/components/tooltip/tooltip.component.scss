@@ -1,0 +1,24 @@
+@import "/src/styles/variables.scss";
+
+.custom-tooltip {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 16px;
+  text-align: start;
+
+  h1 {
+    font-size: $font-size-medium !important;
+    font-weight: 700;
+  }
+
+  p {
+    font-size: $font-size-small !important;
+    font-weight: 500;
+  }
+
+  ul {
+    list-style: none;
+    font-weight: 700;
+  }
+}

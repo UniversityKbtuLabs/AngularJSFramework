@@ -1,0 +1,20 @@
+<div class="d-flex flex-column">
+  <div class="fx_modal_header">
+    <p class="fx_modal_header_title">Открытие счёта</p>
+    <img
+      src="assets/icons/close_calendar.svg"
+      class="fx_modal_header_close"
+      (click)="closeModal()" />
+  </div>
+  <div class="fx_modal_body">
+    <p class="fx_modal_body_text">
+      У вас отсутствует счет в нужной валюте. Откройте счет в валюте бесплатно,
+      чтобы сделать конвертацию
+    </p>
+  </div>
+  <div class="fx_modal_footer">
+    <button class="fx_modal_footer_btn" (click)="createAccount()">
+      <p>Открыть счет</p>
+    </button>
+  </div>
+</div>

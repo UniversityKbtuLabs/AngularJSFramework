@@ -1,0 +1,304 @@
+<div class="modal-header">
+  <h4 class="modal-title pull-left" *ngIf="!isEdit && !isUpdate">
+    {{ 'operations.default.addingNewEmployee' | translate }}
+  </h4>
+  <h4 class="modal-title pull-left" *ngIf="isEdit || isUpdate">
+    {{ 'operations.default.editingEmployee' | translate }}
+  </h4>
+  <button
+    type="button"
+    class="btn-close close pull-right"
+    aria-label="Close"
+    (click)="cancel()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body" [formGroup]="form">
+  <section>
+    <p class="employees-subtitle">
+      {{ 'operations.default.employeeInfo' | translate }}
+    </p>
+
+    <div class="row">
+      <!-- ИИН -->
+      <div class="col pr-12">
+        <div class="form-floating">
+          <input
+            [ngClass]="displayFieldClass('iin')"
+            class="form-control base-input"
+            autocomplete="off"
+            type="text"
+            [required]="!isEdit"
+            placeholder="{{ 'operations.default.iin' | translate }}"
+            formControlName="iin"
+            appInput="iin"
+            [readonly]="cheifEditable"
+            mask="000000000000"
+            maxlength="12" />
+
+          <label for="floatingInput">{{
+            'operations.default.iin' | translate
+          }}</label>
+        </div>
+        <ob-field-error-display
+          *ngIf="formControl.iin.errors?.required"
+          [displayError]="isFieldValid('iin')"
+          errorMsg="{{
+            'error.required' | translate
+          }}"></ob-field-error-display>
+
+        <ob-field-error-display
+          *ngIf="formControl.iin.errors?.minlength"
+          [displayError]="isFieldValid('iin')"
+          errorMsg="{{ 'error.iin' | translate }}"></ob-field-error-display>
+
+        <ob-field-error-display
+          *ngIf="formControl.iin.errors?.pattern"
+          [displayError]="isFieldValid('iin')"
+          errorMsg="{{ 'error.onlyDigitals' | translate }}">
+        </ob-field-error-display>
+        <ob-field-error-display
+          *ngIf="formControl.iin.errors?.filledIncorrectly"
+          [displayError]="isFieldValid('iin')"
+          errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+        </ob-field-error-display>
+        <ob-field-error-display
+          *ngIf="formControl.iin.errors?.incorrectIIN"
+          [displayError]="isFieldValid('iin')"
+          errorMsg="{{ 'error.incorrectIIN' | translate }}">
+        </ob-field-error-display>
+      </div>
+      <div class="col pl-12">
+        <div class="form-floating">
+          <input
+            #lastName
+            [ngClass]="{ 'is-invalid': formControl.lastName.errors?.pattern }"
+            class="form-control base-input"
+            autocomplete="off"
+            type="text"
+            placeholder="{{ 'operations.default.lastName' | translate }}"
+            formControlName="lastName"
+            [readonly]="cheifEditable"
+            (input)="lastName.value = lastName.value.toUpperCase()"
+            maxlength="30" />
+
+          <label for="floatingInput">{{
+            'operations.default.lastName' | translate
+          }}</label>
+        </div>
+        <ob-field-error-display
+          *ngIf="formControl.lastName.errors?.pattern"
+          [displayError]="isFieldValid('lastName')"
+          errorMsg="{{ 'error.symbol' | translate }}"></ob-field-error-display>
+      </div>
+    </div>
+    <div class="row mt-3">
+      <div class="col pr-12">
+        <div class="form-floating">
+          <input
+            #firstName
+            [ngClass]="{ 'is-invalid': formControl.firstName.errors?.pattern }"
+            class="form-control base-input"
+            autocomplete="off"
+            type="text"
+            placeholder="{{ 'operations.default.firstName' | translate }}"
+            formControlName="firstName"
+            [readonly]="cheifEditable"
+            (input)="firstName.value = firstName.value.toUpperCase()"
+            maxlength="30" />
+          <label for="floatingInput">{{
+            'operations.default.firstName' | translate
+          }}</label>
+        </div>
+        <ob-field-error-display
+          *ngIf="formControl.firstName.errors?.pattern"
+          [displayError]="isFieldValid('firstName')"
+          errorMsg="{{ 'error.symbol' | translate }}"></ob-field-error-display>
+      </div>
+
+      <div class="col pl-12">
+        <div class="form-floating">
+          <input
+            #middleName
+            [ngClass]="{ 'is-invalid': formControl.middleName.errors?.pattern }"
+            class="form-control base-input"
+            autocomplete="off"
+            type="text"
+            placeholder="{{ 'operations.default.middleName' | translate }}"
+            formControlName="middleName"
+            [readonly]="cheifEditable"
+            (input)="middleName.value = middleName.value.toUpperCase()"
+            maxlength="30" />
+          <label for="floatingInput">{{
+            'operations.default.middleName' | translate
+          }}</label>
+        </div>
+        <ob-field-error-display
+          *ngIf="formControl.middleName.errors?.pattern"
+          [displayError]="isFieldValid('middleName')"
+          errorMsg="{{ 'error.symbol' | translate }}"></ob-field-error-display>
+      </div>
+    </div>
+
+    <div class="row mt-3">
+      <!-- Дата Рождения -->
+      <div class="col-6 pr-12">
+        <div class="form-floating" style="position: relative">
+          <input
+            [ngClass]="displayFieldClass('birthDay')"
+            type="text"
+            class="form-control base-input"
+            [required]="!isEdit"
+            placeholder="{{ 'operations.default.birthDate' | translate }}"
+            formControlName="birthDay"
+            bsDatepicker
+            (change)="onDateChange()"
+            [bsConfig]="{
+              customTodayClass: 'custom-today-class',
+              isAnimated: true,
+              containerClass: 'payments-calendar',
+              showWeekNumbers: false
+            }"
+            #dp="bsDatepicker" />
+          <span class="icon-calendar" (click)="dp.toggle()">
+            <img src="./assets/icons/ic_calendar2.svg" alt="" />
+          </span>
+          <label for="floatingInput">{{
+            'operations.default.birthDate' | translate
+          }}</label>
+        </div>
+        <ob-field-error-display
+          *ngIf="formControl.birthDay.errors?.required"
+          [displayError]="isFieldValid('birthDay')"
+          errorMsg="{{
+            'error.required' | translate
+          }}"></ob-field-error-display>
+      </div>
+      <!-- Дата Рождения -->
+    </div>
+  </section>
+  <section class="mt-5">
+    <p
+      class="employees-subtitle"
+      *ngIf="paymentType === 'salary' && isSettings === false">
+      {{ 'operations.default.whereAndHowMuch' | translate }}
+    </p>
+    <p
+      class="employees-subtitle"
+      *ngIf="paymentType === 'salary' && isSettings === true">
+      {{ 'operations.default.employeeDetails' | translate }}
+    </p>
+    <p class="employees-subtitle" *ngIf="paymentType !== 'salary'">
+      {{ 'default.amount' | translate }}
+    </p>
+    <div class="row">
+      <!-- Номер счета сотрудника -->
+      <div class="col-6 pr-12" *ngIf="paymentType === 'salary'">
+        <div class="form-floating">
+          <input
+            #account
+            [ngClass]="displayFieldClass('account')"
+            class="form-control base-input"
+            autocomplete="off"
+            type="text"
+            required="true"
+            placeholder="'operations.default.staffAccountNumber' | translate"
+            formControlName="account"
+            appInput="account"
+            maxlength="20"
+            (accountChange)="changeAccount($event)"
+            (input)="account.value = account.value.toUpperCase()" />
+
+          <label for="floatingInput">{{
+            'operations.default.staffAccountNumber' | translate
+          }}</label>
+        </div>
+        <ob-field-error-display
+          *ngIf="formControl.account.errors?.required"
+          [displayError]="isFieldValid('account')"
+          errorMsg="{{
+            'error.required' | translate
+          }}"></ob-field-error-display>
+
+        <ob-field-error-display
+          *ngIf="formControl.account.errors?.minlength"
+          [displayError]="isFieldValid('account')"
+          errorMsg="{{ 'error.account' | translate }}"></ob-field-error-display>
+
+        <ob-field-error-display
+          *ngIf="formControl.account.errors?.pattern"
+          [displayError]="isFieldValid('account')"
+          errorMsg="{{ 'error.onlyDigitalsAndLetters' | translate }}">
+        </ob-field-error-display>
+        <ob-field-error-display
+          *ngIf="formControl.account.errors?.incorrectBankAccount"
+          [displayError]="isFieldValid('account')"
+          errorMsg="{{ 'error.incorrectBankAccount' | translate }}">
+        </ob-field-error-display>
+      </div>
+
+      <!-- Сумма платежа -->
+      <div class="col-6 pl-12" *ngIf="isSettings === false">
+        <div class="form-floating">
+          <input
+            [ngClass]="displayFieldClass('amount')"
+            class="form-control base-input"
+            autocomplete="off"
+            type="text"
+            required="true"
+            placeholder="'operations.countragent.amount' | translate"
+            formControlName="amount"
+            mask="separator.2"
+            suffix=" ₸"
+            thousandSeparator=" "
+            separatorLimit="999999999999999999" />
+
+          <label for="floatingInput">{{
+            'operations.countragent.amount' | translate
+          }}</label>
+        </div>
+        <ob-field-error-display
+          *ngIf="formControl.amount.errors?.required"
+          [displayError]="isFieldValid('amount')"
+          errorMsg="{{
+            'error.required' | translate
+          }}"></ob-field-error-display>
+      </div>
+    </div>
+    <ob-loader [loading]="bankInfoloading">
+      <div class="row pd-10 pt-16">
+        <div class="modal-section-info col-dt-8 col-tb-8 col-mb-12 mb-2">
+          <div class="modal-section-detail">
+            <span class="modal-section-detail__content bankInfo">
+              <span
+                class="icon icon_{{
+                  observalbeEmployeeBankLogo$ | async
+                }} bankInfo-icon"
+                obCheckIcon
+                [bankBic]="observalbeEmployeeBankLogo$ | async"></span>
+              {{ observalbeEmployeeBankName$ | async }}</span
+            >
+          </div>
+        </div>
+      </div>
+    </ob-loader>
+  </section>
+</div>
+<div class="modal-footer">
+  <div class="d-flex justify-content-start">
+    <ob-button
+      *ngIf="!isEdit && !isUpdate"
+      [label]="'operations.default.add' | translate"
+      [className]="'btn btn-primary height-medium br-12 mr-24 p-24'"
+      (click)="FieldsValidation()"></ob-button>
+    <ob-button
+      *ngIf="isEdit || isUpdate"
+      [label]="'operations.payments.btn-save' | translate"
+      [className]="'btn btn-primary height-medium br-12 mr-24 p-24'"
+      (click)="FieldsValidation()"></ob-button>
+    <ob-button
+      [label]="'operations.default.cancel' | translate"
+      [className]="'btn btn-outline-green height-medium br-12 ml-20 p-24'"
+      (click)="cancel()"></ob-button>
+  </div>
+</div>

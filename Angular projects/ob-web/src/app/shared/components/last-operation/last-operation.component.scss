@@ -1,0 +1,48 @@
+.last_operation {
+  background: #FFFFFF;
+  border-radius: 12px;
+  padding: 24px 32px 24px 32px;
+  display: flex;
+  flex-direction: column;
+
+  &_title {
+    font-weight: 700;
+    font-size: 16px;
+    color: #263238;
+  }
+
+  &_close {
+    width: 24px;
+    height: 24px;
+    margin-left: auto;
+    margin-top: -16px;
+    margin-right: -24px;
+  }
+
+  &_info {
+    font-weight: 500;
+    font-size: 14px;
+    color: #829199;
+  }
+
+  &_to_details {
+    font-weight: 700;
+    font-size: 14px;
+    color: #11BB91;
+    cursor: pointer;
+  }
+}
+
+.mb {
+  &_4 {
+    margin-bottom: 4px;
+  }
+
+  &_8 {
+    margin-bottom: 8px;
+  }
+
+  &_16 {
+    margin-bottom: 16px;
+  }
+}

@@ -1,0 +1,13 @@
+<div
+  class="dropdown-container col-dt-3.5 col-tb-3 col-mb-12"
+  *ngIf="flag && filteredData.length > 0">
+  <div>
+    <p class="dropdown-container__title">{{ searchTitle }}</p>
+  </div>
+  <ul class="dropdown-container-ul">
+    <li *ngFor="let item of filteredData" (click)="selectedItem(item.id)">
+      <span>{{ item.code }}</span>
+      <a>{{ item.name }}</a>
+    </li>
+  </ul>
+</div>

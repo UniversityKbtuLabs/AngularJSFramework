@@ -1,0 +1,104 @@
+<div class="accounts">
+  <div>
+    <div class="d-flex justify-content-between">
+      <p class="accounts_title">{{ getTitle() }}</p>
+
+      <div
+        class="{{
+          type === 'accounts' || type === 'cards'
+            ? 'accounts_actions'
+            : 'accounts_actions justify-content-end'
+        }}">
+        <ng-template [ngIf]="type === 'accounts' || type === 'cards'">
+          <div class="accounts_actions_btn" (click)="getStatements()">
+            {{ 'accounts.all-accounts.download-extract' | translate }}
+          </div>
+          <!-- <ob-button
+          [label]="'Скачать выписку'"
+          [className]="'btn btn-success height-medium br-12 p-24 mr-24'"
+          [onClick]="getStatements"
+          [loading]="loading[type]"
+        ></ob-button> -->
+        </ng-template>
+        <ng-template [ngIf]="type === 'accounts' || type === 'cards'">
+          <div class="accounts_actions_btn" (click)="getRequisites()">
+            {{ 'requisites.my-requisites' | translate }}
+          </div>
+        </ng-template>
+        <ng-template [ngIf]="type === 'accounts'">
+          <div class="accounts_actions_btn" (click)="createAccount()">
+            {{ 'products.accounts.openAccount' | translate }}
+          </div>
+        </ng-template>
+
+        <ng-template [ngIf]="type === 'deposits'">
+          <div
+            class="accounts_actions_btn"
+            (click)="getDepositStatements()"
+            *ngIf="!loading[type] && list.length > 0">
+            {{ 'operations.default.downloadDepositStatements' | translate }}
+          </div>
+          <div class="accounts_actions_btn" (click)="createDeposit()">
+            {{ 'accounts.addDeposit' | translate }}
+          </div>
+        </ng-template>
+
+        <ng-template [ngIf]="type === 'cards'">
+          <div class="accounts_actions_btn" (click)="createCard()">
+            {{ 'accounts.addCard' | translate }}
+          </div>
+        </ng-template>
+        <!-- <ob-button
+        *ngIf="type === 'accounts'"
+        [label]="'Реквизиты'"
+        [className]="'btn-outline-green height-medium br-12 p-24 mr-24'"
+        [onClick]="getRequisites"
+        [loading]="loading[type]"
+      ></ob-button> -->
+
+        <!-- <ob-button
+    [label]="getButtonLabel()"
+    [className]="'btn-outline-green height-medium br-12 p-24'"
+    [disabled]="true"
+  ></ob-button> -->
+      </div>
+    </div>
+
+    <ob-loader [loading]="loading[type]">
+      <div *ngIf="type === 'accounts'" class="accounts_info">
+        <div class="accounts_info_block">
+          <p class="accounts_info_block__light">
+            {{ 'accounts.all-accounts.available-accounts' | translate }}
+          </p>
+
+          <div>
+            <p
+              *ngIf="getFormattedAmount(amountList['KZT']) !== 'NaN'"
+              class="accounts_info_block__bold">
+              {{ getFormattedAmount(amountList['KZT']) | amountPipe }} ₸
+            </p>
+            <ng-template [ngIf]="getCurrencies().length > 1">
+              <ng-container *ngFor="let item of getCurrencies()">
+                <p class="accounts_info_block__bold" *ngIf="item !== 'KZT'">
+                  {{ getFormattedAmount(amountList[item]) | amountPipe }}
+                  {{ getCurrency(item) }}
+                </p>
+              </ng-container>
+            </ng-template>
+          </div>
+        </div>
+
+        <!-- <div class="accounts_info_block" *ngIf="getCurrencies().length > 1">
+        <p class="accounts_info_block__light">На валютных счетах</p>
+      </div> -->
+      </div>
+
+      <div class="accounts_table">
+        <ob-accounts-table
+          [headers]="getTableHeaders()"
+          [list]="list"
+          [type]="type"></ob-accounts-table>
+      </div>
+    </ob-loader>
+  </div>
+</div>

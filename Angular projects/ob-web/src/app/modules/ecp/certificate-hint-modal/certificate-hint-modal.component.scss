@@ -1,0 +1,74 @@
+.modal {
+    &-header-title {
+        color: #263238;
+        font-size: 20px;
+        font-weight: 800;
+    }
+
+    &-body-title {
+        font-size: 16px;
+        font-weight: 600;
+        margin-bottom: 16px;
+    }
+    
+    &-body {
+        ol {
+            margin-bottom: 16px;
+        }
+
+        .modal-list-item {
+            position: relative;
+            padding-left: 8px;
+            margin-left: 15px;
+            font-weight: 500;
+            margin-bottom: 16px;
+        }
+        
+        .modal-list-item::before {
+            position: absolute;
+            left: -5px;
+        }
+
+        .modal-list-item::marker {
+            font-weight: 700;
+        }
+
+        .modal-inner-list {
+            list-style: disc;
+
+            li {
+                width: max-content;
+                position: relative;
+                padding-left: 5px;
+                margin-left: 40px;
+                font-weight: 500;
+                cursor: pointer;
+                color: #11BB91;
+
+                & > a {
+                    color: #11BB91;
+                    text-decoration: none;
+                }
+
+                & > span {
+                    color: #263238;
+                    cursor: auto;
+                }
+            }
+        }
+    }
+
+    &-full-instruction {
+        font-weight: 500;
+
+        & > a {
+            color: #11BB91;
+            text-decoration: none;
+        }
+        
+        & > span {
+            color: #11BB91;
+            cursor: pointer;
+        }
+    }
+}

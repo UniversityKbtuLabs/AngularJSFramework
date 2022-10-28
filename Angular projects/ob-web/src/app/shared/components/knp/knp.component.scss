@@ -1,0 +1,20 @@
+.knp {
+  display: flex;
+  flex-direction: row;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 18.2px;
+  padding: 12px 0;
+  letter-spacing: 2%;
+  border-bottom: 1px solid #d0d6d8;
+  &__code {
+    color: #263238;
+    width: 40px;
+    min-width: 40px;
+    margin-right: 8px;
+    font-weight: 600;
+  }
+  &__name {
+    color: #829199;
+  }
+}

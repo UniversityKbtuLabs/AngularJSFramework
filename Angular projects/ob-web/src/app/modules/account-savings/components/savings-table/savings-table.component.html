@@ -1,0 +1,81 @@
+<div class="savings">
+  <ng-template [ngIf]="type === 'deposit'">
+    <div class="d-flex flex-column">
+      <div class="d-flex flex-row justify-content-between">
+        <p class="savings_title">
+          {{ 'operations.default.depositStatement' | translate }}
+        </p>
+        <p class="savings_download">
+          {{ 'operations.default.downloadStatements' | translate }}
+        </p>
+      </div>
+      <table class="savings_table">
+        <tr>
+          <th>{{ 'default.date' | translate }}</th>
+          <th>{{ 'default.operation' | translate }}</th>
+          <th>{{ 'default.amount' | translate }}</th>
+          <th>{{ 'default.reminder' | translate }}</th>
+        </tr>
+        <tr>
+          <td>01.12.2021</td>
+          <td [ngStyle]="{ color: '#263238' }">
+            {{ 'acccountSavings.deposit.reward' | translate }}
+          </td>
+          <td>+ 75 000 ₸</td>
+          <td>10 075 000 ₸</td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>
+  <ob-loader [loading]="creditPaymentInfoLoading">
+    <ng-template [ngIf]="type === 'credit'">
+      <div class="d-flex flex-column">
+        <div class="d-flex flex-row justify-content-between">
+          <p class="savings_title">
+            {{ 'acccountSavings.credit.paymentsGraf' | translate }}
+          </p>
+          <!--          <p class="savings_download">Скачать график</p>-->
+        </div>
+        <table class="savings_table">
+          <tr>
+            <th>{{ 'default.date' | translate }}</th>
+            <th>{{ 'default.status' | translate }}</th>
+            <th>{{ 'operations.default.paymentAmount' | translate }}</th>
+            <th>{{ 'acccountSavings.credit.remainder' | translate }}</th>
+          </tr>
+          <tr *ngFor="let item of scheduleList; let i = index">
+            <td>{{ item?.doper }}</td>
+            <td *ngIf="!item?.doper || item?.doper === ''"></td>
+            <td
+              [ngStyle]="{ color: '#11BB91' }"
+              *ngIf="item?.status === 'PAID'">
+              {{ 'acccountSavings.credit.performed' | translate }}
+            </td>
+            <td
+              [ngStyle]="{ color: '#505C64' }"
+              *ngIf="item?.status === 'PENDING'">
+              {{ 'acccountSavings.credit.redeemable' | translate }}
+            </td>
+            <td
+              [ngStyle]="{ color: '#FF5721' }"
+              *ngIf="item?.status === 'OVERDUE'">
+              {{ 'status.expired' | translate }}
+            </td>
+            <td
+              *ngIf="
+                item?.status === '' || !item?.status || item?.status === 'NONE'
+              "></td>
+            <td>
+              {{ getFormattedActualBalance(item?.totalAmount) | amountPipe }}
+              {{ getCurrency(item?.valCode) }}
+            </td>
+            <td>
+              {{ getFormattedActualBalance(getPaid(i)) | amountPipe }}
+              {{ getCurrency(item?.valCode) }}
+            </td>
+          </tr>
+        </table>
+      </div>
+    </ng-template>
+  </ob-loader>
+</div>

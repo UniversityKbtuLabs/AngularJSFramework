@@ -1,0 +1,403 @@
+@import '/src/styles/variables.scss';
+
+.title {
+  font-size: $font-size-h3-large;
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+.common {
+  background-color: #fff;
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 32px;
+  margin-bottom: 32px;
+
+  &-subtitle {
+    font-weight: 700;
+    font-size: $font-size-medium;
+    margin-bottom: 16px;
+    line-height: 20.8px;
+    letter-spacing: 2%;
+  }
+
+  &-section {
+    margin-bottom: 40px;
+  }
+
+  &-autofill {
+    display: flex;
+    align-items: center;
+    margin-bottom: 45px;
+    line-height: 18.2px;
+
+    &__text {
+      display: flex;
+      align-items: center;
+
+      &:nth-child(2) {
+        margin-right: 2rem;
+      }
+
+      & > img {
+        cursor: pointer;
+      }
+    }
+
+    &__main {
+      color: $color-gray-middle;
+      font-weight: 500;
+    }
+
+    &__secondary {
+      color: $color-gray-middle;
+      font-size: $font-size-small;
+      
+      font-weight: 500;
+      width: max-content;
+      span {
+        margin-right: 9px;
+        // color: #2a353d;
+      }
+    }
+    &__docNum {
+      font-size: 14px !important;
+      height: 36px !important;
+      width: 153px;
+      padding-right: 0;
+      padding-left: 10px;
+      position: relative;
+      margin-left: 8px;
+    }
+
+    .form-control:invalid:focus, .form-control.is-invalid:focus{
+      outline: 1.5px solid #ff744d !important;
+      background-image: none;
+    }
+
+    .form-control {
+      border: 1px solid #d0d6d8 !important;
+    }
+
+    &__docNum-error-container {
+      position: absolute;
+    }
+  }
+
+  &-destination {
+    margin-bottom: 40px;
+    display: flex;
+    align-items: center;
+
+    &__text {
+      font-size: $font-size-medium;
+      margin-right: 12px;
+    }
+  }
+
+  &-knp__text {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: $Background-light-grey;
+    border-radius: 4px;
+    height: 100%;
+    box-sizing: border-box;
+    padding: 8px 12px;
+
+    & > p {
+      font-weight: 500;
+      font-size: $font-size-extra-small;
+    }
+  }
+
+  &-knp__info {
+    min-height: 51px;
+  }
+
+  &-inputs {
+    margin-bottom: 38px;
+  }
+
+  &-general-term {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 40px;
+
+    &__toggle {
+      margin-right: 11px;
+    }
+  }
+
+  &-employees-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    color: $color-green;
+
+    & > img {
+      margin-right: 4px;
+    }
+  }
+
+  &-comission__input {
+    margin-bottom: 32px;
+    padding: 0 12px;
+    ::placeholder{
+      font-weight: 500;
+      font-size: 16px;
+      color: #88999c;
+    }
+    .h56 {
+      height: 56px;
+      // font-weight: 500;
+      // font-size: 16px;
+      // color: #88999c;
+    }
+  }
+
+  &-bottom-line {
+    border-top: 1px solid $color-pale-gray;
+    margin: 40px 0 32px;
+  }
+}
+
+.transfer-content {
+  background-color: #fff;
+  border-radius: 12px;
+  box-sizing: border-box;
+  padding: 32px 32px 13px;
+  margin-bottom: 32px;
+
+  &__right-heading {
+    font-size: $font-size-medium;
+    font-weight: 700;
+    line-height: 18.2px;
+    letter-spacing: 0.02em;
+    color: $color-black;
+    margin-bottom: 24px;
+  }
+}
+
+.information {
+  margin-bottom: 32px;
+
+  &.divide .information-content:not(:last-child){
+    border-bottom: 1px solid #d0d6d8;
+    padding-bottom: 16px;
+  }
+  
+  .information-content {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 19px;
+
+    &__title {
+      font-size: $font-size-small;
+      font-weight: 700;
+      line-height: 18.2px;
+      letter-spacing: 0.02em;
+      color: #263238;
+    }
+    &__click_area:hover{
+      cursor: pointer;
+    }
+    &__text{
+      margin-top: 11px;
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 130%;
+      letter-spacing: 0.02em;
+      color: #263238;
+
+      ul{
+        padding-left: 20px;
+      }
+
+      li{
+        padding-top: 8px;
+      }
+    }
+    &__arrow_down{
+      margin-top: 8px;
+      margin-bottom: auto;
+      margin-right: 10px;
+      cursor: pointer;
+    }
+    &__arrow_up{
+      cursor: pointer;
+      margin-top: 8px;
+      margin-bottom: auto;
+      margin-right: 10px;
+      transform: rotate(180deg);
+    }
+  }
+}
+
+.success-signed {
+  text-align: center;
+  .success-title {
+    font-weight: $font-weight-bold;
+    font-size: 20px;
+    margin-bottom: 2rem;
+  }
+  .success-info {
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e1e9ea;
+    .info {
+      font-weight: $font-weight-bold;
+      font-size: 26px;
+      margin-bottom: 2rem;
+    }
+  }
+  .success-button {
+    margin-bottom: 1rem;
+  }
+  .btn-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.sms-description {
+  font-size: $font-size-medium;
+  margin-bottom: 16px;
+}
+
+.sms-timer {
+  margin-top: 1rem;
+  padding-left: 10px;
+  cursor: pointer;
+  font-family: Manrope;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #11bb91;
+}
+
+#bootstrap-overrides .ng-dropdown-panel .ng-dropdown-panel-items {
+  max-height: 257px !important;
+  width: 702px !important;
+  max-width: 702px;
+  min-width: 100%;
+}
+
+code-input {
+  --item-spacing: 8px !important;
+  --item-height: 56px !important;
+  font-size: 24px !important;
+  font-weight: 700;
+  --item-border: 1px solid #acbbbe !important;
+  --item-border-focused: 2px solid #11bb91 !important;
+  --item-shadow-focused: 0 1px 2px 0 #11bb91 !important;
+  --item-border-radius: 12px !important;
+  --item-border-bottom: 1px solid #acbbbe !important;
+  --item-border-has-value: 1px solid #acbbbe !important;
+  --item-border-bottom-has-value: 1px solid #acbbbe !important;
+  --item-border-focused: 1px solid #11bb91 !important;
+  --item-border-bottom-focused: 1px solid #11bb91 !important;
+}
+
+.code-container{
+  .sms-error-text{
+    margin-top: 1rem;
+    padding-left: 10px;
+    color: red;
+  }
+  .disabled_otp{
+    opacity: .7;
+  }
+}
+
+.alert-warning{
+  margin: 0;
+  padding: 7px 7px 0 7px;
+  border: 0;
+  background: unset;
+
+}
+
+.base-input {
+  padding-left: 16px !important;
+  height: 56px !important;
+}
+
+.pd-12 {
+ padding: 0 12px;
+}
+
+@media screen and (min-width: 720px) {
+  .width-input {
+    max-width: 336px;
+  }
+}
+@media screen and (max-width: 720px) {
+  .common-autofill {
+    flex-flow: column;
+    align-items: flex-start;
+    width: max-content;
+  }
+
+  .common-knp__info:first-child {
+    margin-bottom: 15px;
+  }
+}
+
+::ng-deep .invalid{
+  padding-top: 3px;
+  padding-left: 1px;
+}
+
+.card-to-wrapper {  
+  .form-control.base-input {
+    padding-left: 56px !important;
+  }
+
+  label {
+    padding-left: 56px !important;
+  }
+
+  .form-floating > .form-control:focus ~ label, .form-floating > .form-control:not(:placeholder-shown) ~ label, .form-floating > .form-select ~ label {
+    padding-left: 64px !important;
+  }
+}
+
+.bank-logo {
+  position: relative;
+  z-index: 1;
+  left: 12px;
+  top: 11px;
+  
+  img {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+  }
+}
+
+.base-input {
+  font-size: 16px;
+}
+
+::ng-deep .ng-select.custom-select.ng-select-opened {
+  .ng-option{
+    border-bottom: none!important;
+    padding: 0!important;
+  }
+}
+
+::ng-deep .ng-select.custom-select {
+  .ng-value {
+    :nth-child(1) {
+      margin-left: 0px !important;
+    }
+  }
+
+  .ng-arrow-wrapper {
+    padding: 0px;
+    margin-right: 4px;
+  }
+}

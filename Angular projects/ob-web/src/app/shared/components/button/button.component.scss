@@ -1,0 +1,184 @@
+@import '/src/styles/variables.scss';
+
+.btn {
+  // width: 100%;
+  height: 100%;
+  color: #fff;
+  outline: none !important;
+  box-shadow: none !important;
+  background-color: $color-green !important;
+  border: 1px solid $color-green !important;
+  font-weight: $font-weight-bold;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.btn:hover {
+  color: #fff;
+}
+
+.btn-outline {
+  &-green {
+    background-color: transparent !important;
+    border: 1px solid $color-green !important;
+    color: $color-green !important;
+  }
+  &-orange {
+    background-color: transparent !important;
+    border: 1px solid $color-error-red !important;
+    color: $color-error-red !important;
+  }
+}
+
+.btn-secondary {
+  background-color: #fff !important;
+  color: $color-green !important;
+  border: none !important;
+  outline: none !important;
+  display: flex;
+
+  &:focus {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+.btn-orange {
+  background-color: #fff !important;
+  color: $color-error-red !important;
+  border: 1px solid $color-error-red !important;
+  outline: none !important;
+}
+
+.btn-green {
+  background-color: #fff !important;
+  color: $color-green !important;
+  border: 1px solid $color-green !important;
+  outline: none !important;
+}
+.btn-success {
+  color: #fff;
+  border-radius: 12px;
+  height: 40px;
+  font-size: 14px;
+  font-weight: 700;
+  padding: 11px 78.5px;
+  display: flex;
+}
+
+.btn-delete{
+  padding: 11px 24px;
+  height: 40px;
+  background: #11BB91;
+  border-radius: 12px;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #FFFFFF;
+  border: none;
+  outline: none;
+  display: flex;
+}
+
+.btn-cancel{
+  padding: 11px 24px;
+  height: 40px;
+  border: 1px solid #11BB91;
+  border-radius: 12px;
+  background-color: #FFFFFF;
+  font-weight: 700;
+  font-size: 14px;
+  line-height: 130%;
+  letter-spacing: 0.02em;
+  color: #11BB91;
+  display: flex;
+}
+
+.w-100 {
+  width: 100%;
+}
+
+.br-8 {
+  border-radius: 8px;
+}
+
+.br-12 {
+  border-radius: 12px;
+}
+
+.ml-24 {
+  margin-left: 24px;
+}
+
+.mr-24 {
+  margin-right: 24px;
+}
+
+.mb-24 {
+  margin-bottom: 24px;
+}
+
+.height-medium {
+  height: 40px !important;
+}
+
+.height-large {
+  height: 56px !important;
+}
+
+.h {
+  &-18 {
+    height: 18px !important;
+  }
+
+  &-52 {
+    height: 52px !important;
+  }
+}
+
+.loader {
+  border: 1px solid #f3f3f3;
+  border-radius: 50%;
+  border-top: 1px solid $color-gray-middle;
+  width: 23px;
+  height: 23px;
+  -webkit-animation: spin 1s linear infinite; /* Safari */
+  animation: spin 1s linear infinite;
+  margin-left: 1rem;
+  margin-right: -10px;
+  position: relative;
+  bottom: 2px;
+}
+
+.p-24 {
+  padding: 0 24px;
+}
+
+.w-304 {
+  width: 304px;
+}
+
+.label-bold {
+  font-weight: 700;
+  font-size: 14px;
+}
+
+@-webkit-keyframes spin {
+  0% {
+    -webkit-transform: rotate(0deg);
+  }
+  100% {
+    -webkit-transform: rotate(360deg);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

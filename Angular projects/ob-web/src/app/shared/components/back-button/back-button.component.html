@@ -1,0 +1,21 @@
+<div class="back-button">
+  <img
+    class="back-button__home"
+    src="assets/icons/ic_homemain.svg"
+    (click)="navigateHome()" />
+  <div class="back-button__link" *ngFor="let link of linkList; let i = index">
+    <img
+      class="back-button__arrow"
+      src="assets/icons/ic_arrow.svg"
+      alt="back-arrow" />
+    <p
+      class="back-button__text"
+      (click)="navigate(link)"
+      *ngIf="link.active === false">
+      {{ link.name | translate }}
+    </p>
+    <p class="back-button__text__active" *ngIf="link.active === true">
+      {{ link.name | translate }}
+    </p>
+  </div>
+</div>

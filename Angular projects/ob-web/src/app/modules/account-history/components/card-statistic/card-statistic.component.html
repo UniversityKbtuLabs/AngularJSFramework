@@ -1,0 +1,38 @@
+<div class="statistic">
+  <div class="row">
+    <div class="col-dt-3 col-smdt-3 col-tb-6 col-mb-6 mb-3">
+      <ob-info-block
+        title="{{ 'account-history.statistic.received' | translate }}"
+        [subtitle]="getSubtitle('in')"
+        [color]="'green'"
+        [hint]="
+          helperService.formatCurrency(accountData?.currency)
+        "></ob-info-block>
+    </div>
+    <div class="col-dt-3 col-smdt-3 col-tb-6 col-mb-6 mb-3">
+      <ob-info-block
+        title="{{ 'account-history.statistic.sent' | translate }}"
+        [subtitle]="getSubtitle('out')"
+        [color]="'red'"
+        [hint]="
+          helperService.formatCurrency(accountData?.currency)
+        "></ob-info-block>
+    </div>
+    <div class="col-dt-3 col-smdt-3 col-tb-6 col-mb-6 mb-3">
+      <ob-info-block
+        title="{{ 'account-history.statistic.balance-init' | translate }}"
+        [subtitle]="getSubtitle('inReminder')"
+        [hint]="
+          helperService.formatCurrency(accountData?.currency)
+        "></ob-info-block>
+    </div>
+    <div class="col-dt-3 col-smdt-3 col-tb-6 col-mb-6 mb-3">
+      <ob-info-block
+        title="{{ 'account-history.statistic.balance-end' | translate }}"
+        [subtitle]="getSubtitle('outReminder')"
+        [hint]="
+          helperService.formatCurrency(accountData?.currency)
+        "></ob-info-block>
+    </div>
+  </div>
+</div>

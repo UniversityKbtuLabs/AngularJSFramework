@@ -1,0 +1,103 @@
+@import "/src/styles/variables.scss";
+
+.operations {
+	background: #fff;
+	border-radius: 12px;
+	box-sizing: border-box;
+	padding: 32px;
+	margin-bottom: 32px;
+	
+	&-wrap {
+		margin-bottom: 32px;
+	}
+	
+	&-title {
+		margin-bottom: 32px;
+		font-weight: 700;
+		font-size: 16px;
+	}
+
+	&-signing {
+		background-color: #fff;
+		border-radius: 12px;
+		padding: 32px 32px 16px 32px;
+	}
+
+	&-info {
+		margin-bottom: 24px;
+		&__text {
+			font-weight: $font-weight-medium;
+			font-size: $font-size-small;
+			line-height: 130%;
+			letter-spacing: 0.02em;
+			color: $color-black;
+		}
+	}
+
+	&-amount {
+		font-weight: 700;
+		font-size: 14px;
+		line-height: 130%;
+
+		&__wrapper {
+			display: flex;
+			flex-direction: column;
+			gap: 4px;
+		}
+	}
+
+	&-back-button {
+		margin-bottom: 32px;
+	}
+}
+
+.mb_4 {
+	margin-bottom: 4px;
+}
+
+.mb-20 {
+	margin-bottom: 20px;
+}
+
+.mb-24 {
+	margin-bottom: 24px;
+}
+
+.error-text {
+	font-weight: $font-weight-medium;
+	font-size: $font-size-small;
+	line-height: 130%;
+	letter-spacing: 0.02em;
+	color: $color-error-red;
+}
+
+code-input {
+  --item-spacing: 27px !important;
+  --item-height: 56px !important;
+  font-size: 24px !important;
+  font-weight: 700;
+  --item-border: 1px solid #acbbbe !important;
+  --item-border-focused: 2px solid #11bb91 !important;
+  --item-shadow-focused: 0 1px 2px 0 #11bb91 !important;
+  --item-border-radius: 12px !important;
+  --item-border-bottom: 1px solid #acbbbe !important;
+  --item-border-has-value: 1px solid #acbbbe !important;
+  --item-border-bottom-has-value: 1px solid #acbbbe !important;
+  --item-border-focused: 1px solid #11bb91 !important;
+  --item-border-bottom-focused: 1px solid #11bb91 !important;
+}
+
+.toast-container .ngx-toastr {
+	position: relative;
+	overflow: hidden;
+	margin: 0 0 6px;
+	padding: 15px 15px 15px 50px;
+	width: 300px;
+	border-radius: 15px !important;
+	background-position: 15px center;
+	background-repeat: no-repeat;
+	background-size: 24px;
+	background-color: #2A353D;
+	box-shadow: 0 0 12px #999;
+	color: #fff;
+}

@@ -1,0 +1,64 @@
+<div class="modal_header">
+  <p class="modal_header_title">
+    {{ title }}
+  </p>
+  <img
+    src="assets/icons/ic_cancel.svg"
+    class="modal_header_btn_close"
+    (click)="closeModal()" />
+</div>
+<div class="modal_body">
+  <div *ngFor="let item of result; let i = index" class="modal_body_content">
+    <div class="modal_body_content_wrapper">
+      <p class="item_number">{{ i + 1 }}.</p>
+      <div class="item_main">
+        <p class="item_main_name">
+          {{ item?.opertype }}
+        </p>
+        <p class="item_main_amount" *ngIf="item.amount && item.currency">
+          {{ getFormattedActualBalance(item?.amount) }}
+          {{ formatCurrency(item?.currency) }}
+        </p>
+      </div>
+      <div class="item_img">
+        <img
+          src="assets/icons/down_arrow.svg"
+          [ngClass]="{
+            item_arrow_down: showDetails[i] === false,
+            item_arrow_up: showDetails[i] === true
+          }"
+          (click)="changeShowDetails(i)" />
+      </div>
+    </div>
+    <div class="modal_body_content_wrapper" *ngIf="showDetails[i] === true">
+      <p class="item_number"></p>
+      <div class="item_main">
+        <div class="item_main_info" *ngIf="item.docdate">
+          <p class="item_main_info_text1">
+            {{ 'status.arrestDate' | translate }}
+          </p>
+          <p class="item_main_info_text2">
+            {{ formatDate(item?.docdate) }}
+          </p>
+        </div>
+        <div class="item_main_info" *ngIf="item.docnum">
+          <p class="item_main_info_text1">
+            {{ 'default.documentNumber' | translate }}
+          </p>
+          <p class="item_main_info_text2">
+            {{ item?.docnum }}
+          </p>
+        </div>
+        <!-- <div class="item_main_info" *ngIf="item.clientname">
+          <p class="item_main_info_text1">
+            Описание
+          </p>
+          <p class="item_main_info_text2">
+            {{item?.clientname}}
+          </p>
+        </div> -->
+      </div>
+      <div class="item_img"></div>
+    </div>
+  </div>
+</div>

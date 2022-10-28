@@ -1,0 +1,73 @@
+@import '/src/styles/variables.scss';
+.confirmation {
+  box-sizing: border-box;
+  padding: 64px 25px;
+  background: #fff;
+  border-radius: 12px;
+  margin-left: 0;
+  margin-right: 0;
+  .contragent {
+    color: #88999c;
+  }
+  .mr {
+    margin-right: 0.5rem;
+  }
+  .btn-bg {
+    background-color: #11bb91;
+    color: #fff;
+    border-radius: 12px;
+    height: 40px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .btn-np {
+    border-color: #11bb91;
+    border-radius: 12px;
+    color: #11bb91;
+    font-size: 14px;
+    font-weight: 700;
+    height: 40px;
+  }
+
+  .btn-wt {
+    background: #ffffff;
+    border: 1px solid #11bb91;
+    padding: 11px 24px;
+    border-radius: 12px;
+    font-weight: 700;
+    font-size: 14px;
+    color: #11bb91;
+  }
+  .download {
+    color: #11bb91;
+  }
+  h1 {
+    font-size: $font-size-h3-medium !important;
+    font-weight: $font-weight-extra-bold !important;
+    letter-spacing: 0.02em !important;
+    line-height: 130% !important;
+  }
+
+  h4 {
+    font-size: $font-size-h5-large !important;
+    font-weight: $font-weight-extra-bold !important;
+    letter-spacing: 0.01em;
+    line-height: 132% !important;
+  }
+  h6 {
+    font-size: $font-size-small !important;
+    font-weight: $font-weight-medium !important;
+    letter-spacing: 0.01em;
+    line-height: 130% !important;
+  }
+}
+
+.mb-32 {
+  margin-bottom: 32px;
+}
+.mb-16 {
+  margin-bottom: 16px;
+}
+.mb-24 {
+  margin-bottom: 24px;
+}

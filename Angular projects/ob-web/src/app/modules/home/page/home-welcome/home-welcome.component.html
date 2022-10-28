@@ -1,0 +1,75 @@
+<div class="d-flex row">
+  <div class="col-tb-12 col-smdt-4 col-dt-4 col-lgdt-3 home-main">
+    <ob-accounts></ob-accounts>
+
+    <div class="home-exchange">
+      <div class="home-exchange-header" (click)="goToHalykFXPage()">
+        <p class="home-exchange-header__title">
+          {{ 'exchange.exchangeRates' | translate }}
+        </p>
+        <div class="home-exchange-header__img" *ngIf="!isProduction">
+          <img src="assets/icons/Pagination.svg" alt="right-arrow" />
+        </div>
+      </div>
+      <div class="home-exchange-body">
+        <ob-exchange></ob-exchange>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-tb-8 col-smdt-8 col-dt-8 col-lgdt-9 g-custom">
+    <section *ngIf="documentsQuantity !== 0" class="notification-section row">
+      <div class="notification-card col-12">
+        <ob-notification-card
+          [title]="'default.signDocs' | translate"
+          [description]="'default.signDocsNotification' | translate"
+          [count]="documentsQuantity"
+          [btnTitle]="
+            'operations.payments.sign' | translate
+          "></ob-notification-card>
+      </div>
+    </section>
+
+    <div class="col-12 welcome-operations">
+      <ob-collapse
+        title="{{ 'home.welcome.action' | translate }}"
+        [defaultInactive]="true"
+        [type]="'operation'"
+        (clicked)="openModal($event)">
+        <div class="operations-content">
+          <div *ngFor="let op of operations">
+            <ng-template
+              [ngIf]="
+                op.router !== payment_import_route && op.router !== 'extract'
+              ">
+              <ob-custom-card
+                [className]="op.disabled ? 'opacity-50' : ''"
+                title="{{ op.title | translate }}"
+                imgUrl="{{ op.img }}"
+                [routerLink]="op.router"></ob-custom-card>
+            </ng-template>
+            <ng-template
+              [ngIf]="
+                op.router === payment_import_route || op.router === 'extract'
+              ">
+              <ob-custom-card
+                [className]="op.disabled ? 'opacity-50' : ''"
+                title="{{ op.title | translate }}"
+                imgUrl="{{ op.img }}"
+                [route]="op.router"></ob-custom-card>
+            </ng-template>
+          </div>
+        </div>
+      </ob-collapse>
+    </div>
+
+    <div class="col-12 welcome-operations">
+      <p class="welcome-operations__title" id="discharge-filter">
+        {{ 'home.welcome.operation' | translate }}
+      </p>
+
+      <ob-account-history
+        [listType]="'operations-history'"></ob-account-history>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,21 @@
+@import "/src/styles/variables.scss";
+@import "/src/styles/main";
+
+.operations-filter {
+    &-title {
+        font-size: $font-size-small;
+        font-weight: 500;
+        margin-bottom: 16px;
+        color: $color-black;
+    }
+
+    &-datepickers {
+        display: flex;
+        align-items: center;
+        margin-bottom: 16px;
+    }
+
+    &-tabs {
+        margin-bottom: 40px;
+    }
+}

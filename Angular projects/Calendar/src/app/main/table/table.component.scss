@@ -1,0 +1,17 @@
+.table {
+  width: 90%;
+  margin-right: auto;
+  margin-left: auto;
+}
+
+.cell {
+  width: 100%;
+  padding: 10px 16px 10px 16px;
+  background-color: aqua;
+  display: flex;
+  flex-direction: column;
+
+  &_item {
+
+  }
+}

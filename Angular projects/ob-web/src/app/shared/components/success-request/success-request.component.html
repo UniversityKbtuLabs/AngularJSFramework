@@ -1,0 +1,22 @@
+<div class="success-request">
+  <img src="assets/icons/Illustrations.svg" alt="success-icon" />
+
+  <h3 class="success-request-title">
+    {{ 'toast-messages.success.request-confirmation' | translate }}
+  </h3>
+  <p class="success-request-description">
+    {{ 'products.default.request' | translate }} №739376
+    {{ 'products.default.replishment' | translate }} 450 000 ₸
+    {{ 'products.default.replishment' | translate }}
+  </p>
+
+  <ob-button
+    label="'general.navigation.to-account' | translate | uppercase"
+    style="padding: 0; width: 22%"
+    [className]="'btn height-large br-12'"
+    [onClick]="backToAccounts"></ob-button>
+  <ob-button
+    label="'default.view-applications' | translate | uppercase"
+    style="padding: 0"
+    [className]="'btn height-large br-12 btn-secondary'"></ob-button>
+</div>

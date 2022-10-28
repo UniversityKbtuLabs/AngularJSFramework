@@ -1,0 +1,29 @@
+@import "/src/styles/variables.scss";
+
+.small-table {
+    background-color: $color-gray-lighter;
+    box-sizing: border-box;
+    padding: 16px;
+    border-radius: 4px;
+    margin-top: 16px;
+
+    &-element {
+        display: flex;
+        align-items: center;
+        padding: 15px;
+        border-bottom: 1px solid $color-gray;
+
+        & > p {
+            color: $color-black;
+            font-size: $font-size-small;
+        }
+
+        & > p:first-child {
+            width: 176px;
+        }
+
+        &:last-child {
+            border: none;
+        }
+    }
+}

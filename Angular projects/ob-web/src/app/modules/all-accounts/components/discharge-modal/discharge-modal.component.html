@@ -1,0 +1,101 @@
+<div class="modal-header">
+  <p class="modal-title">
+    {{ 'accounts.all-accounts.download-extract' | translate }}
+  </p>
+
+  <button
+    type="button"
+    class="btn-close close pull-right"
+    aria-label="Close"
+    (click)="closeModal()">
+    <span aria-hidden="true" class="visually-hidden">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <!-- <div>select</div> -->
+  <div *ngIf="type === 'accounts'" class="mb">
+    <ng-select
+      class="custom-select"
+      [searchable]="false"
+      [clearable]="false"
+      placeholder="{{ 'accounts.all-accounts.select-account' | translate }}"
+      name="account"
+      [(ngModel)]="selectedAccount"
+      #account="ngModel"
+      required>
+      <ng-option
+        *ngFor="let account of getAccountsList()"
+        [value]="getAccountInfo(account).key">
+        <ob-select-account
+          [description]="getAccountInfo(account).title"
+          [title]="getAccountInfo(account).description"
+          [icon]="getImage(account)"></ob-select-account>
+      </ng-option>
+    </ng-select>
+    <ng-container
+      *ngIf="
+        (click && account.invalid) ||
+        (account.invalid && (account.dirty || account.touched))
+      ">
+      <p *ngIf="account.errors.required" class="invalid">
+        {{ 'error.required' | translate }}
+      </p>
+    </ng-container>
+  </div>
+
+  <p class="modal-subtitle">{{ 'default.period' | translate }}</p>
+
+  <input
+    type="text"
+    placeholder=""
+    class="form-control discharge-input"
+    bsDaterangepicker
+    [bsConfig]="{ isAnimated: true, customTodayClass: 'custom-today-class' }"
+    [(ngModel)]="operationDate" />
+
+  <ob-tab-selects
+    [list]="filterDateList"
+    (obSelectedDate)="changeSelectedDate($event)"></ob-tab-selects>
+  <div class="modal-tab-select"></div>
+
+  <input
+    type="text"
+    class="modal-input"
+    placeholder="{{'default.iinPlaceholder' | translate}"
+    [(ngModel)]="countragent" />
+  <p class="modal-subtitle">{{'default.format' | translate}</p>
+
+  <ob-tab-selects
+    [list]="formatList"
+    (obSelectedDate)="changeSelectedFormat($event)"></ob-tab-selects>
+  <div class="modal-tab-select"></div>
+
+  <div class="modal-toggle">
+    <p>{{ 'accounts.all-accounts.without-bank-comission' | translate }}</p>
+
+    <div class="contragent-general-term__toggle">
+      <div class="material-switch">
+        <input
+          class="form-check-input"
+          type="checkbox"
+          role="switch"
+          id="switch-quick-payment"
+          [(ngModel)]="comissionOff" />
+        <label class="form-check-label" for="switch-quick-payment"></label>
+      </div>
+    </div>
+  </div>
+
+  <ng-template [ngIf]="error">
+    <div class="alert alert-danger alert-params" role="alert">
+      {{ error }}
+    </div>
+  </ng-template>
+</div>
+
+<div class="modal-footer">
+  <ob-button
+    label="{{'default.download' | translate}"
+    [className]="'btn height-medium br-12 p-24 mr-24'"
+    [onClick]="getDischarge"></ob-button>
+</div>

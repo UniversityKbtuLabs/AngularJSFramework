@@ -1,0 +1,411 @@
+<div class="open_deposit">
+  <div class="row">
+    <div
+      class="col-smdt-12 col-dt-8 col-lgdt-8"
+      [formGroup]="createDepositForm">
+      <div class="open_deposit_main">
+        <p class="open_deposit_main_title mb_14">
+          {{
+            depositType
+              ? ('products.deposits.' + depositType | translate)
+              : ('products.deposits.deposit' | translate)
+          }}
+        </p>
+        <div class="open_deposit_header">
+          <div class="open_deposit_header__docNum flex-column">
+            <span
+              class="open_deposit_header__secondary d-flex align-items-baseline">
+              <p
+                class=""
+                [ngStyle]="{
+                  color: !createDepositForm.controls.docNum.errors?.required
+                    ? ''
+                    : '#FF5721'
+                }">
+                {{ 'operations.payment-confirmation.doc-number' | translate }}:
+              </p>
+              <div
+                class="ms-1 open_deposit_header__secondary"
+                *ngIf="
+                  !createDepositForm.controls.docNum.errors?.required &&
+                  !isEditDocNum
+                ">
+                №{{ createDepositForm.controls.docNum.value }}
+              </div>
+              <input
+                *ngIf="isEditDocNum"
+                formControlName="docNum"
+                maxlength="9"
+                class="form-control open_deposit_header__docNumber"
+                [ngClass]="displayFieldClass('docNum')"
+                obDocNumberPayment
+                (focusout)="editDocNum()"
+                id="docNum"
+                (docNumChange)="docNumChange($event)"
+                (keyup)="onDocNumKeyUp($event)" />
+            </span>
+            <div class="align-self-start">
+              <div class="open_deposit__docNum-error-container">
+                <ob-field-error-display
+                  *ngIf="
+                    createDepositForm.controls.docNum.errors?.maxLengthExceeded
+                  "
+                  [displayError]="isFieldInvalid('docNum')"
+                  errorMsg="{{ 'error.documentNum-payments' | translate }}">
+                </ob-field-error-display>
+                <ob-field-error-display
+                  *ngIf="createDepositForm.controls.docNum.errors?.pattern"
+                  [displayError]="isFieldInvalid('docNum')"
+                  errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+                </ob-field-error-display>
+              </div>
+            </div>
+          </div>
+          <div class="open_deposit_header__docNum">
+            <img
+              *ngIf="
+                !isEditDocNum &&
+                createDepositForm.controls.docNum.errors?.required
+              "
+              src="assets/icons/ic_edit1.svg"
+              alt="change-icon"
+              (click)="editDocNum()" />
+            <img
+              *ngIf="
+                !isEditDocNum &&
+                !createDepositForm.controls.docNum.errors?.required
+              "
+              src="assets/icons/ic_edit.svg"
+              alt="change-icon"
+              (click)="editDocNum()" />
+            <img
+              *ngIf="isEditDocNum"
+              src="assets/icons/ic_check_mark.svg"
+              alt="change-icon"
+              (click)="editDocNum()" />
+          </div>
+          <div class="open_deposit_header__docNum">
+            <span class="open_deposit_header__secondary">
+              {{ 'operations.default.createDate' | translate }}
+            </span>
+            <span class="open_deposit_header__main">{{
+              prefill?.docDate.split('-').reverse().join('.')
+            }}</span>
+          </div>
+        </div>
+        <div class="row mb_15">
+          <div
+            class="col-dt-6 col-tb-6 col-mb-12"
+            id="bootstrap-overrides-transfer-from">
+            <ng-select
+              formControlName="selectedAccount"
+              class="custom-select account-withdraw"
+              [clearable]="false"
+              [searchable]="false"
+              required
+              dropdownPosition="bottom"
+              notFoundText="{{ 'default.not_found' | translate }}"
+              placeholder="{{ 'operations.transfers.accountFrom' | translate }}"
+              loadingText="{{ 'default.loading' | translate }}..."
+              [loading]="isAccountsLoading"
+              id="selectedAccount"
+              [readonly]="isAccountsLoading"
+              (change)="onAccChange($event)"
+              [ngClass]="displayFieldClass('selectedAccount')">
+              <ng-option *ngFor="let item of accountList" [value]="item.iban">
+                <ob-select-account
+                  [description]="item.iban"
+                  [title]="item.actualBalance"
+                  [icon]="getIcon(item.currency)"
+                  [currency]="item.currency"></ob-select-account>
+              </ng-option>
+            </ng-select>
+            <ob-field-error-display
+              *ngIf="
+                createDepositForm.controls.selectedAccount.errors?.required
+              "
+              [displayError]="isFieldInvalid('selectedAccount')"
+              errorMsg="{{ 'error.account_not_selected' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <div class="col-dt-6 col-tb-6 col-mb-12">
+            <div class="form-floating">
+              <input
+                formControlName="amount"
+                type="text"
+                class="form-control base-input amount-input"
+                id="amount"
+                placeholder="{{
+                  'products.deposits.depositAmount' | translate
+                }}"
+                [ngClass]="displayFieldClass('amount')"
+                mask="separator.2"
+                suffix=" ₸"
+                thousandSeparator=" "
+                separatorLimit="999999999999999999"
+                autocomplete="off" />
+              <label for="amount">{{
+                'products.deposits.depositAmount' | translate
+              }}</label>
+              <div class="put-all-btn" (click)="putAllAmount()">
+                {{ 'products.deposits.putAll' | translate }}
+              </div>
+            </div>
+            <ob-field-error-display
+              *ngIf="createDepositForm.controls.amount.errors?.required"
+              [displayError]="isFieldInvalid('amount')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="insufficientFunds && !isFieldInvalid('amount')"
+              [displayError]="insufficientFunds && !isFieldInvalid('amount')"
+              errorMsg="{{ 'error.amount' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="createDepositForm.controls.amount.errors?.depositMinAmount"
+              [displayError]="isFieldInvalid('amount')"
+              errorMsg="{{ 'error.depositMinAmount' | translate }} {{
+                minAmount
+              }} ₸">
+            </ob-field-error-display>
+          </div>
+        </div>
+        <div class="row mb_24">
+          <div class="col-12">
+            <div class="d-flex flex-column">
+              <div class="col-dt-12 col-tb-12 col-mb-12">
+                <div class="form-floating" id="sliderInput">
+                  <input
+                    type="text"
+                    class="form-control base-input slider__input"
+                    id="rangeInput"
+                    formControlName="depositTermInput"
+                    (blur)="checkDepositTermInput()"
+                    maxlength="2"
+                    autocomplete="off"
+                    (keypress)="handleKeyPress($event)"
+                    oninput="
+                          (Number(this.value) === 0 && this.value) ? this.value = 1: '';
+                          (!isNaN(Number(this.value)) && Number(this.value) !== 0) ? 
+                            range.parentNode.style.setProperty('--value',this.value):''" />
+                  <label for="floatingInput">{{
+                    'products.deposits.term' | translate
+                  }}</label>
+                  <div class="slider_date__container">
+                    <p class="slider_date">
+                      {{ 'default.till' | translate }}
+                      {{
+                        getDepositEndDate(
+                          createDepositForm.controls.depositTermInput.value
+                        )
+                      }}
+                    </p>
+                  </div>
+                  <div
+                    class="slider_val__container"
+                    [ngStyle]="getTextDaysPosition()">
+                    <p class="slider_val">
+                      {{
+                        getTextDays(
+                          createDepositForm.controls.depositTerm.value
+                        )
+                      }}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <div
+                class="range-slider"
+                style="--min: 0; --max: 29; --step: 1; --value: 1">
+                <input
+                  id="range"
+                  type="range"
+                  min="0"
+                  max="29"
+                  step="1"
+                  value="1"
+                  autocomplete="off"
+                  formControlName="depositTerm"
+                  (blur)="checkDepositTermInput()"
+                  oninput="
+                      (Number(this.value) === 0 && this.value) ? this.value = 1: '';
+                      range.parentNode.style.setProperty('--value', this.value);" />
+                <div class="range-slider__progress"></div>
+              </div>
+            </div>
+            <p class="text_term">
+              {{ 'products.deposits.termRange' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="row mb_32">
+          <div class="col-dt-6 col-tb-6 col-mb-12 mb_16">
+            <div class="form-floating">
+              <input
+                formControlName="depositRate"
+                type="text"
+                class="form-control base-input"
+                id="depositRate"
+                placeholder="{{ 'products.deposits.nominalRate' | translate }}"
+                [ngClass]="displayFieldClass('depositRate')"
+                mask="separator.2"
+                suffix=" %"
+                separatorLimit="99"
+                [readonly]="!createDepositForm.controls.isIndividualRate.value"
+                autocomplete="off" />
+              <label for="depositRate">{{
+                'products.deposits.nominalRate' | translate
+              }}</label>
+            </div>
+            <ob-field-error-display
+              *ngIf="createDepositForm.controls.depositRate.errors?.required"
+              [displayError]="isFieldInvalid('depositRate')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="
+                createDepositForm.controls.depositRate.errors?.zeroSum &&
+                !createDepositForm.controls.depositRate.errors?.required
+              "
+              [displayError]="isFieldInvalid('depositRate')"
+              errorMsg="{{ 'error.zeroDepositRate' | translate }}">
+            </ob-field-error-display>
+          </div>
+          <div class="row flex-column">
+            <div
+              class="open_deposit-general-term col-dt-6 col-tb-6 col-mb-12 mt-16">
+              <div class="currency-transfer-general-term__toggle">
+                <div class="material-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    id="isIndividualRate"
+                    (change)="onIndividualRateChange()"
+                    formControlName="isIndividualRate" />
+                  <label
+                    class="form-check-label"
+                    for="isIndividualRate"></label>
+                </div>
+              </div>
+              <div class="open_deposit-general-term__text">
+                <p>
+                  {{ 'products.deposits.individualRate' | translate }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb_16">
+          <div class="col-dt-12 col-tb-12 col-mb-12">
+            <p class="text_bid mb_4">
+              {{ 'products.deposits.rewardAmount' | translate }}
+            </p>
+            <div class="text-reward__container">
+              <ob-loader [loading]="isRewardLoading">
+                <p class="text_bid_val">
+                  {{ rewardAmount > 0 ? '+ ' : ''
+                  }}{{ getFormattedAmount(rewardAmount) | amountPipe }} ₸
+                </p>
+              </ob-loader>
+            </div>
+          </div>
+        </div>
+        <div class="row mb_12">
+          <p class="text_kpn">
+            {{ 'products.deposits.taxRate' | translate }}:
+            <span class="text_kpn_val">{{ taxRate || 0 }}%</span>
+          </p>
+        </div>
+        <div class="row mb_17">
+          <p class="text_kpn">
+            {{ 'products.deposits.rewardInfo' | translate }}
+          </p>
+        </div>
+      </div>
+      <div class="open_deposit_footer">
+        <button class="open_deposit_footer_btn" (click)="fieldsValidation()">
+          <p>{{ 'accounts.addDeposit' | translate }}</p>
+          <div *ngIf="sendLoading" class="loader"></div>
+        </button>
+      </div>
+    </div>
+    <div class="col-smdt-12 col-dt-4 col-lgdt-3">
+      <div class="open_deposit_offer mb_24">
+        <p class="open_deposit_offer_title mb_24">
+          {{ 'products.deposits.depositSuggestion' | translate }}
+        </p>
+        <div class="open_deposit_offer_wrapper mb_24">
+          <img
+            src="assets/icons/deposit_currency.svg"
+            class="open_deposit_offer_img" />
+          <div class="ml_12">
+            <p class="open_deposit_offer_key">
+              {{ 'products.deposits.depositCurrency' | translate }}
+            </p>
+            <p class="open_deposit_offer_value">
+              {{ 'default.tenge' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="open_deposit_offer_wrapper mb_24">
+          <img
+            src="assets/icons/deposit_replenishment_withdrawal.svg"
+            class="open_deposit_offer_img" />
+          <div class="ml_12">
+            <p class="open_deposit_offer_key">
+              {{ 'products.deposits.depositInfoTitle2' | translate }}
+            </p>
+            <p class="open_deposit_offer_value">
+              {{ 'products.deposits.depositInfoText2' | translate }}
+            </p>
+          </div>
+        </div>
+        <div class="open_deposit_offer_wrapper">
+          <img
+            src="assets/icons/deposit_term.svg"
+            class="open_deposit_offer_img" />
+          <div class="ml_12">
+            <p class="open_deposit_offer_key">
+              {{ 'products.deposits.depositTerm' | translate }}
+            </p>
+            <p class="open_deposit_offer_value">
+              {{ 'products.deposits.termRange' | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="open_deposit_offer">
+        <p class="open_deposit_offer_title mb_16">
+          {{ 'default.information' | translate }}
+        </p>
+        <div class="open_deposit_info">
+          <div
+            class="d-flex flex-row justify-content-between open_deposit_info__click_area"
+            (click)="showKpnInfo = !showKpnInfo">
+            <p class="open_deposit_info__title">
+              {{ 'products.deposits.kpnInfoTitle' | translate }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                open_deposit_info__arrow_down: showKpnInfo === false,
+                open_deposit_info__arrow_up: showKpnInfo === true
+              }" />
+          </div>
+          <div
+            class="open_deposit_info__container"
+            *ngIf="showKpnInfo === true">
+            <p class="open_deposit_info__text mb-1">
+              {{ 'products.deposits.kpnInfoText1' | translate }}
+            </p>
+            <p class="open_deposit_info__text mb-1">
+              {{ 'products.deposits.kpnInfoText2' | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

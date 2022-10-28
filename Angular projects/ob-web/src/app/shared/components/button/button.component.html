@@ -1,0 +1,9 @@
+<button
+  type="button"
+  class="{{ className }}"
+  (click)="click()"
+  [disabled]="disabled"
+  type="type">
+  {{ label }}
+  <div *ngIf="loading" class="loader"></div>
+</button>

@@ -1,0 +1,18 @@
+<table class="table">
+  <thead>
+  <tr>
+    <th *ngFor="let day of weekDays">{{ day }}</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let week of weeks">
+    <td *ngFor="let dayObj of week">
+      <div class="cell">
+        <p class="cell_item">
+          {{dayObj}}
+        </p>
+      </div>
+    </td>
+  </tr>
+  </tbody>
+</table>

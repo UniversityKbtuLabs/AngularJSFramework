@@ -1,0 +1,97 @@
+<div class="d-flex flex-column">
+  <div class="fx_modal_header">
+    <p class="fx_modal_header_title">Изменить торговый сигнал</p>
+    <img
+      src="assets/icons/close_calendar.svg"
+      class="fx_modal_header_close"
+      (click)="closeModal()" />
+  </div>
+  <div class="fx_modal_body" [formGroup]="editSignalForm">
+    <div class="currency_section">
+      <div class="currency_section_sell">
+        <div>
+          <p class="currency_section_sell_title">Продажа банком</p>
+        </div>
+        <div>
+          <img
+            src="assets/icons/usdflag.svg"
+            class="currency_section_sell_img" />
+          <p class="currency_section_sell_text">USD</p>
+        </div>
+      </div>
+      <div class="currency_section_switch">
+        <img src="assets/icons/add_signal_swich.svg" />
+      </div>
+      <div class="currency_section_buy">
+        <div>
+          <p class="currency_section_buy_title">Покупка банком</p>
+        </div>
+        <div>
+          <img
+            src="assets/icons/kztflag.svg"
+            class="currency_section_buy_img" />
+          <p class="currency_section_buy_text">KZT</p>
+        </div>
+      </div>
+    </div>
+
+    <!--                Ожидаемая цена-->
+    <div class="expected_price">
+      <div class="form-floating">
+        <input
+          formControlName="expectedAmount"
+          type="text"
+          class="form-control base-input a2a_amount"
+          id="paymentDebitPurpose"
+          placeholder="Ожидаемая цена"
+          [ngClass]="displayFieldClass('expectedAmount')"
+          mask="separator.2"
+          thousandSeparator=" "
+          suffix="USD"
+          separatorLimit="999999999999999999"
+          autocomplete="off" />
+        <label for="paymentDebitPurpose"> Ожидаемая цена </label>
+      </div>
+    </div>
+    <!--                Ожидаемая цена-->
+
+    <!--    Дата отслеживания-->
+    <div class="d-flex flex-row">
+      <input
+        type="text"
+        class="form-control calendar_input"
+        bsDatepicker
+        placement="bottom"
+        [ngClass]="{ 'invalid-period': periodError }"
+        [bsConfig]="{
+          maxDate: maxDate,
+          customTodayClass: 'custom-today-class',
+          isAnimated: true,
+          dateInputFormat: 'DD.MM.YYYY',
+          startView: 'day',
+          minMode: 'day',
+          adaptivePosition: true,
+          containerClass: 'calendar',
+          showWeekNumbers: false
+        }"
+        placeholder="Дата отслеживания"
+        [(ngModel)]="trackingDate"
+        [ngModelOptions]="{ standalone: true }"
+        (ngModelChange)="changeDate($event)"
+        #dp1="bsDatepicker" />
+      <span class="calendar_icon" (click)="dp1.toggle()">
+        <img src="./assets/icons/ic_calendar2.svg" alt="" />
+      </span>
+    </div>
+    <!--    Дата отслеживания-->
+
+    <p class="notification_text">
+      Мы уведомим вас по мере достижения Вашего ожидаемого курса
+    </p>
+  </div>
+  <div class="fx_modal_footer">
+    <button class="fx_modal_footer_btn">
+      <p>Сохранить изменения</p>
+    </button>
+  </div>
+</div>

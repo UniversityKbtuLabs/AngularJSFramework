@@ -1,0 +1,50 @@
+<div class="credit_payment">
+  <ob-loader [loading]="creditPaymentInfoLoading">
+    <p class="text_next">
+      {{ 'acccountSavings.credit.nextPayment' | translate }}
+      {{ getNextPaymentDate() }} :
+      {{ getFormattedActualBalance(getNextPaymentAmount()) }}
+      {{ getCurrency(data?.valCode) }}
+    </p>
+    <div class="d-flex flex-row justify-content-between mt_24">
+      <p class="text_term">
+        {{ 'acccountSavings.credit.term' | translate }}
+        {{ data?.allPaymentsCount }}
+        {{ 'acccountSavings.credit.months' | translate }}
+      </p>
+      <p class="text_term">
+        {{ 'acccountSavings.credit.payed' | translate }}
+        {{ data?.payedPaymentCount }}/{{ data?.allPaymentsCount }}
+        {{ 'acccountSavings.credit.payments' | translate }}
+      </p>
+    </div>
+    <div class="d-flex flex-row w-100 mt_16">
+      <div
+        class="line_green"
+        [ngStyle]="{ width: getPayedPercent() + '%' }"
+        [ngClass]="{ 'br-50': getPayedPercent() === 100 }"></div>
+      <div
+        class="line_grey"
+        [ngStyle]="{ width: getPendingPercent() + '%' }"
+        [ngClass]="{ 'br-50': getPendingPercent() === 100 }"></div>
+    </div>
+    <div class="d-flex flex-row justify-content-between w-100 mt_24">
+      <p class="text_repaid">
+        {{ 'acccountSavings.credit.payed' | translate }}
+      </p>
+      <p class="text_repaid">
+        {{ 'acccountSavings.credit.creditSum' | translate }}
+      </p>
+    </div>
+    <div class="d-flex flex-row justify-content-between w-100 mt_4">
+      <p class="text_amount">
+        {{ getFormattedActualBalance(this.data?.payedOD) }}
+        {{ getCurrency(data?.valCode) }}
+      </p>
+      <p class="text_amount">
+        {{ getFormattedActualBalance(data?.sdok) }}
+        {{ getCurrency(data?.valCode) }}
+      </p>
+    </div>
+  </ob-loader>
+</div>

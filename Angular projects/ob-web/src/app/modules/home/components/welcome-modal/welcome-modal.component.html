@@ -1,0 +1,127 @@
+<div *ngIf="isContact" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content contact">
+      <div class="contact-header">
+        {{ 'home.contacts.title' | translate }}
+        <div class="contact-header_btn_close">
+          <img src="assets/icons/ic_cancel.svg" (click)="cancel()" />
+        </div>
+      </div>
+      <div class="contact-body">
+        <div *ngIf="false" class="contact-item">
+          <img src="./assets/icons/contact_delivery.svg" alt="" />
+          <div class="contact-item-inner">
+            <p class="contact-item-inner__subtitle">
+              {{ 'home.contacts.managerHeading' | translate }}
+            </p>
+            <a href="tel:+77273752525" class="contact-item-inner__phone"
+              >+ 7 (727) 375 25 25 вн. 45078</a
+            >
+          </div>
+        </div>
+        <div *ngIf="false" class="contact-item">
+          <img src="./assets/icons/contact_currency.svg" alt="" />
+          <div class="contact-item-inner">
+            <p class="contact-item-inner__subtitle">
+              {{ 'home.contacts.currencyHeading' | translate }}
+            </p>
+            <a href="tel:+77272585466" class="contact-item-inner__phone"
+              >+ 7 (727) 258 54 66</a
+            >
+          </div>
+        </div>
+        <div class="contact-item">
+          <img src="./assets/icons/contact_tech.svg" alt="" />
+          <div class="contact-item-inner">
+            <p class="contact-item-inner__subtitle">
+              {{ 'home.contacts.technicHeading' | translate }}
+            </p>
+            <a href="tel:9595" class="contact-item-inner__phone">
+              8 (727) 259 72 27
+              {{ 'home.contacts.mob' | translate }}. 9595
+              <br />
+              8 8000 800 777 ({{ 'home.contacts.free' | translate }})</a
+            >
+          </div>
+        </div>
+        <div class="contact-item">
+          <img src="./assets/icons/contact_emailto.svg" alt="" />
+          <div class="contact-item-inner">
+            <p class="contact-item-inner__subtitle">
+              {{ 'home.contacts.bankEmailHeading' | translate }}
+            </p>
+            <a
+              href="mailto:online@halykbank.kz"
+              class="contact-item-inner__phone">
+              online@halykbank.kz
+            </a>
+          </div>
+        </div>
+
+        <div *ngIf="false" class="contact-item">
+          <img src="./assets/icons/contact_chat.svg" alt="" />
+          <div class="contact-item-inner">
+            <p class="contact-item-inner__title">
+              {{ 'home.contacts.chatHeading' | translate }}
+            </p>
+          </div>
+        </div>
+        <div *ngIf="false" class="contact-item">
+          <img src="./assets/icons/contact_mail.svg" alt="" />
+          <div class="contact-item-inner">
+            <a
+              href="mailto:halykbank@gmail.com"
+              class="contact-item-inner__title"
+              >{{ 'home.contacts.mailHeading' | translate }}</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="!isContact" class="modal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title">
+          {{ title | translate }}
+        </h4>
+        <button
+          type="button"
+          class="close"
+          aria-label="Close"
+          (click)="bsModalRef.hide()">
+          <span aria-hidden="true" class="icon icon_delete"></span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="card lesson-border">
+          <div class="card-body">
+            <p class="card-text">
+              {{ info | translate }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <div *ngIf="!endFlag" class="flex">
+          <button class="_btn btn-basic" (click)="bsModalRef.hide()">
+            {{ 'home.welcome.welcome-modal.btnOne' | translate }}
+          </button>
+          <button class="_btn btn-main" (click)="continue()">
+            {{ 'home.welcome.welcome-modal.btnTwo' | translate }}
+          </button>
+        </div>
+        <button
+          class="_btn btn-main"
+          (click)="bsModalRef.hide()"
+          *ngIf="endFlag">
+          {{ 'home.welcome.welcome-modal.btnClose' | translate }}
+        </button>
+      </div>
+      <div></div>
+    </div>
+  </div>
+</div>

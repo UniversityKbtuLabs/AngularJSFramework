@@ -1,0 +1,65 @@
+<div class="table_container">
+  <table>
+    <thead>
+      <tr>
+        <ng-container *ngFor="let column of tableColumns">
+          <th scope="col">
+            {{ column.label | translate | uppercase }}
+          </th>
+        </ng-container>
+      </tr>
+    </thead>
+
+    <tbody>
+      <ng-container *ngFor="let item of rowData">
+        <tr class="clickable">
+          <ng-container>
+            <td>
+              <div>
+                <p class="table-text__bold">
+                  {{ item?.inoPartnerName }}
+                </p>
+                <p class="table-text__sub">
+                  {{
+                    item?.allPaymentsSum > 0
+                      ? item?.allPaymentsSum
+                      : 'Нет платежей'
+                  }}
+                  {{
+                    item?.allPaymentsSum > 0
+                      ? helperService.formatCurrency(item?.contractCurrency)
+                      : ''
+                  }}
+                </p>
+              </div>
+            </td>
+            <td>
+              <div class="table-text">
+                <p class="mb2">
+                  {{ item?.contractNumber }}
+                </p>
+                <p>{{ item?.unk }}</p>
+              </div>
+            </td>
+            <td>
+              <div class="table-text">
+                {{ item?.makeDate }}
+              </div>
+            </td>
+            <td>
+              <div class="table-text">
+                {{ item?.lastDate }}
+              </div>
+            </td>
+            <td>
+              <div class="table-text__bold">
+                {{ item?.contractSum }}
+                {{ helperService.formatCurrency(item?.contractCurrency) }}
+              </div>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>

@@ -1,0 +1,86 @@
+<div class="row operations-wrap">
+  <div class="operations-back-button">
+    <ob-back-button [currentPage]="'home_operations'"></ob-back-button>
+  </div>
+
+  <div class="col-dt-9 col-smdt-9 col-tb-12 col-mb-12">
+    <div class="operations">
+      <p class="operations-title">
+        {{ 'default.signingDocuments' | translate }}
+      </p>
+
+      <ob-account-history [listType]="'documents-signing'"></ob-account-history>
+    </div>
+  </div>
+
+  <div class="col-dt-3 col-smdt-3 col-tb-12 col-mb-12">
+    <div class="operations-signing">
+      <p class="operations-title">
+        {{ 'default.selectDocuments' | translate }}
+      </p>
+
+      <div class="operations-info">
+        <div
+          class="operations-info__text"
+          [ngClass]="{
+            'operations-amount__wrapper mb-20':
+              selectedDocuments.length > 0 && getTotalSum().length > 0,
+            mb_4: docsList.length === 0
+          }">
+          {{ 'default.selected' | translate }}:
+          <span
+            class="operations-amount"
+            *ngIf="selectedDocuments?.length === 0"
+            >0</span
+          >
+          <span class="operations-amount" *ngIf="docsList.length > 0"
+            >{{ docsList.length }}
+            {{ ' ' + (getNouns(docsList.length, 'operations') | translate) }}
+          </span>
+          <span class="operations-amount" *ngIf="productsList.length > 0"
+            >{{ productsList.length }}
+            {{
+              ' ' + (getNouns(productsList.length, 'products') | translate)
+            }}</span
+          >
+        </div>
+
+        <div
+          class="operations-info__text"
+          *ngIf="getTotalSum().length > 0 || selectedDocuments?.length === 0">
+          <div
+            [ngClass]="{
+              'operations-amount__wrapper': selectedDocuments?.length > 0
+            }">
+            {{ 'default.selectedAmount' | translate }}:
+            <span class="operations-amount" *ngIf="getTotalSum().length < 1">{{
+              0
+            }}</span>
+            <span class="operations-amount" *ngFor="let total of getTotalSum()">
+              {{ helperService.formatAmount(amountList[total]) }}
+              {{ helperService.formatCurrency(total) }}
+            </span>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="emptySelectedDocuments" class="error-text mb-24">
+        {{ 'error.emptySelectedDocuments' | translate }}
+      </div>
+
+      <!--      [disabled]="selectedDocuments?.length < 1"-->
+      <ob-button
+        [label]="'default.signing' | translate"
+        [className]="
+          'btn btn-success btn-default height-medium br-12 mb-3 w-100'
+        "
+        (click)="openModal()"></ob-button>
+
+      <!-- <ob-button
+        [label]="'default.delete' | translate"
+        [className]="'btn-orange height-medium br-12 w-100'"
+        [disabled]="selectedDocuments?.length < 1"
+        [onClick]="deleteDocuments"
+      ></ob-button> -->
+    </div>
+  </div>
+</div>

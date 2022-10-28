@@ -1,0 +1,702 @@
+<ng-template [ngIf]="listType === 'account-statements'">
+  <div class="account-statements-download">
+    <p class="title">
+      {{
+        accStatementTitle
+          ? accStatementTitle[accountType]
+          : ('operations.default.productStatement' | translate)
+      }}
+    </p>
+    <ng-template
+      [ngIf]="
+        accountType === 'account' ||
+        accountType === 'card' ||
+        accountType === 'card-account'
+      ">
+      <p class="title-download" (click)="fetchStatements()">
+        {{ 'operations.default.downloadStatements' | translate }}
+      </p>
+    </ng-template>
+  </div>
+</ng-template>
+
+<ng-template [ngIf]="accountType !== 'card' && accountType !== 'card-account'">
+  <ob-tabs
+    *ngIf="listType !== 'documents-signing'"
+    [tabs]="statusTabs"
+    (obSelected)="onStatusChange($event)"></ob-tabs>
+</ng-template>
+
+<!-- Блок фильтров выписки -->
+<ng-template [ngIf]="listType === 'account-statements'">
+  <div class="discharge-filter">
+    <div
+      class="{{
+        accountType === 'account'
+          ? 'discharge-filter-block'
+          : 'd-flex justify-content-between align-items-baseline discharge-filter-block'
+      }}">
+      <div class="discharge-filter-top">
+        <div class="discharge-filter-top-left">
+          <!-- Получатель -->
+          <ng-template [ngIf]="accountType === 'account'">
+            <div style="position: relative">
+              <input
+                type="text"
+                placeholder="{{ 'operations.default.destination' | translate }}"
+                class="form-control discharge-input search"
+                autocomplete="off"
+                [formControl]="searchString"
+                id="searchString" />
+              <span class="icon-search">
+                <img src="./assets/icons/ic_search.svg" alt="" />
+              </span>
+            </div>
+          </ng-template>
+          <!-- Получатель -->
+
+          <!-- Период документа -->
+          <div class="discharge-filter-period">
+            <div style="position: relative">
+              <input
+                type="text"
+                class="form-control calendar_input"
+                bsDatepicker
+                placement="bottom"
+                [ngClass]="{ 'invalid-period': periodError }"
+                [bsConfig]="{
+                  maxDate: maxDate,
+                  customTodayClass: 'custom-today-class',
+                  isAnimated: true,
+                  dateInputFormat: 'DD.MM.YYYY',
+                  startView: 'day',
+                  minMode: 'day',
+                  adaptivePosition: true,
+                  containerClass: 'calendar',
+                  showWeekNumbers: false
+                }"
+                placeholder="{{ 'default.calendar-date' | translate }}"
+                [(ngModel)]="startDate"
+                (ngModelChange)="changeDate($event, 'startDate')"
+                #dp1="bsDatepicker" />
+              <span class="icon-calendar" (click)="dp1.toggle()">
+                <img src="./assets/icons/ic_calendar2.svg" alt="" />
+              </span>
+            </div>
+            <div style="position: relative">
+              <input
+                type="text"
+                class="form-control calendar_input"
+                bsDatepicker
+                placement="bottom"
+                [ngClass]="{ 'invalid-period': periodError }"
+                [bsConfig]="{
+                  customTodayClass: 'custom-today-class',
+                  maxDate: maxDate,
+                  isAnimated: true,
+                  dateInputFormat: 'DD.MM.YYYY',
+                  startView: 'day',
+                  minMode: 'day',
+                  adaptivePosition: true,
+                  containerClass: 'calendar',
+                  showWeekNumbers: false
+                }"
+                [(ngModel)]="endDate"
+                placeholder="{{ 'default.calendar-date' | translate }}"
+                (ngModelChange)="changeDate($event, 'endDate')"
+                #dp2="bsDatepicker" />
+              <span class="icon-calendar" (click)="dp2.toggle()">
+                <img src="./assets/icons/ic_calendar2.svg" alt="" />
+              </span>
+            </div>
+          </div>
+          <!-- Период документа -->
+        </div>
+        <!-- Все фильтры -->
+        <ng-template
+          [ngIf]="
+            listType === 'account-statements' && accountType === 'account'
+          ">
+          <div class="discharge-filter-top-right">
+            <div
+              *ngIf="!showAllFilters"
+              class="d-flex top-reset"
+              (click)="resetFilter()">
+              <p class="all-filters__title">
+                {{ 'default.reset' | translate }}
+              </p>
+            </div>
+            <div class="d-flex" (click)="showAllFilters = !showAllFilters">
+              <p class="all-filters__title">
+                {{
+                  (!showAllFilters ? 'default.allFilters' : 'default.hide')
+                    | translate
+                }}
+              </p>
+              <span
+                [ngClass]="
+                  !showAllFilters
+                    ? 'all-filters__icon-top'
+                    : 'all-filters__icon-bottom'
+                ">
+                <img
+                  src="./assets/icons/PaginationGreen.svg"
+                  alt="open-close-arrow" />
+              </span>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+      <div
+        *ngIf="!showAllFilters"
+        class="d-flex bottom-reset"
+        (click)="resetFilter()">
+        <p class="all-filters__title">
+          {{ 'default.reset' | translate }}
+        </p>
+      </div>
+
+      <div *ngIf="showAllFilters" class="discharge-filter-bottom">
+        <div class="all-filters">
+          <!-- Вид операции -->
+          <div *ngIf="this.listType !== 'account-statements'">
+            <ng-select
+              [(ngModel)]="operationType"
+              class="discharge-input"
+              [searchable]="false"
+              [clearable]="false"
+              placeholder="{{ 'default.all' | translate }}"
+              (ngModelChange)="onOpTypeChange($event)">
+              <ng-option *ngFor="let tab of operationTabs" [value]="tab">
+                <div>
+                  {{ tab.name | translate }}
+                </div>
+              </ng-option>
+            </ng-select>
+          </div>
+          <!-- Вид операции -->
+          <!-- Сумма от -->
+          <ng-template
+            [ngIf]="
+              listType === 'account-statements' && accountType === 'account'
+            ">
+            <div>
+              <input
+                type="text"
+                class="form-control discharge-input"
+                [formControl]="amountFrom"
+                id="searchString"
+                autocomplete="off"
+                mask="separator.2"
+                thousandSeparator=" "
+                separatorLimit="999999999999999999"
+                placeholder="{{ 'default.amountFrom' | translate }}" />
+            </div>
+            <!-- Сумма от -->
+
+            <!-- Сумма до -->
+            <div>
+              <input
+                type="text"
+                class="form-control discharge-input"
+                [formControl]="amountTo"
+                id="searchString"
+                autocomplete="off"
+                mask="separator.2"
+                thousandSeparator=" "
+                separatorLimit="999999999999999999"
+                placeholder="{{ 'default.amountTo' | translate }}" />
+            </div>
+          </ng-template>
+          <!-- Сумма до -->
+
+          <!-- ИИН/БИН -->
+          <!-- <div style="position: relative">
+          <span class="icon__all-search">
+            <img src="./assets/icons/ic_search.svg" alt="" />
+          </span>
+          <input
+            type="text"
+            class="form-control discharge-input search"
+            [formControl]="searchString"
+            id="searchString"
+            mask="0*"
+            [patterns]="digits"
+            maxlength="12"
+            placeholder="{{ 'default.idn' | translate }}"
+          />
+        </div> -->
+          <!-- ИИН/БИН -->
+
+          <!-- Номер документа -->
+          <div
+            style="position: relative"
+            *ngIf="
+              listType !== 'account-statements' ||
+              (listType === 'account-statements' &&
+                accountType !== 'card' &&
+                accountType !== 'cards' &&
+                accountType !== 'card-account')
+            ">
+            <!-- <input type="text" class="form-control all-filters__input" /> -->
+            <span class="icon__all-search">
+              <img src="./assets/icons/ic_search.svg" alt="" />
+            </span>
+            <input
+              type="text"
+              class="form-control discharge-input search"
+              [formControl]="documentNumber"
+              autocomplete="off"
+              id="searchString"
+              maxlength="9"
+              placeholder="№{{ 'default.documenta' | translate }}" />
+          </div>
+          <!-- Номер документа -->
+        </div>
+        <div class="flex align-itmes-center h-18">
+          <!-- Сбросить -->
+          <ob-button
+            [label]="'default.reset' | translate"
+            [className]="'btn-secondary label-bold br-12 h-18 w-100'"
+            [onClick]="resetFilter"></ob-button>
+          <!-- Сбросить -->
+        </div>
+      </div>
+      <!-- Все фильтры -->
+    </div>
+  </div>
+</ng-template>
+<!-- Блок фильтров выписки -->
+
+<!-- Блок фильтров ленты операций и доков на подпись -->
+<ng-template
+  [ngIf]="
+    listType !== 'account-statements' && listType !== 'product-statements'
+  ">
+  <div class="discharge-filter">
+    <div class="discharge-filter-block">
+      <div class="discharge-filter-top">
+        <div class="discharge-filter-top-left">
+          <!-- Получатель -->
+          <div style="position: relative">
+            <input
+              type="text"
+              placeholder="{{ 'operations.default.destination' | translate }}"
+              class="form-control discharge-input search"
+              autocomplete="off"
+              [formControl]="searchString"
+              id="searchString" />
+            <span class="icon-search">
+              <img src="./assets/icons/ic_search.svg" alt="" />
+            </span>
+          </div>
+          <!-- Получатель -->
+
+          <!-- Период документа -->
+          <div class="discharge-filter-period">
+            <div style="position: relative">
+              <input
+                type="text"
+                class="form-control calendar_input"
+                bsDatepicker
+                placement="bottom"
+                [ngClass]="{ 'invalid-period': periodError }"
+                [bsConfig]="{
+                  maxDate: maxDate,
+                  customTodayClass: 'custom-today-class',
+                  isAnimated: true,
+                  dateInputFormat: 'DD.MM.YYYY',
+                  startView: 'day',
+                  minMode: 'day',
+                  adaptivePosition: true,
+                  containerClass: 'calendar',
+                  showWeekNumbers: false
+                }"
+                placeholder="{{ 'default.calendar-date' | translate }}"
+                [(ngModel)]="startDate"
+                (ngModelChange)="changeDate($event, 'startDate')"
+                #dp1="bsDatepicker" />
+              <span class="icon-calendar" (click)="dp1.toggle()">
+                <img src="./assets/icons/ic_calendar2.svg" alt="" />
+              </span>
+            </div>
+            <div style="position: relative">
+              <input
+                type="text"
+                class="form-control calendar_input"
+                bsDatepicker
+                placement="bottom"
+                [ngClass]="{ 'invalid-period': periodError }"
+                [bsConfig]="{
+                  customTodayClass: 'custom-today-class',
+                  maxDate: maxDate,
+                  isAnimated: true,
+                  dateInputFormat: 'DD.MM.YYYY',
+                  startView: 'day',
+                  minMode: 'day',
+                  adaptivePosition: true,
+                  containerClass: 'calendar',
+                  showWeekNumbers: false
+                }"
+                [(ngModel)]="endDate"
+                placeholder="{{ 'default.calendar-date' | translate }}"
+                (ngModelChange)="changeDate($event, 'endDate')"
+                #dp2="bsDatepicker" />
+              <span class="icon-calendar" (click)="dp2.toggle()">
+                <img src="./assets/icons/ic_calendar2.svg" alt="" />
+              </span>
+            </div>
+          </div>
+          <!-- Период документа -->
+        </div>
+        <!-- Все фильтры -->
+
+        <div class="discharge-filter-top-right">
+          <div
+            *ngIf="!showAllFilters"
+            class="d-flex top-reset"
+            (click)="resetFilter()">
+            <p class="all-filters__title">
+              {{ 'default.reset' | translate }}
+            </p>
+          </div>
+          <div class="d-flex" (click)="showAllFilters = !showAllFilters">
+            <p class="all-filters__title">
+              {{
+                (!showAllFilters ? 'default.allFilters' : 'default.hide')
+                  | translate
+              }}
+            </p>
+            <span
+              [ngClass]="
+                !showAllFilters
+                  ? 'all-filters__icon-top'
+                  : 'all-filters__icon-bottom'
+              ">
+              <img
+                src="./assets/icons/PaginationGreen.svg"
+                alt="open-close-arrow" />
+            </span>
+          </div>
+          <!-- Получатель -->
+        </div>
+      </div>
+      <div
+        *ngIf="!showAllFilters"
+        class="d-flex bottom-reset"
+        (click)="resetFilter()">
+        <p class="all-filters__title">
+          {{ 'default.reset' | translate }}
+        </p>
+      </div>
+
+      <div *ngIf="showAllFilters" class="discharge-filter-bottom">
+        <div class="all-filters">
+          <!-- Вид операции -->
+          <ng-select
+            [(ngModel)]="operationType"
+            class="discharge-input"
+            [searchable]="false"
+            [clearable]="false"
+            placeholder="{{ 'default.all' | translate }}"
+            (ngModelChange)="onOpTypeChange($event)">
+            <ng-option *ngFor="let tab of operationTabs" [value]="tab">
+              <div>
+                {{ tab.name | translate }}
+              </div>
+            </ng-option>
+          </ng-select>
+          <!-- Вид операции -->
+          <!-- Сумма от -->
+          <div>
+            <input
+              type="text"
+              class="form-control discharge-input"
+              [formControl]="amountFrom"
+              id="searchString"
+              autocomplete="off"
+              mask="separator.2"
+              thousandSeparator=" "
+              separatorLimit="999999999999999999"
+              placeholder="{{ 'default.amountFrom' | translate }}" />
+          </div>
+          <!-- Сумма от -->
+
+          <!-- Сумма до -->
+          <div>
+            <input
+              type="text"
+              class="form-control discharge-input"
+              [formControl]="amountTo"
+              id="searchString"
+              autocomplete="off"
+              mask="separator.2"
+              thousandSeparator=" "
+              separatorLimit="999999999999999999"
+              placeholder="{{ 'default.amountTo' | translate }}" />
+          </div>
+          <!-- Сумма до -->
+
+          <!-- ИИН/БИН -->
+          <!-- <div style="position: relative">
+          <span class="icon__all-search">
+            <img src="./assets/icons/ic_search.svg" alt="" />
+          </span>
+          <input
+            type="text"
+            class="form-control discharge-input search"
+            [formControl]="searchString"
+            id="searchString"
+            mask="0*"
+            [patterns]="digits"
+            maxlength="12"
+            placeholder="{{ 'default.idn' | translate }}"
+          />
+        </div> -->
+          <!-- ИИН/БИН -->
+
+          <!-- Номер документа -->
+          <div
+            style="position: relative"
+            *ngIf="
+              listType !== 'account-statements' ||
+              (listType === 'account-statements' &&
+                accountType !== 'card' &&
+                accountType !== 'cards' &&
+                accountType !== 'card-account')
+            ">
+            <!-- <input type="text" class="form-control all-filters__input" /> -->
+            <span class="icon__all-search">
+              <img src="./assets/icons/ic_search.svg" alt="" />
+            </span>
+            <input
+              type="text"
+              class="form-control discharge-input search"
+              [formControl]="documentNumber"
+              autocomplete="off"
+              id="searchString"
+              maxlength="9"
+              placeholder="№{{ 'default.documenta' | translate }}" />
+          </div>
+          <!-- Номер документа -->
+        </div>
+        <div class="flex align-itmes-center h-18">
+          <!-- Сбросить -->
+          <ob-button
+            [label]="'default.reset' | translate"
+            [className]="'btn-secondary label-bold br-12 h-18 w-100'"
+            [onClick]="resetFilter"></ob-button>
+          <!-- Сбросить -->
+        </div>
+      </div>
+      <!-- Все фильтры -->
+    </div>
+  </div>
+</ng-template>
+<!-- Блок фильтров -->
+<!-- Блок фильтров ленты операций и доков на подпись -->
+
+<!-- Блок фильтров продуктов -->
+<ng-template [ngIf]="listType === 'product-statements'">
+  <div class="discharge-filter">
+    <div class="discharge-filter-block">
+      <div class="discharge-filter-top">
+        <div class="discharge-filter-top-left">
+          <div style="position: relative">
+            <input
+              type="text"
+              placeholder="{{ 'products.default.request' | translate }}"
+              class="form-control discharge-input search"
+              autocomplete="off"
+              [formControl]="searchString"
+              id="searchString" />
+            <span class="icon-search">
+              <img src="./assets/icons/ic_search.svg" alt="" />
+            </span>
+          </div>
+          <div class="discharge-filter-period">
+            <div style="position: relative">
+              <input
+                type="text"
+                class="form-control calendar_input"
+                bsDatepicker
+                placement="bottom"
+                [ngClass]="{ 'invalid-period': periodError }"
+                [bsConfig]="{
+                  maxDate: maxDate,
+                  customTodayClass: 'custom-today-class',
+                  isAnimated: true,
+                  dateInputFormat: 'DD.MM.YYYY',
+                  startView: 'day',
+                  minMode: 'day',
+                  adaptivePosition: true,
+                  containerClass: 'calendar',
+                  showWeekNumbers: false
+                }"
+                placeholder="{{ 'default.calendar-date' | translate }}"
+                [(ngModel)]="startDate"
+                (ngModelChange)="changeDate($event, 'startDate')"
+                #dp1="bsDatepicker" />
+              <span class="icon-calendar" (click)="dp1.toggle()">
+                <img src="./assets/icons/ic_calendar2.svg" alt="" />
+              </span>
+            </div>
+            <div style="position: relative">
+              <input
+                type="text"
+                class="form-control calendar_input"
+                bsDatepicker
+                placement="bottom"
+                [ngClass]="{ 'invalid-period': periodError }"
+                [bsConfig]="{
+                  customTodayClass: 'custom-today-class',
+                  maxDate: maxDate,
+                  isAnimated: true,
+                  dateInputFormat: 'DD.MM.YYYY',
+                  startView: 'day',
+                  minMode: 'day',
+                  adaptivePosition: true,
+                  containerClass: 'calendar',
+                  showWeekNumbers: false
+                }"
+                [(ngModel)]="endDate"
+                placeholder="{{ 'default.calendar-date' | translate }}"
+                (ngModelChange)="changeDate($event, 'endDate')"
+                #dp2="bsDatepicker" />
+              <span class="icon-calendar" (click)="dp2.toggle()">
+                <img src="./assets/icons/ic_calendar2.svg" alt="" />
+              </span>
+            </div>
+          </div>
+        </div>
+        <div class="discharge-filter-top-right">
+          <div
+            *ngIf="!showAllFilters"
+            class="d-flex top-reset"
+            (click)="resetFilter()">
+            <p class="all-filters__title">
+              {{ 'default.reset' | translate }}
+            </p>
+          </div>
+          <div class="d-flex" (click)="showAllFilters = !showAllFilters">
+            <p class="all-filters__title">
+              {{
+                (!showAllFilters ? 'default.allFilters' : 'default.hide')
+                  | translate
+              }}
+            </p>
+            <span
+              [ngClass]="
+                !showAllFilters
+                  ? 'all-filters__icon-top'
+                  : 'all-filters__icon-bottom'
+              ">
+              <img
+                src="./assets/icons/PaginationGreen.svg"
+                alt="open-close-arrow" />
+            </span>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="!showAllFilters"
+        class="d-flex bottom-reset"
+        (click)="resetFilter()">
+        <p class="all-filters__title">
+          {{ 'default.reset' | translate }}
+        </p>
+      </div>
+      <div *ngIf="showAllFilters" class="discharge-filter-bottom">
+        <div class="all-filters">
+          <ng-select
+            [(ngModel)]="operationType"
+            class="discharge-input"
+            [searchable]="false"
+            [clearable]="false"
+            placeholder="{{ 'default.all' | translate }}"
+            (ngModelChange)="onOpTypeChange($event)">
+            <ng-option *ngFor="let tab of operationTabs" [value]="tab">
+              <div>
+                {{ tab.name | translate }}
+              </div>
+            </ng-option>
+          </ng-select>
+        </div>
+        <div class="flex align-itmes-center h-18">
+          <ob-button
+            [label]="'default.reset' | translate"
+            [className]="'btn-secondary label-bold br-12 h-18 w-100'"
+            [onClick]="resetFilter"></ob-button>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+<!-- Блок фильтров продуктов -->
+
+<div [ngClass]="{ 'table-wrapper': loading }">
+  <ob-loader [loading]="loading">
+    <!-- Статистика счета -->
+    <ng-template [ngIf]="accountType === 'account'">
+      <ob-loader [loading]="isLoadingBalances">
+        <div>
+          <ob-card-statistic
+            *ngIf="listType === 'account-statements'"
+            [accountData]="balances"></ob-card-statistic>
+        </div>
+      </ob-loader>
+    </ng-template>
+    <!-- Статистика счета -->
+    <ng-template [ngIf]="!!rows.length && !error">
+      <!-- Список документов -->
+      <div class="history">
+        <ob-loader [loading]="loading && isLoadingSignersInfo">
+          <ng-template [ngIf]="!!rows.length && !error">
+            <!-- Список документов -->
+            <div class="history">
+              <!-- Таблица -->
+              <ob-table
+                [rowData]="rows"
+                [getDocumentsList]="getOperationsList"
+                [type]="listType"
+                [accountType]="accountType"
+                [isResetFilter$]="resetFilterSubject.asObservable()"
+                (sortByDate)="sortByField('statementDate')"
+                (sortBySum)="sortByField('amount')"></ob-table>
+              <!-- Таблица -->
+
+              <!-- Пагинация -->
+              <div class="discharge-pagination" *ngIf="totalElements > 10">
+                <pagination
+                  [totalItems]="totalElements"
+                  [ngModel]="currentPage"
+                  [maxSize]="maxSize"
+                  [directionLinks]="false"
+                  (pageChanged)="changePage($event)"
+                  [rotate]="true"
+                  [boundaryLinks]="true"
+                  firstText="{{ isFirst ? ' ' : '&laquo;' }}"
+                  lastText="{{ isLast ? ' ' : '&raquo;' }}"></pagination>
+              </div>
+              <!-- Список документов -->
+            </div>
+          </ng-template>
+        </ob-loader>
+      </div>
+    </ng-template>
+    <!-- Ошибка -->
+    <ng-template [ngIf]="error">
+      <div class="alert alert-danger mt-24" role="alert">
+        {{ error }}
+      </div>
+    </ng-template>
+    <!-- Ошибка -->
+    <!-- нет данных -->
+    <ng-template [ngIf]="nodata">
+      <div class="text-muted mt-24">
+        {{ 'default.nodata' | translate }}
+      </div>
+    </ng-template>
+    <!-- нет данных -->
+  </ob-loader>
+</div>

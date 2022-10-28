@@ -1,0 +1,37 @@
+@import "/src/styles/variables.scss";
+
+.account {
+    width: 264px;
+    border: 1px solid $color-pale-gray;
+    border-radius: 8px;
+    padding: 16px;
+    margin-right: 24px;
+    cursor: pointer;
+    position: relative;
+
+    &-balance {
+        color: $color-black;
+        font-size: $font-size-h3-large;
+        font-weight: 700;
+        margin-bottom: 5px;
+
+        & > span {
+            font-size: $font-size-extra-small;
+        }
+    }
+
+    &-iban {
+        color: $color-gray-middle;
+        font-size: $font-size-extra-small;
+    }
+
+    & > img {
+        position: absolute;
+        right: 14px;
+        top: 14px;
+    }
+
+    &:hover {
+        border-color: $color-black;
+    }
+}

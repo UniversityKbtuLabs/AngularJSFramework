@@ -1,0 +1,325 @@
+.icon {
+  cursor: pointer;
+  @include icon-size(35, 35);
+
+  &_lang {
+    @include icon-url(Flag);
+  }
+
+  &_down-arrow {
+    @include icon-url(ic_arrow);
+  }
+  &_up-arrow {
+    @include icon-url(ic_arrow);
+    transform: rotate(180deg);
+  }
+  &_question-mark {
+    @include icon-url(question-mark);
+  }
+  &_main {
+    @include icon-url(ic_homemain);
+  }
+  &_accounts {
+    @include icon-url(ic_accounts);
+  }
+  &_info {
+    @include icon-url(ic_info);
+  }
+  &_notification {
+    @include icon-url(ic_notification);
+  }
+  &_search {
+    @include icon-url(ic_search);
+  }
+  &_chat {
+    @include icon-url(ic_chat);
+  }
+  &_company {
+    @include icon-url(ic_company);
+  }
+  &_contragent {
+    @include icon-url(ic_contragent);
+  }
+  &_currency_control {
+    @include icon-url(ic_currency_control);
+  }
+  &_currency {
+    @include icon-url(ic_currency);
+  }
+  &_faq_2 {
+    @include icon-url(ic_faq_2);
+  }
+  &_payments {
+    @include icon-url(ic_payments);
+  }
+  &_products {
+    @include icon-url(ic_products);
+  }
+  &_support {
+    @include icon-url(ic_support);
+  }
+  &_location {
+    @include icon-url(ic_location);
+  }
+  &_download {
+    @include icon-url(ic_download);
+  }
+  &_mail {
+    @include icon-url(ic_mail);
+  }
+  &_menu {
+    @include icon-url(ic_menu);
+  }
+  &_delete {
+    @include icon-url(ic_delete);
+  }
+  &_import {
+    @include icon-url(ic_import);
+  }
+  &_star {
+    @include icon-url(star);
+  }
+  &_calendar {
+    @include icon-url(ic_calendar);
+  }
+  &_list {
+    @include icon-url(ic_list);
+  }
+  &_settings {
+    @include icon-url(ic_settings);
+  }
+  &_filter {
+    @include icon-url(ic_filter);
+  }
+  &_tick {
+    @include icon-url(ic_tick);
+  }
+  &_pen {
+    @include icon-url(ic_pen);
+  }
+  &_exclamatory {
+    @include icon-url(ic_exclamatory);
+  }
+  &_phone {
+    @include icon-url(ic_phone);
+  }
+  &_point {
+    @include icon-url(ic_point);
+  }
+  &_manager {
+    @include icon-url(ic_manager);
+  }
+  &_status_error {
+    @include icon-url(ic_status_error);
+  }
+  &_status_success {
+    @include icon-url(ic_status_success);
+  }
+  &_status_warning {
+    @include icon-url(ic_status_warning);
+  }
+  &_remove {
+    @include icon-url(ic_remove);
+  }
+  &_dark_arrow {
+    @include icon-url(ic_dark_arrow);
+  }
+  &_green-arrow {
+    @include icon-url(ic_green-arrow);
+  }
+  &_HSBKKZKX {
+    @include icon-url("HSBKKZKX")
+  }
+  &_AAAVKZKA {
+    @include icon-url("AAAVKZKA")
+  }
+  &_ALFAKZKA {
+    @include icon-url("ALFAKZKA")
+  }
+  &_ATYNKZKA {
+    @include icon-url("ATYNKZKA")
+  }
+  &_CASPKZKA {
+    @include icon-url("CASPKZKA")
+  }
+  &_CITIKZKA {
+    @include icon-url("CITIKZKA")
+  }
+  &_EURIKZKA {
+    @include icon-url("EURIKZKA")
+  }
+  &_HCSKKZKA {
+    @include icon-url("HCSKKZKA")
+  }
+  &_HLALKZKZ {
+    @include icon-url("HLALKZKZ")
+  }
+  &_HSBC{
+    @include icon-url("HSBC")
+  }
+  &_HSBKKZKX {
+    @include icon-url("HSBKKZKX")
+  }
+  &_IRTYKZKA{
+    @include icon-url("IRTYKZKA")
+  }
+  &_KCJBKZKX {
+    @include icon-url("KCJBKZKX")
+  }
+  &_KPSTKZKA {
+    @include icon-url("KPSTKZKA")
+  }
+  &_NURSKZKX {
+    @include icon-url("NURSKZKX")
+  }
+  &_Qiwi {
+    @include icon-url("Qiwi")
+  }
+  &_KINCKZKA {
+    @include icon-url("RBK")
+  }
+  &_SABRKZKA {
+    @include icon-url("SABRKZKA")
+  }
+  &_TBKBKZKA {
+    @include icon-url("TBKBKZKA")
+  }
+  &_TSESKZKA {
+    @include icon-url("TSESKZKA")
+  }
+  &_Tsesna {
+    @include icon-url("Tsesna")
+  }
+  &_VTBAKZKZ {
+    @include icon-url("VTBAKZKZ")
+  }
+  &_KKMFKZ2A {
+    @include icon-url("KKMFKZ2A")
+  }
+  &_GCVPKZ2A {
+    @include icon-url("GCVPKZ2A")
+  }
+  &_INLMKZKA {
+    @include icon-url("INLMKZKA")
+  }
+  &_SHBKKZKA {
+    @include icon-url("SHBKKZKA")
+  }
+  &_ALMNKZKA {
+    @include icon-url("ALMNKZKA")
+  }
+  &_KSNVKZKA {
+    @include icon-url("KSNVKZKA")
+  }
+  &_ic_check_mark{
+    @include icon-url("ic_check_mark")
+  }
+  &_calendar2 {
+    @include icon-url("ic_calendar2");
+  }
+  &_grid_small {
+    @include icon-url("ic_grid_small")
+  }
+  &_AUD {
+    @include icon-url("AUD")
+  }
+  &_CAD {
+    @include icon-url("CAD")
+  }
+  &_KZT {
+    @include icon-url("KZT")
+  }
+  &_GBP {
+    @include icon-url("GBP")
+  }
+  &_USD {
+    @include icon-url("USD")
+  }
+  &_RUB {
+    @include icon-url("RUB")
+  }
+  &_TRY {
+    @include icon-url("TRY")
+  }
+  &_EUR {
+    @include icon-url("EUR")
+  }
+  &_CNY {
+    @include icon-url("CNY")
+  }
+  &_JPY {
+    @include icon-url("JPY")
+  }
+  &_CHF {
+    @include icon-url("CHF")
+  }
+  &_KGS {
+    @include icon-url("KG")
+  }
+  &_SEK {
+    @include icon-url("SEK")
+  }
+  &_TJS {
+    @include icon-url("TJS2")
+  }
+  &_accounts {
+    @include icon-url(product_accounts)
+  }
+  &_cards {
+    @include icon-url(product_cards)
+  }
+  &_deposits {
+    @include icon-url(product_deposits)
+  }
+  &_merchant-acquiring {
+    @include icon-url(merchant_acquiring)
+  }
+  &_certificate {
+    @include icon-url(certificate)
+  }
+  &_pdf-document {
+    @include icon-url(pdf_document)
+  }
+  &_credits {
+    @include icon-url(credit)
+  }
+  &_phone {
+    @include icon-url(phone)
+  }
+  &_bills {
+    @include icon-url(bills)
+  }
+  &_delivery {
+    @include icon-url(delivery)
+  }
+  &_blocked {
+    @include icon-url(blocked)
+  }
+  &_default-document {
+    @include icon-url(default_document)
+  }
+  &_close-delete {
+    @include icon-url(close_delete)
+  }
+  &_trade-acquiring {
+    @include icon-url(trade-acquiring)
+  }
+  &_internet-acquiring {
+    @include icon-url(internet-acquiring)
+  }
+  &_homebank {
+    @include icon-url(homebank)
+  }
+  &_halyk-club {
+    @include icon-url(halyk_club)
+  }
+  &_halyk-market {
+    @include icon-url(halyk_market)
+  }
+  &_encashment {
+    @include icon-url(encashment)
+  }
+  &_guarantees {
+    @include icon-url(guarantees)
+  }
+}

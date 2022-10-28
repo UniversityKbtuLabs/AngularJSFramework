@@ -1,0 +1,463 @@
+@import '/src/styles/variables.scss';
+
+.convertation {
+  &_back_btn {
+    margin-bottom: 35px;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  &_main {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+
+    &_title {
+      font-weight: 800;
+      font-size: 20px;
+      color: #263238;
+    }
+
+    &_section {
+      &_title {
+        font-weight: 700;
+        font-size: 16px;
+        color: #263238;
+      }
+
+    }
+
+    &_input_section {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      width: 100%;
+
+      &_first_inp {
+        width: 47%;
+      }
+
+      &_accountsSwitch {
+        width: 36px;
+        height: 36px;
+        margin-left: auto;
+        margin-right: auto;
+        cursor: pointer;
+      }
+
+      &_second_inp {
+        width: 47%;
+      }
+
+    }
+
+    &_contract {
+      &_text1 {
+        font-weight: 700;
+        font-size: 14px;
+        color: #263238;
+      }
+
+      &_text2 {
+        font-weight: 500;
+        font-size: 14px;
+        color: #829199;
+      }
+
+      &_text3{
+        font-weight: 500;
+        font-size: 14px;
+        color: #263238;
+      }
+
+      &_text_rate {
+        font-weight: 500;
+        font-size: 14px;
+        color: #829199;
+      }
+    }
+
+    &_purpose {
+      &_text {
+        font-weight: 500;
+        font-size: 16px;
+        color: #263238;
+
+      }
+    }
+
+    &_rate {
+      &_col {
+        &_1 {
+          width: 30%;
+          font-weight: 500;
+          font-size: 14px;
+          color: #829199;
+        }
+
+        &_2 {
+          width: 70%;
+          font-weight: 700;
+          font-size: 14px;
+          color: #263238;
+
+          p {
+            font-weight: 700;
+            font-size: 14px;
+            color: #263238;
+          }
+        }
+
+        &_individual {
+          font-weight: 700;
+          font-size: 14px;
+          color: #11BB91;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+      }
+    }
+  }
+
+  &_info {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-radius: 12px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+
+    &_title {
+      font-weight: 700;
+      font-size: 16px;
+      color: #263238;
+    }
+
+    &_item {
+      &_title {
+        font-weight: 700;
+        font-size: 14px;
+        color: #263238;
+      }
+
+      &_text {
+        font-weight: 500;
+        font-size: 14px;
+        color: #263238;
+      }
+
+      &_line {
+        border: 1px solid #D0D6D8;
+        margin-bottom: 0px;
+        width: 100%;
+      }
+
+      &_phone {
+        font-weight: 500;
+        font-size: 14px;
+        color: #11BB91;
+      }
+
+      &_arrow {
+        &_up {
+          cursor: pointer;
+          transform: rotate(180deg);
+        }
+
+        &_down {
+          cursor: pointer;
+        }
+      }
+    }
+  }
+
+  &-autofill {
+    display: flex;
+    align-items: center;
+    margin-bottom: 42px;
+    line-height: 18.2px;
+
+    &__text {
+      display: flex;
+      align-items: center;
+
+      &:nth-child(2) {
+        margin-right: 2rem;
+      }
+
+      & > img {
+        cursor: pointer;
+      }
+    }
+
+    &__main {
+      color: $color-gray-light-dark;
+      font-weight: 500;
+    }
+
+    &__dark {
+      color: $color-light-black;
+      font-weight: 500;
+      margin-bottom: 8px;
+    }
+
+    &__small {
+      color: $color-gray-light-dark;
+      font-size: $font-size-extra-small;
+      font-weight: 500;
+    }
+
+    &__secondary {
+      color: $color-gray-light-dark;
+      font-size: $font-size-small;
+      font-weight: 500;
+
+      &-number {
+        color: #000;
+      }
+    }
+
+    &__docNum {
+      font-size: 14px !important;
+      height: 36px !important;
+      width: 153px;
+      padding-right: 0;
+      padding-left: 10px;
+      position: relative;
+      margin-left: 8px;
+    }
+
+    .form-control:invalid:focus, .form-control.is-invalid:focus {
+      outline: 1.5px solid #ff744d !important;
+    }
+
+    .form-control {
+      border: 1px solid #d0d6d8;
+    }
+
+    &__sublabel {
+      padding-left: 12px;
+    }
+
+    &__docNum-error-container {
+      position: absolute;
+    }
+  }
+}
+
+.ml {
+  &_4 {
+    margin-left: 4px;
+  }
+
+  &_8 {
+    margin-left: 8px;
+  }
+
+  &_12 {
+    margin-left: 12px;
+  }
+
+  &_16 {
+    margin-left: 16px;
+  }
+}
+
+.mt {
+  &_4 {
+    margin-top: 4px;
+  }
+
+  &_8 {
+    margin-top: 8px;
+  }
+
+  &_11 {
+    margin-top: 11px;
+  }
+
+  &_16 {
+    margin-top: 16px;
+  }
+
+  &_18 {
+    margin-top: 18px;
+  }
+
+  &_24 {
+    margin-top: 24px;
+  }
+
+  &_27 {
+    margin-top: 27px;
+  }
+
+  &_38 {
+    margin-top: 38px;
+  }
+
+  &_40 {
+    margin-top: 40px;
+  }
+}
+
+.left_border {
+  border-left: 4px solid #505C64;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.contractSelect {
+  ::ng-deep .ng-value {
+    div:nth-child(1) {
+      p:nth-child(1) {
+        font-weight: 500;
+        font-size: 16px;
+        color: #263238;
+      }
+
+      p:nth-child(2) {
+        display: none;
+      }
+    }
+
+    div:nth-child(2) {
+      display: none;
+    }
+  }
+}
+
+@media screen and (max-width: 720px) {
+  .convertation {
+    &_main {
+      &_input_section {
+        display: flex;
+        flex-direction: column;
+
+        &_first_inp {
+          width: 100%;
+        }
+
+        &_accountsSwitch {
+          width: 36px;
+          height: 36px;
+          margin-left: auto;
+          margin-right: auto;
+          cursor: pointer;
+        }
+
+        &_second_inp {
+          width: 100%;
+        }
+      }
+    }
+  }
+
+}
+
+.base-input {
+  padding-left: 16px !important;
+  height: 56px !important;
+}
+
+.form-floating > .form-control:focus ~ label {
+  font-size: 12px;
+  display: inline-block;
+  padding-top: 10px;
+  line-height: 130%;
+  transform: none;
+}
+
+.overrides-form {
+  ::ng-deep.ng-option {
+    border-bottom: none !important;
+    padding: 0 0px !important;
+
+    &:first-child {
+      border-top-left-radius: 12px;
+      border-top-right-radius: 12px;
+
+      .knp {
+        padding-top: 0px;
+      }
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 12px;
+      border-bottom-right-radius: 12px;
+
+      .knp {
+        border-bottom: none !important;
+        padding-bottom: 0 !important;
+      }
+    }
+
+    &-marked {
+      background-color: #f6f6f6;
+    }
+  }
+
+  ::ng-deep.ng-select
+  .ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-disabled {
+    color: #88999c;
+    padding: 16px 24px !important;
+
+    &[role="option"] {
+      padding: 16px !important;
+    }
+  }
+
+  ::ng-deep.ng-select.padding-disabled
+  .ng-dropdown-panel
+  .ng-dropdown-panel-items
+  .ng-option.ng-option-disabled {
+    &[role="option"] {
+      padding: 16px 24px !important;
+    }
+  }
+
+  ::ng-deep.ng-select .ng-select-container .ng-value-container .ng-option {
+    padding: 0px 0px !important;
+  }
+
+  ::ng-deep.ng-select .ng-select-container .ng-value-container {
+    padding-left: 0px !important;
+  }
+
+  ::ng-deep.ng-select.floating-label .ng-select-container .ng-value-container .ng-input {
+    padding-left: 0 !important;
+  }
+
+  ::ng-deep .ng-select.custom-select.ng-select-opened {
+    .ng-option {
+      border-bottom: none !important;
+      padding: 0px !important;
+    }
+  }
+
+  ::ng-deep .ng-select.custom-select {
+    .ng-value {
+      padding-left: 16px;
+
+      :nth-child(1) {
+        margin-left: 0px !important;
+      }
+    }
+
+    .ng-arrow-wrapper {
+      padding: 0px;
+      margin-right: 4px;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+<div
+  class="setting"
+  [ngClass]="setting.code === 'block' ? 'setting-last-element' : ''">
+  <div class="setting-text">
+    <img [src]="setting.img" alt="setting" />
+
+    <div class="setting-info">
+      <p class="setting-info-label">{{ setting.label | translate }}</p>
+      <p *ngIf="setting.description" class="setting-info-description">
+        {{ setting.description }}
+      </p>
+    </div>
+  </div>
+
+  <div
+    class="material-switch"
+    *ngIf="setting.code === 'withdrawal' || setting.code === 'operations'">
+    <input
+      class="form-check-input"
+      type="checkbox"
+      role="switch"
+      [id]="setting.code" />
+    <label class="form-check-label" [for]="setting.code"></label>
+  </div>
+</div>

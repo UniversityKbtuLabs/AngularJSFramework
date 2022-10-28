@@ -1,0 +1,237 @@
+@import '/src/styles/main';
+@import '/src/styles/variables.scss';
+
+table {
+  width: 100%;
+
+  &-label {
+    font-weight: 700 !important;
+  }
+  .dates-separator {
+    background-color: $color-gray-middle;
+    text-align: left;
+    p {
+      color: #505c64;
+      font-weight: 600;
+    }
+    background: $color-gray_main;
+    padding: 0 16px !important;
+    height: 32px!important;
+    border: none !important;
+    letter-spacing: 0.02em;
+    line-height: 100%;
+    vertical-align: middle;
+  }
+  thead{
+    tr{
+      th:nth-child(1){
+        min-width: 14%;
+        max-width: 224px;
+      }
+      td:nth-child(2){
+        padding-left: 16px;
+      }
+      .th-column-0{
+        width: 220px;
+      }
+    }
+  }
+}
+
+thead,
+tr {
+  border-bottom: 1px solid $color-border-gray;
+}
+tr:last-child {
+  border-bottom: none;
+}
+th,
+td {
+
+  &:last-child {
+    text-align: right;
+    min-width: 150px;
+  }
+}
+td {
+  padding: 16px 0;
+}
+
+td:nth-child(2){
+  padding-left: 16px;
+}
+
+thead{
+  tr{
+    th:nth-child(2){
+      padding-left: 16px !important;
+    }
+  }
+}
+
+.cards-operation {
+  display: grid;
+  width: 100%;
+}
+
+.cards-sum {
+  width: 0%;
+}
+
+.cards-date {
+  width: 0%;
+  padding-right: 20px;
+}
+
+td {
+  vertical-align: top;
+  // padding-bottom: 0;
+  cursor: default;
+}
+
+
+th {
+  color: $color-gray-light-dark;
+  font-weight: 600 !important;
+  font-size: $font-size-extra-small;
+  line-height: 120%;
+  align-items: center;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  padding: 24px 0 12px 0;
+}
+
+.search-result {
+  width: 100%;
+
+  &::-webkit-scrollbar {
+    display: none !important;
+  }
+}
+
+.table-text {
+  &__light {
+    font-weight: $font-weight-medium;
+    color: $color-gray-middle;
+    cursor: pointer;
+  }
+
+  &__light-iban {
+    font-weight: $font-weight-medium;
+    color: $color-gray-light-dark;
+    font-size: $font-size-small;
+    line-height: 18.2px;
+  }
+
+  &__iban {
+    font-weight: $font-weight-medium;
+    // color: $color-gray-middle;
+  }
+
+  &__bold {
+    font-weight: 700;
+    margin-right: 0 !important;
+    font-size: $font-size-small;
+    color: $color-light-black;
+    letter-spacing: 2%;
+  }
+
+  &__ellips {
+    // width: 280px;
+    text-overflow: ellipsis;
+    // white-space: nowrap;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+  &__no-ellips {
+    // width: 280px;
+    overflow: hidden;
+  }
+  &__no-wrap {
+    width: 100%;
+    white-space: nowrap;
+  }
+
+  &__debit {
+    color: $color-green;
+  }
+
+  &__amount {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    p{
+      font-weight: 700;
+    }
+    span{
+      padding-left: 5px !important;
+    }
+  }
+}
+
+.clickable {
+    cursor: pointer;
+}
+.mt-2 {
+  margin-top: 2px;
+}
+
+.actions {
+  width: 24px;
+  padding-left: 16px;
+  vertical-align: middle;
+  display: table-cell;
+  position: relative;
+  text-align: end;
+}
+
+@media screen and (max-width: 1060px) {
+	.search-result {
+    width: 870px;
+    
+    &-cards {
+      width: auto;
+    }
+  }
+}
+
+#checkbox{
+  font-size: 16px;
+  width: 16px;
+  display: flex;
+  // #flexCheckDefault{
+  //   display: flex;
+  //   width: auto;
+  //   flex: 0 0 100%;
+  // }
+}
+
+// #flexCheckDefault{
+//   display: flex;
+//   flex: 0 0 100%;
+//   padding-left: unset;
+//   margin-left: unset;
+  
+
+// }
+
+.form-check-input{
+  font-size: 16px;
+  // width: 18px;
+  margin-left: unset;
+  padding-left: 0;
+  margin-top: 0;
+}
+
+
+.operation {
+  p:not(:last-child){
+    margin-bottom: 2px;
+  }
+}
+
+.products_table {
+  td {
+    vertical-align: middle;
+  }
+}

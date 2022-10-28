@@ -1,0 +1,35 @@
+<div class="esp-content">
+  <p>
+    {{ 'esp.title' | translate }}
+    <strong>{{ 'esp.certificate' | translate }}</strong>
+    {{ 'general.and' | translate }}
+    <strong> {{ 'esp.tool' | translate }} </strong> Online CSP.
+  </p>
+  <div class="form-selector">
+    <label>{{ 'esp.selectCert' | translate }}</label>
+    <div class="form-content" [formGroup]="loginForm">
+      <div class="form-group">
+        <input
+          type="radio"
+          id="xalyk"
+          value="byHalykl"
+          class="custom-input_radio"
+          formControlName="esp" />
+        <label for="xalyk">{{ 'esp.upXalyk' | translate }}</label>
+      </div>
+      <div class="form-group" id="typeRk">
+        <input
+          type="radio"
+          id="rk"
+          value="byRk"
+          class="custom-input_radio"
+          formControlName="esp" />
+        <label for="rk">{{ 'esp.upvRk' | translate }}</label>
+      </div>
+    </div>
+  </div>
+  <button class="_btn btn-main" (click)="uploadEsp()">
+    {{ 'esp.enterEsp' | translate }}
+  </button>
+  <label id="esp-help">{{ 'esp.helpEsp' | translate }}</label>
+</div>

@@ -1,0 +1,38 @@
+@import "/src/styles/variables.scss";
+
+.come-back {
+  margin-bottom: 35px;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+
+  &__secondary {
+    color: $color-gray-middle;
+    font-size: $font-size-small;
+    margin-left: 10px;
+  }
+}
+
+::ng-deep .tooltip{
+  &-inner {
+    padding: 20px;
+    color: #fff;
+    width: auto;
+    max-width: 422px;
+    border-radius: 12px;
+    background: $color-black;
+  }
+
+  &-arrow::before {
+    border-top-color: $color-black !important;
+    border-bottom-color: $color-black !important;
+  }
+}
+  
+
+// .payment {
+//   background-color: #fff;
+//   border-radius: 12px;
+//   box-sizing: border-box;
+//   padding: 32px;
+// }

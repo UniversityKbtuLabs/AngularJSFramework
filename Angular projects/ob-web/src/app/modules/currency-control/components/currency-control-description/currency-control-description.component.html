@@ -1,0 +1,28 @@
+<div
+  [ngClass]="{
+    description_container_close: description === false,
+    description_container_open: description === true
+  }">
+  <div class="d-flex flex-row justify-content-between">
+    <p class="description_title">{{ 'menu.currency-control' | translate }}</p>
+    <img
+      src="assets/icons/up_arrow.svg"
+      [ngClass]="{
+        description_arrow_down: description === false,
+        description_arrow_up: description === true
+      }"
+      (click)="showDescription()" />
+  </div>
+  <div
+    class="d-flex flex-row flex-wrap description mt_24"
+    *ngIf="description === true">
+    <div class="col-tb-12 col-smdt-12 col-dt-10 col-lgdt-10">
+      <ul>
+        <li>{{ 'currencyControl.description.purpose' | translate }}</li>
+        <li>{{ 'currencyControl.description.makeConversion' | translate }}</li>
+        <li>{{ 'currencyControl.description.addContract' | translate }}</li>
+      </ul>
+    </div>
+    <div class="col-tb-12 col-smdt-12 col-dt-2 col-lgdt-2"></div>
+  </div>
+</div>

@@ -1,0 +1,32 @@
+<!-- <div class="calendar-container">
+  <input
+    type="text"
+    class="form-control"
+    bsDatepicker
+    [(ngModel)]="bsValue"
+    [bsConfig]="{ isAnimated: true, dateInputFormat: 'DD-MM-YYYY', customTodayClass: 'custom-today-class' }"
+    (ngModelChange)="onChanges()"
+  />
+
+  <span class="icon icon_calendar"></span>
+</div> -->
+<div>
+  <input
+    type="text"
+    class="form-control discharge-input capitalize"
+    bsDatepicker
+    [bsConfig]="{
+      isAnimated: true,
+      dateInputFormat: 'MMMM YYYY',
+      startView: 'day',
+      minMode: 'day',
+      adaptivePosition: true,
+      containerClass: 'calendar'
+    }"
+    [readonly]="true"
+    style="background-color: #fff"
+    [(ngModel)]="bsValue" />
+  <span class="icon-calendar">
+    <img src="./assets/icons/ic_calendar2.svg" alt="" />
+  </span>
+</div>

@@ -1,0 +1,30 @@
+@import "/src/styles/variables.scss";
+
+.info {
+  &-title {
+    color: $color-gray-middle;
+    font-weight: 500;
+    margin-bottom: 4px;
+    font-size: $font-size-small;
+    &__small {
+      font-size: $font-size-medium;
+    }
+  }
+
+  &-subtitle {
+    font-size: $font-size-medium;
+    font-weight: 700;
+
+    &__small {
+      font-size: $font-size-medium;
+    }
+  }
+}
+
+.green {
+  color: $color-green !important;
+}
+
+.red {
+  color: $color-error-red !important;
+}

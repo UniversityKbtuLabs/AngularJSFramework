@@ -1,0 +1,66 @@
+<div class="histogram" #histogramm>
+  <!--    Горизонтальные и вертикальные метки-->
+  <div class="histogram_main">
+    <div class="histogram_main_vertical_markset">
+      <div
+        class="histogram_main_vertical_wraper"
+        *ngFor="let verticalMark of verticalMarkSet; let i = index"
+        style="height:{{ 100 / verticalMarkSet.length }}%;">
+        <p class="histogram_main_vertical_mark">
+          {{ verticalMark }} {{ getCurrency() }}
+        </p>
+        <hr
+          [ngClass]="{
+            histogram_main_vertical_line_first: i === 0,
+            histogram_main_vertical_line_not_first: i !== 0
+          }" />
+      </div>
+    </div>
+    <div class="histogram_main_horizontal_markset">
+      <p
+        *ngFor="let horizontalMark of horizontalMarkSet"
+        style="width:{{ 100 / horizontalMarkSet.length }}%;"
+        class="histogram_main_horizontal_mark">
+        {{ horizontalMark.getDate() }}
+        {{ getMonth(horizontalMark.getMonth()) }}
+      </p>
+    </div>
+  </div>
+  <!--    Горизонтальные и вертикальные метки-->
+
+  <!--    Гистограмма-->
+  <div
+    class="histogram_graph"
+    [ngStyle]="{ 'margin-top': -histogramm.offsetHeight + 'px' }">
+    <canvas class="histogram_graph_main" width="1270" height="200"> </canvas>
+  </div>
+  <!--    Гистограмма-->
+
+  <div
+    class="histogram_graph"
+    [ngStyle]="{ 'margin-top': -histogramm.offsetHeight + 50 + 'px' }"
+    (mousemove)="onMouseMove($event)">
+    <canvas class="histogram_graph_main" width="1270" height="200"> </canvas>
+  </div>
+
+  <div
+    #tooltipElement
+    class="histogram_graph_tooltip"
+    *ngIf="showTooltip"
+    style="margin-top: {{ tooltipTop }}px; margin-left:{{ tooltipleft }}px;">
+    <div class="d-flex flex-column justify-content-between">
+      <div class="d-flex flex-row justify-content-between mb_10">
+        <p>
+          {{ tooltipDate.getDate() }}
+          {{ getMonth(tooltipDate.getMonth()) }}
+        </p>
+        <p class="ml_4">
+          {{ getTooltipHoursAndMinutes() }}
+        </p>
+      </div>
+      <div class="d-flex flex-row justify-content-center">
+        <p>{{ getTooltipRate() }} {{ getCurrency() }}</p>
+      </div>
+    </div>
+  </div>
+</div>

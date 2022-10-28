@@ -1,0 +1,64 @@
+@import '/src/styles/variables.scss';
+
+.status {
+  // padding: 8px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  // width: max-content;
+  justify-content: flex-end;
+
+  & > img {
+    margin-right: 8px;
+  }
+
+  & > p {
+    font-size: $font-size-small;
+    font-weight: 500;
+    line-height: 14px;
+    letter-spacing: 2%;
+  }
+}
+
+.new-doc {
+  // background-color: #EDF2FE;
+
+  & > p {
+    color: $color-violet;
+  }
+}
+
+.sign {
+  // background-color: #E7EAEE;
+    color: $color-gray-darker;
+}
+
+.in-progress {
+  // background-color: #FFF6E5;
+
+  & > p {
+    color: $color-yellow-dark;
+  }
+}
+
+.approved {
+  // background-color: #E0F9EB;
+  & > p {
+    color: $color-green;
+  }
+}
+
+.failure {
+  // background-color: #FFEBEA80;
+
+  & > p {
+    color: $color-error-red;
+  }
+}
+
+.onsign {
+    color: $color-blue-light
+}
+.status-mt {
+  margin-top: 2px;
+}

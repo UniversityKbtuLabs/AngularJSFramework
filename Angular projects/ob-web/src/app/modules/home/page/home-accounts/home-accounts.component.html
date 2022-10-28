@@ -1,0 +1,19 @@
+<ob-back-button [currentPage]="'home_accounts'"> </ob-back-button>
+<div class="accounts-space"></div>
+
+<ob-all-accounts
+  [type]="'accounts'"
+  [list]="accounts"
+  id="accounts"></ob-all-accounts>
+
+<ob-all-accounts [type]="'cards'" [list]="cards" id="cards"></ob-all-accounts>
+
+<ob-all-accounts
+  [type]="'deposits'"
+  [list]="deposits"
+  id="deposits"></ob-all-accounts>
+
+<ob-all-accounts
+  [type]="'credits'"
+  [list]="loans"
+  id="credits"></ob-all-accounts>

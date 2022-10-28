@@ -1,0 +1,55 @@
+<div class="d-flex row">
+  <div class="col-tb-12 col-smdt-4 col-dt-4 col-lgdt-3" id="top">
+    <section class="products__navigation">
+      <h2 class="products__title-medium">
+        {{ 'products.default.myProducts' | translate }}
+      </h2>
+      <div class="products-list__wrapper">
+        <div class="top-shadow"></div>
+        <div class="products-list">
+          <div
+            class="products-list__item-wrapper"
+            *ngFor="let product of productsList">
+            <h3 class="products__title-small">
+              {{ product.title | translate }}
+            </h3>
+            <div class="products-list__item-container">
+              <div
+                class="products-list__item"
+                *ngFor="let item of product.list"
+                (click)="redirectTo(item.type)">
+                <div class="products-list__item-inner">
+                  <span class="icon icon_{{ item.icon }}"></span>
+                  <p>{{ item.text | translate }}</p>
+                </div>
+                <span class="icon icon_dark_arrow"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="bottom-shadow"></div>
+      </div>
+    </section>
+  </div>
+  <div class="col-tb-12 col-smdt-8 col-dt-8 col-lgdt-9 g-custom products-main">
+    <ob-tabs
+      [className]="'element-bold'"
+      [tabs]="tabs"
+      [selectedTab]="tab"
+      (obSelected)="onTabChange($event)"></ob-tabs>
+
+    <ng-template [ngIf]="tab === 'ALL'">
+      <ob-all-products></ob-all-products>
+    </ng-template>
+    <ng-template [ngIf]="tab === 'REQUESTS'">
+      <ob-product-statements></ob-product-statements>
+    </ng-template>
+
+    <div
+      class="products__scroll-top"
+      [ngClass]="{ show: windowScrolled }"
+      (click)="scrollToSection('top')">
+      <img src="./assets/icons/arrow_white.svg" alt="top" />
+    </div>
+  </div>
+</div>

@@ -1,0 +1,761 @@
+<div class="row mb-114">
+  <div class="col-dt-9 col-lgdt-8 col-smdt-12" [formGroup]="commonForm">
+    <div class="common payment-content">
+      <h1 class="title">{{ paymentTitle | translate }}</h1>
+
+      <section class="common-autofill">
+        <div class="common-autofill__text flex-column">
+          <span class="common-autofill__secondary d-flex align-items-baseline">
+            <p
+              class="common-autofill__secondary"
+              [ngStyle]="{
+                color: !commonFormControl.docNum.errors?.required
+                  ? ''
+                  : '#FF5721'
+              }">
+              {{ 'operations.payment-confirmation.doc-number' | translate }}:
+            </p>
+            <span
+              class="ms-2 common-autofill__secondary"
+              *ngIf="
+                !commonFormControl.docNum.errors?.required && !isEditDocNum
+              ">
+              №{{ commonFormControl.docNum.value }}
+            </span>
+            <input
+              formControlName="docNum"
+              maxlength="9"
+              *ngIf="isEditDocNum"
+              class="form-control common-autofill__docNum"
+              [ngClass]="displayFieldClass('docNum')"
+              obDocNumberPayment
+              id="docNum"
+              (docNumChange)="docNumChange($event)"
+              (focusout)="editDocNum()"
+              (keyup)="onDocNumKeyUp($event)" />
+          </span>
+          <div class="align-self-start">
+            <div class="common-autofill__docNum-error-container">
+              <ob-field-error-display
+                *ngIf="commonFormControl.docNum.errors?.maxLengthExceeded"
+                [displayError]="isFieldValid('docNum')"
+                errorMsg="{{ 'error.documentNum-payments' | translate }}">
+              </ob-field-error-display>
+              <ob-field-error-display
+                *ngIf="commonFormControl.docNum.errors?.pattern"
+                [displayError]="isFieldValid('docNum')"
+                errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+              </ob-field-error-display>
+            </div>
+          </div>
+        </div>
+        <div class="common-autofill__text">
+          <img
+            *ngIf="!isEditDocNum && commonFormControl.docNum.errors?.required"
+            src="assets/icons/ic_edit1.svg"
+            alt="change-icon"
+            class="common-autofill__edit_icon"
+            (click)="editDocNum()" />
+          <img
+            *ngIf="!isEditDocNum && !commonFormControl.docNum.errors?.required"
+            src="assets/icons/ic_edit.svg"
+            alt="change-icon"
+            class="common-autofill__edit_icon"
+            (click)="editDocNum()" />
+          <img
+            *ngIf="isEditDocNum"
+            src="assets/icons/ic_check_mark.svg"
+            alt="change-icon"
+            class="common-autofill__edit_icon"
+            (click)="editDocNum()" />
+        </div>
+
+        <div class="common-autofill__text">
+          <span class="common-autofill__secondary me-2">
+            {{ 'operations.default.createDate' | translate }}
+          </span>
+          <span class="common-autofill__main">{{
+            prefill?.docDate | reverse
+          }}</span>
+        </div>
+      </section>
+
+      <section class="common-section">
+        <div class="common-destination row" *ngIf="paymentType === 'salary'">
+          <p class="common-subtitle">
+            {{ 'default.recipient' | translate }}
+          </p>
+          <div class="col-dt-6 col-smdt-6 col-tb-6 col-mb-12 mb-16">
+            <ng-template [ngIf]="unicodeList.length === 0">
+              <div class="form-floating">
+                <input
+                  #bankAccount
+                  class="form-control base-input"
+                  [ngClass]="displayFieldClass('bankNameRecipient')"
+                  autocomplete="off"
+                  type="text"
+                  required="required"
+                  placeholder="{{
+                    'operations.default.destinationBankAccount' | translate
+                  }}"
+                  formControlName="bankNameRecipient"
+                  appInput="account"
+                  id="bankNameRecipient"
+                  maxlength="20"
+                  (input)="
+                    bankAccount.value = bankAccount.value.toUpperCase()
+                  " />
+                <span [ngClass]="[bankInfoloading ? 'loading' : '']"></span>
+                <label for="floatingInput">{{
+                  'operations.default.destinationBankAccount' | translate
+                }}</label>
+              </div>
+            </ng-template>
+            <ng-template [ngIf]="unicodeList.length > 0">
+              <ng-select
+                formControlName="bankNameRecipient"
+                class="custom-select floating-label"
+                [searchable]="true"
+                placeholder="{{
+                  'operations.default.destinationBankAccount' | translate
+                }}"
+                [searchable]="isSearchableBankRecipient"
+                [editableSearchTerm]="true"
+                [clearable]="false"
+                [ngClass]="displayFieldClass('bankNameRecipient')"
+                required
+                dropdownPosition="bottom"
+                id="bankNameRecipient"
+                loadingText="{{ 'default.loading' | translate }}..."
+                (change)="onChangeBankRecipient($event)"
+                (search)="onSearchBankRecipient($event)"
+                (open)="onOpenCloseBankRecipient()"
+                (close)="onOpenCloseBankRecipient()"
+                [loading]="isUnicodesLoading">
+                <ng-option
+                  *ngFor="let unicode of unicodeList"
+                  [value]="unicode">
+                  <ob-select-account
+                    [description]="getUnicodeComissionText(unicode.rate)"
+                    [title]="unicode.id"
+                    [icon]="getIcon(unicode.currency)"
+                    [showCurrency]="false"></ob-select-account>
+                </ng-option>
+              </ng-select>
+            </ng-template>
+            <ob-field-error-display
+              *ngIf="commonFormControl.bankNameRecipient.errors?.required"
+              [displayError]="isFieldValid('bankNameRecipient')"
+              errorMsg="{{
+                'error.required' | translate
+              }}"></ob-field-error-display>
+
+            <ob-field-error-display
+              *ngIf="
+                !commonFormControl.bankNameRecipient.errors?.pattern &&
+                commonFormControl.bankNameRecipient.errors?.minlength
+              "
+              [displayError]="isFieldValid('bankNameRecipient')"
+              errorMsg="{{
+                'error.account' | translate
+              }}"></ob-field-error-display>
+
+            <ob-field-error-display
+              *ngIf="commonFormControl.bankNameRecipient.errors?.pattern"
+              [displayError]="isFieldValid('bankNameRecipient')"
+              errorMsg="{{ 'error.onlyDigitalsAndLetters' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="
+                commonFormControl.bankNameRecipient.errors?.incorrectBankAccount
+              "
+              [displayError]="isFieldValid('bankNameRecipient')"
+              errorMsg="{{ 'error.incorrectBankAccount' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="
+                commonFormControl.bankNameRecipient.errors?.similarAccounts
+              "
+              [displayError]="isFieldValid('bankNameRecipient')"
+              errorMsg="{{ 'error.similarAccounts' | translate }}">
+            </ob-field-error-display>
+          </div>
+
+          <div class="col-dt-6 col-smdt-6 col-tb-6 col-mb-12 mb-16">
+            <div class="form-floating">
+              <input
+                class="form-control base-input"
+                [ngClass]="displayFieldClass('bin')"
+                autocomplete="off"
+                type="text"
+                required="required"
+                mask="000000000000"
+                placeholder="{{
+                  'operations.default.destinationBankIban' | translate
+                }}"
+                formControlName="bin"
+                id="bin" />
+              <label for="floatingInput">{{
+                'operations.default.destinationBankIban' | translate
+              }}</label>
+            </div>
+            <ob-field-error-display
+              *ngIf="commonFormControl.bin.errors?.required"
+              [displayError]="isFieldValid('bin')"
+              errorMsg="{{
+                'error.required' | translate
+              }}"></ob-field-error-display>
+
+            <ob-field-error-display
+              *ngIf="commonFormControl.bin.errors?.minlength"
+              [displayError]="isFieldValid('bin')"
+              errorMsg="{{ 'error.iin' | translate }}"></ob-field-error-display>
+
+            <ob-field-error-display
+              *ngIf="commonFormControl.bin.errors?.invalidSymbol"
+              [displayError]="isFieldValid('bin')"
+              errorMsg="{{
+                'error.symbol' | translate
+              }}"></ob-field-error-display>
+          </div>
+        </div>
+        <div class="row pd-10" *ngIf="bankInfo && paymentType === 'salary'">
+          <div class="contragent-section-info col-dt-8 col-tb-8 col-mb-12 mb-2">
+            <div class="contragent-section-detail">
+              <span class="contragent-section-detail__content bankInfo">
+                <span
+                  class="icon icon_{{
+                    employeeBankLogo$ | async
+                  }} bankInfo-icon"
+                  obCheckIcon
+                  [bankBic]="employeeBankLogo$ | async"></span>
+                {{ employeeBankName$ | async }}</span
+              >
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="common-section">
+        <p class="common-subtitle">
+          {{ 'operations.budget.account-desc' | translate }}
+        </p>
+
+        <div class="row flex-column">
+          <div
+            class="col-dt-6 col-smdt-6 col-tb-6 col-mb-12 mb-2 common-comission__input">
+            <ng-select
+              formControlName="selectedAcc"
+              class="custom-select account-withdraw"
+              [searchable]="false"
+              [clearable]="false"
+              (change)="changeSelectedAccount()"
+              placeholder="{{ 'operations.budget.account-desc' | translate }}"
+              [ngClass]="displayFieldClass('selectedAcc')"
+              notFoundText="{{ 'error.empty-data' | translate }}"
+              id="selectedAcc"
+              (open)="onOpenSelectedAccount()"
+              (close)="onCloseSelectedAccount()"
+              loadingText="{{ 'default.loading' | translate }}...">
+              <ng-option
+                *ngFor="let account of accounts"
+                [value]="account?.iban">
+                <ob-select-account
+                  [description]="account.iban"
+                  [title]="account.actualBalance"
+                  [icon]="getIcon(account.currency)"
+                  [currency]="account.currency"></ob-select-account>
+              </ng-option>
+            </ng-select>
+            <!---смс валидации -->
+            <ob-field-error-display
+              *ngIf="commonFormControl.selectedAcc.errors?.required"
+              [displayError]="isFieldValid('selectedAcc')"
+              errorMsg="{{ 'error.account_not_selected' | translate }}">
+            </ob-field-error-display>
+          </div>
+        </div>
+        <!-- Срочный платеж -->
+        <ng-template [ngIf]="bankInfoBic">
+          <div class="row flex-column mb-40">
+            <div
+              class="common-general-term col-dt-6 col-tb-6 col-mb-12 mt-16"
+              *ngIf="paymentType === 'salary' && bankInfoBic !== 'HSBKKZKX'">
+              <div
+                class="contragent-general-term__toggle"
+                (click)="checkUrgentAvailable()">
+                <div class="material-switch">
+                  <input
+                    class="form-check-input"
+                    type="checkbox"
+                    role="switch"
+                    id="switch-quick-payment"
+                    formControlName="quickPayment"
+                    [attr.disabled]="!isUrgentAvailable ? true : null" />
+                  <label
+                    class="form-check-label"
+                    for="switch-quick-payment"></label>
+                </div>
+              </div>
+              <div class="common-general-term__text">
+                <p class="common-autofill__dark">
+                  {{ 'operations.countragent.urgent' | translate }}
+                </p>
+                <p class="common-autofill__secondary">
+                  {{ 'operations.countragent.urgentInfo' | translate }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+        <!-- Срочный платеж -->
+      </section>
+
+      <section class="common-section">
+        <p class="common-subtitle">
+          {{ 'operations.payments.paymentDetails' | translate }}
+        </p>
+        <!-- КНП -->
+        <div class="row common-inputs align-items-center mb-16">
+          <div
+            class="col-dt-6 col-smdt-6 col-tb-6 col-mb-12"
+            id="bootstrap-overrides">
+            <div
+              class="form-floating"
+              [tooltip]="tooltipKnp"
+              [delay]="100"
+              #pop3="bs-tooltip"
+              [isDisabled]="
+                isSearchableKnp ||
+                isSelectedAccountOpen ||
+                isDisablePurposeTooltip
+              "
+              (click)="pop3.hide()"
+              (keypress)="pop3.hide()">
+              <ng-select
+                #ngSelectKnp
+                formControlName="knp"
+                class="knp-cbc-select floating-label pt-24"
+                [ngClass]="displayFieldClass('knp')"
+                [searchable]="isSearchableKnp"
+                [clearable]="true"
+                [editableSearchTerm]="true"
+                (search)="onSearchKnp($event)"
+                (change)="onChangeKnp($event)"
+                notFoundText="{{ 'error.empty-data' | translate }}"
+                placeholder="{{ 'operations.default.knp' | translate }}"
+                required
+                dropdownPosition="bottom"
+                (open)="onOpenKnp()"
+                (close)="onCloseKnp()"
+                (blur)="onCloseKnp()"
+                [loading]="isSearchingKnp"
+                id="knp"
+                loadingText="{{ 'default.loading' | translate }}...">
+                <ng-option *ngFor="let knpItem of knpList" [value]="knpItem">
+                  <ob-knp
+                    [knpCode]="knpItem.knp || knpItem.code"
+                    [knpName]="knpItem.knpName || knpItem.name"
+                    searchTitle="{{
+                      'operations.default.knpLong' | translate
+                    }}"></ob-knp>
+                </ng-option>
+              </ng-select>
+            </div>
+            <ng-template #tooltipKnp>
+              <ob-tooltip [type]="'knp'"></ob-tooltip>
+            </ng-template>
+            <ob-field-error-display
+              *ngIf="commonFormControl.knp.errors?.required"
+              [displayError]="isFieldValid('knp')"
+              errorMsg="{{ 'error.required' | translate }}">
+            </ob-field-error-display>
+            <ob-field-error-display
+              *ngIf="commonFormControl.knp.errors?.invalidObj"
+              [displayError]="isFieldValid('knp')"
+              errorMsg="{{ 'error.filledIncorrectly' | translate }}">
+            </ob-field-error-display>
+          </div>
+        </div>
+        <ng-template [ngIf]="commonFormControl.knp.value">
+          <div class="row pd-10 mb-24">
+            <div
+              class="contragent-section-info col-dt-10 col-tb-10 col-mb-12"
+              style="height: 100%">
+              <div class="contragent-section-detail">
+                <p class="contragent-section-detail__content">
+                  {{ description }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+
+        <div class="row common-inputs" *ngIf="paymentType === 'salary'">
+          <div
+            class="col-dt-12 col-tb-12 col-mb-12 contragent-inputs__element-textarea">
+            <div
+              class="form-floating"
+              [tooltip]="tooltipPurpose"
+              [delay]="100"
+              #pop="bs-tooltip"
+              (click)="pop.hide()"
+              (keypress)="pop.hide()"
+              [isDisabled]="
+                isSearchableKnp ||
+                isSelectedAccountOpen ||
+                isDisablePurposeTooltip
+              ">
+              <textarea
+                class="form-control common-inputs__textarea"
+                [ngClass]="displayFieldClass('purpose')"
+                placeholder="{{ 'operations.payments.purpose' | translate }}"
+                id="floatingTextarea"
+                formControlName="purpose"
+                id="purpose"
+                maxlength="420"
+                (blur)="onTextareaBlur()"
+                (focus)="onTextareaFocus()"
+                #textPurpose
+                [rows]="getHeight(textPurpose.value) || 2"
+                (click)="pop.hide()"
+                (mouseover)="enableTooltip()">
+              </textarea>
+              <label
+                class="common-inputs__textarea-label"
+                for="floatingTextarea"
+                >{{ 'operations.payments.purpose' | translate }}</label
+              >
+              <div
+                [ngStyle]="{
+                  'margin-top': isPurposeInputBlur ? '0px' : '1px'
+                }"></div>
+            </div>
+            <ng-template #tooltipPurpose>
+              <ob-tooltip [type]="'purpose'"></ob-tooltip>
+            </ng-template>
+            <div class="contragent-inputs__textarea-bottom">
+              <div>
+                <ob-field-error-display
+                  *ngIf="commonFormControl.purpose.errors?.required"
+                  [displayError]="isFieldValid('purpose')"
+                  errorMsg="{{
+                    'error.required' | translate
+                  }}"></ob-field-error-display>
+
+                <ob-field-error-display
+                  *ngIf="commonFormControl.purpose.errors?.maxlength"
+                  [displayError]="isFieldValid('purpose')"
+                  errorMsg="{{
+                    'error.purpose' | translate
+                  }}"></ob-field-error-display>
+
+                <ob-field-error-display
+                  *ngIf="commonFormControl.purpose.errors?.invalidSymbol"
+                  [displayError]="isFieldValid('purpose')"
+                  errorMsg="{{ 'error.symbol' | translate }} {{
+                    prohibitedSymbols
+                  }}"></ob-field-error-display>
+              </div>
+              <p class="contragent-inputs__textarea-length">
+                {{ textPurpose.value.length }}/420
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section class="common-section">
+        <p class="common-subtitle">
+          {{ 'operations.default.employees' | translate }}
+        </p>
+        <div class="d-flex mb-3">
+          <!-- кнопка: "Добавить сотрудника" -->
+          <ob-button
+            [label]="'operations.default.addEmployee' | translate"
+            [className]="'btn btn-outline-green height-medium br-12 p-24'"
+            (click)="openModal()"></ob-button>
+        </div>
+        <!-- Указать общий период для всех сотрудников -->
+        <ng-template [ngIf]="paymentType !== 'salary'">
+          <section class="row mb-24">
+            <div class="row mt-24">
+              <div
+                class="contragent-general-term col-dt-6 col-smdt-6 col-tb-6 col-mb-12"
+                [ngClass]="{
+                  'mb-16': commonFormControl.collectivePeriod.value
+                }">
+                <div class="contragent-general-term__toggle">
+                  <div class="material-switch">
+                    <input
+                      (click)="togglePeriod()"
+                      formControlName="collectivePeriod"
+                      class="form-check-input"
+                      type="checkbox"
+                      role="switch"
+                      id="switch-quick-payment" />
+                    <label
+                      class="form-check-label"
+                      for="switch-quick-payment"></label>
+                  </div>
+                </div>
+                <div class="contragent-general-term__text">
+                  <p>
+                    {{ 'operations.default.indicateTotalPeriod' | translate }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <ng-template [ngIf]="commonFormControl.collectivePeriod.value">
+              <div
+                class="period-collective col-dt-6 col-smdt-6 col-tb-6 col-mb-12">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control base-input"
+                    bsDatepicker
+                    [bsConfig]="{
+                      isAnimated: true,
+                      dateInputFormat: 'MMMM YYYY',
+                      startView: 'month',
+                      minMode: 'month',
+                      adaptivePosition: true,
+                      containerClass: 'period-calendar'
+                    }"
+                    (click)="markDirty()"
+                    (bsValueChange)="onPeriodChange($event)"
+                    [readonly]="true"
+                    style="background-color: #fff"
+                    placeholder="{{ 'default.period' | translate }}"
+                    formControlName="collectivePeriodDate"
+                    #bs="bsDatepicker" />
+                  <span class="icon-calendar" (click)="bs.toggle()">
+                    <img src="./assets/icons/ic_calendar2.svg" alt="" />
+                  </span>
+                  <label for="floatingInput">{{
+                    'default.period' | translate
+                  }}</label>
+                </div>
+              </div>
+            </ng-template>
+          </section>
+        </ng-template>
+        <!-- Указать общий период для всех сотрудников -->
+        <ob-loader [loading]="isLoading">
+          <ob-users-list
+            [usersList]="usersList"
+            [paymentType]="currentPaymentName"
+            (updatedUserList)="getEmployees($event)"
+            [collectivePeriod$]="collectivePeriodSubject.asObservable()">
+          </ob-users-list>
+        </ob-loader>
+      </section>
+    </div>
+  </div>
+  <div class="col-dt-3 col-smdt-12">
+    <div
+      class="recommendation payment-content info"
+      [ngClass]="{
+        divide:
+          (retirementInfo && retirementInfo1) ||
+          (osmsInfo && osmsInfo1) ||
+          (socialInfo && socialInfo1)
+      }">
+      <p class="payment-content__right-heading">
+        {{ 'default.information' | translate }}
+      </p>
+
+      <div
+        *ngIf="currentPaymentName === 'retirement'"
+        class="information-content">
+        <div class="recommendation-item">
+          <div
+            class="d-flex flex-row justify-content-between information-content__click_area"
+            (click)="retirementInfoShow()">
+            <p class="information-content__title">
+              {{ 'operations.payments.info_title_retirement' | translate }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                'information-content__arrow_down': retirementInfo === false,
+                'information-content__arrow_up': retirementInfo === true
+              }" />
+          </div>
+          <p class="information-content__text" *ngIf="retirementInfo === true">
+            {{ 'operations.payments.info_text_retirement' | translate }}
+          </p>
+        </div>
+
+        <div style="margin-top: 12px" class="recommendation-item">
+          <div
+            class="d-flex flex-row justify-content-between information-content__click_area"
+            (click)="retirement1InfoShow()">
+            <p class="information-content__title">
+              {{
+                'operations.payments.info_title_payment_destination' | translate
+              }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                'information-content__arrow_down': retirementInfo1 === false,
+                'information-content__arrow_up': retirementInfo1 === true
+              }" />
+          </div>
+          <p class="information-content__text" *ngIf="retirementInfo1 === true">
+            {{
+              'operations.payments.info_text_payment_destination' | translate
+            }}
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="currentPaymentName === 'osms'" class="information-content">
+        <div class="recommendation-item">
+          <div
+            class="d-flex flex-row justify-content-between information-content__click_area"
+            (click)="osmsInfoShow()">
+            <p class="information-content__title">
+              {{ 'operations.payments.info_osms.title' | translate }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                'information-content__arrow_down': osmsInfo === false,
+                'information-content__arrow_up': osmsInfo === true
+              }" />
+          </div>
+          <div class="information-content__text" *ngIf="osmsInfo === true">
+            {{ 'operations.payments.info_osms.text' | translate }}
+            <ul>
+              <li>
+                {{ 'operations.payments.info_osms.owner_fee' | translate }}
+              </li>
+              <li>
+                {{ 'operations.payments.info_osms.employee_fee' | translate }}
+              </li>
+            </ul>
+          </div>
+        </div>
+
+        <div style="margin-top: 12px" class="recommendation-item">
+          <div
+            class="d-flex flex-row justify-content-between information-content__click_area"
+            (click)="osms1InfoShow()">
+            <p class="information-content__title">
+              {{
+                'operations.payments.info_title_payment_destination' | translate
+              }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                'information-content__arrow_down': osmsInfo1 === false,
+                'information-content__arrow_up': osmsInfo1 === true
+              }" />
+          </div>
+          <p class="information-content__text" *ngIf="osmsInfo1 === true">
+            {{
+              'operations.payments.info_text_payment_destination' | translate
+            }}
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="currentPaymentName === 'social'" class="information-content">
+        <div class="recommendation-item">
+          <div
+            class="d-flex flex-row justify-content-between information-content__click_area"
+            (click)="socialInfoShow()">
+            <p class="information-content__title">
+              {{ 'operations.payments.info_title_social' | translate }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                'information-content__arrow_down': socialInfo === false,
+                'information-content__arrow_up': socialInfo === true
+              }" />
+          </div>
+          <p class="information-content__text" *ngIf="socialInfo === true">
+            {{ 'operations.payments.info_text_social' | translate }}
+          </p>
+        </div>
+
+        <div style="margin-top: 12px" class="recommendation-item">
+          <div
+            class="d-flex flex-row justify-content-between information-content__click_area"
+            (click)="social1InfoShow()">
+            <p class="information-content__title">
+              {{
+                'operations.payments.info_title_payment_destination' | translate
+              }}
+            </p>
+            <img
+              src="assets/icons/down_arrow.svg"
+              [ngClass]="{
+                'information-content__arrow_down': socialInfo1 === false,
+                'information-content__arrow_up': socialInfo1 === true
+              }" />
+          </div>
+          <p class="information-content__text" *ngIf="socialInfo1 === true">
+            {{
+              'operations.payments.info_text_payment_destination' | translate
+            }}
+          </p>
+        </div>
+      </div>
+
+      <div *ngIf="currentPaymentName === 'salary'" class="information-content">
+        <div
+          class="d-flex flex-row justify-content-between information-content__click_area"
+          (click)="salaryInfoShow()">
+          <p class="information-content__title">
+            {{ 'operations.payments.info_title_salary' | translate }}
+          </p>
+          <img
+            src="assets/icons/down_arrow.svg"
+            [ngClass]="{
+              'information-content__arrow_down': salaryInfo === false,
+              'information-content__arrow_up': salaryInfo === true
+            }" />
+        </div>
+        <p class="information-content__text" *ngIf="salaryInfo === true">
+          {{ 'operations.payments.info_text_salary' | translate }}
+        </p>
+      </div>
+      <!--      <ob-button-->
+      <!--        [label]="'Увеличить лимит'"-->
+      <!--        [className]="'btn-outline-green height-medium br-12 p-24 w-100'"-->
+      <!--        [disabled]="true"-->
+      <!--      ></ob-button>-->
+      <!-- <button disabled class="counteragent-check__btn">Увеличить лимит</button> -->
+    </div>
+
+    <!-- <div class="information payment-content">
+      <p class="payment-content__right-heading">Информация</p>
+      <div class="information-content">
+        <p class="text-muted information-content__title">
+          Что означает “дата валютирования”?
+        </p>
+        <span class="icon icon_green-arrow"></span>
+      </div>
+    </div>
+
+    <div class="counteragent-check payment-content">
+      <p class="payment-content__right-heading">Проверка контрагента</p>
+      <button disabled class="counteragent-check__btn">Проверить</button>
+    </div> -->
+  </div>
+</div>
+<ob-payment-footer
+  [operationType]="'payment'"
+  [commission]="commission"
+  [sum]="sum + ''"
+  (toSave)="FieldsValidation('save')"
+  (toSign)="FieldsValidation('sign')"
+  [isSave]="true"
+  [isSign]="true"
+  [loading]="loading"
+  [saveLoading]="isSaveLoading"></ob-payment-footer>

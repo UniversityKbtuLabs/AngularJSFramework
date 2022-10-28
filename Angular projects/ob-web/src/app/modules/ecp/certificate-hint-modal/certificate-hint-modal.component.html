@@ -1,0 +1,65 @@
+<div #tableModal>
+  <div class="modal-header">
+    <p class="modal-header-title">{{ 'sms.ecp-hint' | translate }}</p>
+    <button
+      type="button"
+      class="btn-close close pull-right"
+      aria-label="Close"
+      (click)="closeModal()">
+      <span aria-hidden="true" class="visually-hidden">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+    <p class="modal-body-title">
+      {{ 'sms.forLoginWithEcp' | translate }}
+    </p>
+
+    <ol>
+      <li class="modal-list-item">
+        {{ 'sms.installTumar' | translate }}
+        <ul class="modal-inner-list">
+          <li>
+            <a
+              href="https://halyk.onlinebank.kz/install/csp/SetupTumarCSPv6.2.zip ">
+              {{ 'sms.downloadForWindows' | translate }}
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://halyk.onlinebank.kz/install/csp/CryptoSocketInstaller.zip"
+              >{{ 'sms.downloadForMac' | translate }}
+            </a>
+          </li>
+          <li>
+            <a
+              href="https://halyk.onlinebank.kz/install/csp/CryptoSocketInstaller.pdf"
+              target="_blank"
+              >{{ 'sms.instruction' | translate }}
+            </a>
+            <span>{{ 'sms.tumarMac' | translate }}</span>
+          </li>
+          <li>
+            <a
+              href="https://halyk.onlinebank.kz/install/instructions/TumarAndPluginCardInstr.pdf"
+              target="_blank"
+              >{{ 'sms.instruction' | translate }}
+            </a>
+            <span>{{ 'sms.tumarWindows' | translate }}</span>
+          </li>
+        </ul>
+      </li>
+      <li class="modal-list-item">
+        {{ 'sms.connectToPc' | translate }}
+      </li>
+    </ol>
+
+    <p class="modal-full-instruction">
+      <a
+        href="https://halyk.onlinebank.kz/install/instructions/halykOnlineInstruction_ru.pdf"
+        target="_blank"
+        >{{ 'sms.fullInstruction' | translate }}
+      </a>
+      {{ 'sms.preferences' | translate }}
+    </p>
+  </div>
+</div>

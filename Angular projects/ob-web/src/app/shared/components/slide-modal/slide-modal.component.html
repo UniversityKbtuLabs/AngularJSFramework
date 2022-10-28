@@ -1,0 +1,34 @@
+<div
+  id="slider-modal"
+  class="slider-modal"
+  [ngClass]="isActive ? 'slider-modal-active' : ''">
+  <div id="bg" class="bg" [ngClass]="isActive ? 'bg-active' : ''"></div>
+
+  <div id="slider" class="slider" [ngClass]="isActive ? 'slider-active' : ''">
+    <div class="slider-header">
+      <p>{{ 'default.sendToMail' | translate }}</p>
+      <img
+        src="assets/icons/ic_delete.svg"
+        alt="close"
+        (click)="closeModal()" />
+    </div>
+
+    <div class="slider-body">
+      <div *ngIf="(mainService.currentFormType | async) === 'mailTo'">
+        <ob-mail-form></ob-mail-form>
+      </div>
+
+      <div *ngIf="(mainService.currentFormType | async) === 'tariffs'">
+        <ob-tariffs-conditions></ob-tariffs-conditions>
+      </div>
+
+      <div *ngIf="(mainService.currentFormType | async) === 'operationsFilter'">
+        <ob-operations-filter></ob-operations-filter>
+      </div>
+
+      <div *ngIf="(mainService.currentFormType | async) === 'discharge'">
+        <ob-modal-account-statement></ob-modal-account-statement>
+      </div>
+    </div>
+  </div>
+</div>

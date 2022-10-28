@@ -1,0 +1,52 @@
+.fx_modal {
+  &_header {
+    padding: 32px 32px 24px 32px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+
+    &_title {
+      font-weight: 800;
+      font-size: 26px;
+      color: #2A353D;
+    }
+
+    &_close {
+      width: 24px;
+      height: 24px;
+      margin-top: -8px;
+      margin-right: -8px;
+      opacity: 0.6;
+      cursor: pointer;
+    }
+  }
+
+  &_body {
+    display: flex;
+    flex-direction: column;
+    padding: 0px 32px 48px 32px;
+
+    &_text {
+      font-weight: 500;
+      font-size: 16px;
+      color: #263238;
+    }
+  }
+
+  &_footer {
+    display: flex;
+    flex-direction: row;
+    padding: 24px 32px 32px 32px;
+    border-top: 1px solid #D0D6D8;
+
+    &_btn {
+      padding: 11px 24px 11px 24px;
+      background: #11BB91;
+      border: 1px solid #11BB91;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 14px;
+      color: #FFFFFF;
+    }
+  }
+}

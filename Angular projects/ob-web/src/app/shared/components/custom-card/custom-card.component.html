@@ -1,0 +1,13 @@
+<ng-template [ngIf]="className === 'opacity-50'">
+  <ob-badge
+    [type]="'soon'"
+    id="hidden-card"
+    [className]="'hidden-card'"></ob-badge>
+</ng-template>
+<div class="custom-card {{ className }}" (click)="navigate()">
+  <img
+    class="card-icon"
+    src="./assets/icons/{{ imgUrl }}"
+    alt="img_{{ imgUrl }}" />
+  <p>{{ title }}</p>
+</div>

@@ -1,0 +1,49 @@
+@import '/src/styles/variables.scss';
+
+.table_container {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.table {
+  &-text {
+    font-weight: 500;
+    color: #263238;
+    &__bold {
+      font-weight: 700;
+    }
+    &__sub {
+      color: $color-gray-light-dark;
+      font-size: $font-size-extra-small;
+      font-weight: $font-weight-medium;
+      margin-top: 4px;
+    }
+  }
+}
+table {
+  th,
+  td {
+    &:nth-child(1) {
+      width: 35%;
+    }
+    &:nth-child(2) {
+      width: 20%;
+    }
+    &:nth-child(3) {
+      width: 15%;
+    }
+    &:nth-child(4) {
+      width: 20%;
+    }
+    &:nth-child(5) {
+      width: 10%;
+    }
+  }
+}
+
+.mb {
+  &_2 {
+    margin-bottom: 2px;
+  }
+}

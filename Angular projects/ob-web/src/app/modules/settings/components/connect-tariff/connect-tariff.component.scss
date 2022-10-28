@@ -1,0 +1,274 @@
+@import '/src/styles/variables.scss';
+
+.connect-tariff {
+    padding: 32px;
+    background-color: #fff;
+    border-radius: 12px;
+    margin-bottom: 114px;
+
+    &__back-btn {
+        margin-bottom: 32px;
+    }
+
+    &__header {
+        margin-bottom: 24px;
+    }
+    
+    &__title {
+        font-weight: $font-weight-extra-bold;
+        font-size: $font-size-h3-medium;
+        line-height: 130%;
+        letter-spacing: 0.02em;
+        margin-bottom: 8px;
+    }
+
+    &__subtitle {
+        color: $color-black;
+        font-size: $font-size-medium;
+        font-weight: $font-weight-bold;
+        line-height: 130%;
+        letter-spacing: 0.02em;
+    }
+
+    &__line {
+        width: 100px;
+        height: 6px;
+        background-color: $color-green;
+        margin-bottom: 24px;
+    }
+
+    &__descriptions {
+        margin-left: 24px;
+        li {
+            color: $color-gray-darker;
+            font-size: $font-size-medium;
+            line-height: 150%;
+            letter-spacing: 0.02em;
+            font-weight: $font-weight-medium;
+        }
+    }
+    &__default {
+        color: $color-gray-darker;
+        font-size: $font-size-medium;
+        line-height: 150%;
+        letter-spacing: 0.02em;
+        font-weight: $font-weight-medium;
+    }
+    &__btn {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: #fff;
+        background-color: $color-green;
+        height: 52px;
+        border: none;
+        border-radius: 12px;
+
+        p {
+            font-weight: $font-weight-bold;
+        }
+    }
+}
+
+.period-list {
+    &__item {
+        position: relative;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        background-color: #F3F3F3;
+        min-width: 246px;
+        height: 134px;
+        border-radius: 12px;
+        padding-top: 42px;
+        cursor: pointer;
+
+        &.selected {
+            background-color: #fff;
+            &::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                right: 0;
+                bottom: 0;
+                border-radius: 12px;
+                left: 0;
+                border: 2px solid $color-green;
+            }
+        }
+
+        &-selected_text {
+            position: absolute;
+            top: 12px;
+            left: 16px;
+            p {
+                color: $color-green;
+                font-weight: $font-weight-bold;
+            }
+        }
+
+        &-discount {
+            position: absolute;
+            background-color: $color-yellow-dark;
+            color: #fff;
+            top: 0;
+            right: 0;
+            padding: 4px 18px;
+            width: 92px;
+            height: 26px;
+            text-align: center;
+            border-bottom-left-radius: 12px;
+            border-top-right-radius: 12px;
+            p {
+                font-weight: $font-weight-bold;
+            }
+        }
+
+        &-final_cost {
+            font-weight: $font-weight-extra-bold;
+            font-size: $font-size-h3-medium;
+            line-height: 110%;
+            letter-spacing: 0.02em;
+            margin-bottom: 2px;
+        }
+        
+        &-cost {
+            text-decoration: line-through;
+            color: $color-gray-light-dark;
+            margin-bottom: 8px;
+
+            &:empty {
+                height: 21px;
+            }
+        }
+
+        &-period{
+            font-weight: 700;
+            font-size: 14px;
+            color: #263238;
+        }
+    }
+}
+
+.mb{
+    &-16 {
+        margin-bottom: 16px;
+    }
+
+    &-32 {
+        margin-bottom: 32px;
+    }
+
+    &-40 {
+        margin-bottom: 40px;
+    }
+    &-24 {
+        margin-bottom: 24px;
+    }
+}
+
+::ng-deep .ng-select.custom-select.ng-select-opened {
+    .ng-option{
+        border-bottom: none!important;
+        padding: 0!important;
+    }
+}
+
+::ng-deep .ng-select.custom-select {
+    .ng-value {
+        :nth-child(1) {
+        margin-left: 0px !important;
+        }
+    }
+
+    .ng-arrow-wrapper {
+        padding: 0px;
+        margin-right: 4px;
+    }
+}
+
+.tariff-details {
+    
+    &__row {
+        display: flex;
+        gap: 32px;
+        padding: 15px 0;
+        border-bottom: 1px solid #D0D6D8;
+    }
+    &__title {
+        display: flex;
+        gap: 32px;
+        padding: 13px 0;
+        border-bottom: 1px solid #D0D6D8;
+        p {
+            font-size: $font-size-extra-small;
+            font-weight: 600;
+            color: $color-gray-light-dark;
+            line-height: 120%;
+            letter-spacing: 0.01em;
+        }
+    }
+    
+    &__more {
+        margin-top: 26px;
+        display: flex;
+        gap: 4px;
+        align-items: center;
+
+        .hide {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+            transform: rotate(180deg);
+        }
+        
+        .show {
+            cursor: pointer;
+            width: 24px;
+            height: 24px;
+        }
+    }
+
+    &__text {
+        &-main {
+            color: $color-gray-darker;
+            letter-spacing: 0.02em;
+            line-height: 130%;
+            font-size: $font-size-small;
+            font-weight: $font-weight-medium;
+        }
+
+        &-secondary {
+            color: $color-light-black;
+            letter-spacing: 0.02em;
+            line-height: 130%;
+            font-size: $font-size-small;
+            font-weight: $font-weight-bold;
+        }
+        
+        &-green {
+            color: $color-green;
+            letter-spacing: 0.02em;
+            line-height: 130%;
+            font-size: $font-size-small;
+            font-weight: $font-weight-bold;
+            cursor: pointer;
+        }
+    }
+}
+
+@media screen and (max-width: 1120px) {
+  .period-list {
+    overflow-x: auto;
+    padding-bottom: 8px;
+    &__wrapper {
+      width: 1056px;
+    }
+  }
+}
+
+.loader-container {
+    height: 324px !important;
+    display: flex;
+    justify-content: center;
+}

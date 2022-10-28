@@ -1,0 +1,27 @@
+@import "/src/styles/variables.scss";
+
+.blocked-card {
+    max-width: 552px;
+    position: relative;
+    padding: 18px 16px;
+    background-color: $color-gray-lighter;
+    border-radius: 4px;
+    font-size: $font-size-small;
+    margin-bottom: 32px;
+
+    &-img {
+        position: absolute;
+        left: 16px;
+        top: 18px;
+    }
+
+    &-title {
+        color: $color-black;
+        margin: 0 0 8px 48px;
+    }
+
+    &-description {
+        color: $color-gray-darker;
+        margin-left: 48px;
+    }
+}

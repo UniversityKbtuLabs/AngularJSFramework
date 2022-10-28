@@ -1,0 +1,25 @@
+.calendar {
+  &_container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding-top: 128px;
+  }
+
+  &_btn {
+    width: 150px;
+    margin-bottom: 32px;
+    margin-left: 5%;
+    padding: 10px 16px 10px 16px;
+    border-radius: 12px;
+    background-color: #11BB91FF;
+    outline: none;
+    border: none;
+    color: #FFFFFF;
+    font-weight: bold;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+}

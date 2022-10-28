@@ -1,0 +1,32 @@
+@import "/src/styles/variables.scss";
+
+.all-products {
+  &__section {
+    &:not(:first-child) {
+      border-top: 1px solid #d0d4d6;
+      padding-top: 40px;
+    }
+    padding-bottom: 32px;
+  }
+
+  &__title {
+    font-size: $font-size-medium-large;
+    font-weight: $font-weight-extra-bold;
+    color: $color-light-black;
+    line-height: 132%;
+    letter-spacing: 0.01em;
+  }
+}
+
+.mb-32 {
+  margin-bottom: 32px;
+}
+
+.g-24 {
+  --bs-gutter-x: 24px !important;
+  --bs-gutter-y: 24px !important;
+}
+
+.mb-16 {
+  margin-bottom: 16px;
+}

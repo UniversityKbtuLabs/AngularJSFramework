@@ -1,0 +1,53 @@
+@import "/src/styles/variables.scss";
+
+.account-info {
+  margin-bottom: 40px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+
+  &-cards {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  &-currency {
+    font-size: $font-size-extra-small;
+  }
+
+  &-card {
+    position: relative;
+    justify-content: center;
+    padding-left: 25px;
+
+    &:first-child {
+      padding: 0;
+    }
+
+    &:last-child:after {
+      border: none;
+    }
+  }
+
+  &-title {
+    font-size: $font-size-extra-small;
+    color: $color-gray-middle;
+    margin-bottom: 8px;
+    font-weight: 500;
+  }
+
+  &-desc {
+    font-size: $font-size-h5-large;
+    font-weight: 600;
+    color: $color-black;
+  }
+}
+
+.error {
+  color: $color-error-red;
+}
+
+.success {
+  color: $color-green;
+}

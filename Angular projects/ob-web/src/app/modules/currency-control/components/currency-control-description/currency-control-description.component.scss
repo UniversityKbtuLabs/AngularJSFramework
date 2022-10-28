@@ -1,0 +1,72 @@
+@import '/src/styles/main.scss';
+
+.description {
+  &_container {
+    &_close,
+    &_open {
+      width: 100%;
+      background: #ffffff;
+      border-radius: 12px;
+      margin-bottom: 24px;
+    }
+    &_close {
+      padding: 24px 32px;
+    }
+    &_open {
+      padding: 32px;
+    }
+  }
+
+  &_title {
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 130%;
+    letter-spacing: 0.02em;
+    color: #263238;
+  }
+
+  &_arrow {
+    &_up {
+      width: 24px;
+      height: 24px;
+      cursor: pointer;
+    }
+
+    &_down {
+      width: 24px;
+      height: 24px;
+      transform: rotate(180deg);
+      cursor: pointer;
+    }
+  }
+
+  ul {
+    margin-left: 16px;
+
+    li {
+      font-weight: 500;
+      font-size: 14px;
+      line-height: 150%;
+      letter-spacing: 0.02em;
+      color: #263238;
+
+      &:nth-child(2) {
+        margin-top: 4px;
+      }
+
+      &:nth-child(3) {
+        margin-top: 4px;
+      }
+    }
+  }
+}
+
+.mt {
+  &_24 {
+    margin-top: 24px;
+  }
+
+  &_4 {
+    margin-top: 4px;
+  }
+}

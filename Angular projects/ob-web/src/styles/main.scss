@@ -1,0 +1,262 @@
+@import 'variables';
+@import 'theme/theme';
+@import './theme//grid';
+
+@import 'libraries/ng-select';
+
+/* Importing Bootstrap SCSS file. */
+@import '~bootstrap/scss/bootstrap';
+@import '~bootstrap/dist/css/bootstrap.css';
+/* Importing Datepicker SCSS file. */
+@import '~ngx-bootstrap/datepicker/bs-datepicker';
+//@import "~@ng-select/ng-select/themes/material.theme.css";
+
+/* Importing  AG Grid styles*/
+@import 'ag-grid-community/dist/styles/ag-grid.css';
+@import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
+
+@import '~@ng-select/ng-select/themes/default.theme.css';
+@import '~ngx-toastr/toastr';
+
+html,
+body {
+  font-size: 14px;
+  background-color: $color-gray_main;
+  scroll-behavior: smooth;
+  letter-spacing: 0.02em;
+  font-family: $font-family-serif;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+ul,
+ol {
+  padding: 0;
+  margin: 0;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* width */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px !important;
+  display: block !important;
+  background: transparent;
+}
+
+.custom-today-class {
+  background-color: #11bb91;
+  color: #fff;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+::-webkit-scrollbar-button {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #999999;
+  border-radius: 7px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #888888;
+}
+
+.primary {
+  -webkit-filter: opacity(1) drop-shadow(0 0 0 $color-green);
+  filter: opacity(1) drop-shadow(0 0 0 $color-green);
+}
+
+// table ag-grid
+
+.ag-theme-alpine .ag-header {
+  background-color: $color-gray-lighter;
+  border-bottom: none !important;
+  margin-bottom: 16px;
+}
+
+.ag-theme-alpine .ag-header-row {
+  color: $color-black !important;
+  font-size: $font-size-extra-small !important;
+  font-weight: 600;
+}
+
+.ag-theme-alpine .ag-root-wrapper {
+  border: none;
+}
+
+.ag-cell-not-inline-editing {
+  user-select: initial;
+  -moz-user-select: text;
+  -ms-user-select: text;
+  -webkit-user-select: text;
+}
+
+.ag-cell-focus,
+.ag-cell {
+  border: none !important;
+}
+
+.ag-theme-material .ag-icon-checkbox-checked {
+  color: $color-green;
+}
+
+// datepicker
+
+.bs-datepicker-body table td span.selected,
+.bs-datepicker-head,
+.bs-datepicker-head,
+.bs-datepicker button:active,
+.bs-datepicker-body table td.selected span,
+.bs-datepicker-body table td span[class*='select-']:after,
+.bs-datepicker-body table td[class*='select-'] span:after,
+.bs-datepicker-body table td.active-week span:hover {
+  background-color: $color-green !important;
+}
+.bs-datepicker {
+  bottom: 4px !important;
+}
+
+.form-control {
+  input{
+    font-weight: $font-weight-medium;
+  }
+}
+
+.form-check-input:checked {
+  background-color: $color-green !important;
+  border-color: $color-green !important;
+  outline: none !important;
+  box-shadow: none;
+}
+
+.form-check-input {
+  outline: none !important;
+  box-shadow: none;
+}
+
+.toast-top-right {
+  top: 9%;
+}
+
+.modal {
+  &-content {
+    border-radius: 12px !important;
+    border: none;
+  }
+
+  &-header {
+    padding: 32px;
+    position: relative;
+
+    .btn-close.close {
+      position: absolute;
+      padding: 0 !important;
+      margin: 0 !important;
+      right: 16px;
+      top: 16px;
+      height: 32px;
+      width: 32px;
+    }
+  }
+
+  &-body {
+    padding: 24px 32px 27px;
+  }
+}
+
+// pagination styles
+.page-item {
+  & > a {
+    border-radius: 50% !important;
+    border: none;
+    width: 32px;
+    height: 32px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 8px;
+    background-color: $color-gray_main;
+    color: #000;
+    outline: none;
+
+    &:hover {
+      color: $color-green;
+    }
+  }
+}
+
+.page-item.active .page-link {
+  background-color: $color-green;
+  color: $color-gray_main;
+}
+
+.modal-md {
+  .alert-danger {
+    background-color: unset !important;
+    border: unset !important;
+    border-color: unset !important;
+  }
+}
+
+.employee-modal {
+  max-width: 900px !important;
+}
+
+.requisites-modal {
+  max-width: 580px !important;
+}
+
+.savings-modal {
+  max-width: 640px !important;
+}
+
+.modal-mt-120 {
+  margin: 120px auto !important;
+}
+
+.modal-mt-160 {
+  margin: 160px auto !important;
+}
+
+.modal-w-536 {
+  max-width: 536px !important;
+}
+
+.modal-w-420 {
+  max-width: 420px !important;
+}
+
+.btn-primary {
+  // временно для тесте
+  background-color: #11bb91 !important;
+  border: 1px solid #11bb91 !important;
+}
+
+.modal.fade{
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal-backdrop.fade{
+  opacity: 0;
+}

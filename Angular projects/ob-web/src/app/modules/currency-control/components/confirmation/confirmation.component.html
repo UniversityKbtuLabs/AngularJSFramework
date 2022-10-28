@@ -1,0 +1,43 @@
+<!--Для добавление контракта-->
+
+<div class="confirmation row mt-5" *ngIf="!isSigned">
+  <div class="col-6 offset-3 text-center">
+    <img src="./assets/icons/payment_sign.svg" alt="ob-success" />
+    <h4 class="mb-32">
+      {{ 'currencyControl.contract.send-to-sign' | translate }}
+    </h4>
+    <hr class="mb-32" />
+    <div class="col-8 offset-2">
+      <button
+        type="button"
+        class="btn btn-lg w-100 mt-2 btn-bg"
+        (click)="onNavigate()">
+        {{ 'operations.default.ready' | translate }}
+      </button>
+    </div>
+    <div class="col-8 offset-2">
+      <button
+        type="button"
+        class="btn btn-lg w-100 mt-2 btn-np"
+        (click)="onCreateNewContract()">
+        {{ 'currencyControl.contract.add' | translate }}
+      </button>
+    </div>
+  </div>
+</div>
+<div class="confirmation row mt-5" *ngIf="isSigned">
+  <div class="col-6 offset-3 text-center">
+    <img src="./assets/icons/payment_sign.svg" alt="ob-success" />
+    <h4 class="mb-32">{{ 'currencyControl.contract.signed' | translate }}</h4>
+    <hr class="mb-32" />
+    <div class="col-8 offset-2">
+      <!-- <h6 class="mt-3 text-uppercase download"></h6> -->
+      <button
+        type="button"
+        class="btn btn-lg w-100 mt-2 btn-bg"
+        (click)="onNavigateCurrencyControl()">
+        {{ 'default.currency-control-nav' | translate }}
+      </button>
+    </div>
+  </div>
+</div>

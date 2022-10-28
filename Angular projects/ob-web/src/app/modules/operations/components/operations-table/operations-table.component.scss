@@ -1,0 +1,15 @@
+@import "/src/styles/variables.scss";
+
+.date {
+  background: #f2f7f7;
+  padding: 4px 4px 4px 16px;
+}
+
+.secondary {
+  color: $color-gray-middle;
+  margin-right: 5px;
+}
+
+.bold {
+  font-weight: bold;
+}

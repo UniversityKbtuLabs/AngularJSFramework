@@ -1,0 +1,450 @@
+<div class="accounts_table_inner">
+  <ng-template [ngIf]="type !== 'credits'">
+    <div class="table_header header_margin">
+      <div>{{ headers[0] }}</div>
+      <div>
+        <p>{{ headers[1] }}</p>
+        <p>{{ headers[2] }}</p>
+      </div>
+      <div>{{ headers[3] }}</div>
+    </div>
+  </ng-template>
+
+  <ng-template [ngIf]="type === 'credits'">
+    <div class="table_header_credit header_margin">
+      <div class="table_header_credit_col_1 header_col_title">
+        {{ headers[0] }}
+      </div>
+      <div class="table_header_credit_col_2">
+        <div class="header_col_title">{{ headers[1] }}</div>
+        <div class="header_col_title">{{ headers[2] }}</div>
+        <div class="header_col_title">{{ headers[3] }}</div>
+        <div class="header_col_title">{{ headers[4] }}</div>
+      </div>
+    </div>
+  </ng-template>
+
+  <ng-container *ngIf="type !== 'cards' && type !== 'credits'">
+    <div
+      class="table_body"
+      [ngClass]="i === list.length - 1 ? 'last_item' : 'last_item_not'"
+      *ngFor="let account of list; let i = index">
+      <div
+        class="table_body_account_name"
+        (click)="
+          (type === 'accounts' || type === 'deposits') &&
+            navigateToDetails(account)
+        ">
+        <div class="table_body_account_img" *ngIf="type === 'deposits'">
+          <img
+            *ngIf="
+              account.active === 'N' ||
+              account.active === 'I' ||
+              account.active === 'D'
+            "
+            src="./assets/icons/blocked.svg"
+            alt="blocked reason"
+            class="table_body__reason" />
+          <img
+            [ngClass]="
+              account.active === 'Y' || account.active === 'V'
+                ? ''
+                : 'table_body__img-error'
+            "
+            [src]="getAccountIcon(account.currency, account.active, '')"
+            alt="account icon"
+            (error)="imgError($event)" />
+        </div>
+
+        <div class="table_body_account_img" *ngIf="type === 'accounts'">
+          <img
+            *ngIf="
+              helperService.getDetailAccountStatus(account.absState | lowercase)
+                .length !== 0
+            "
+            [src]="
+              helperService.getDetailAccountIcon(account?.absState | lowercase)
+            "
+            alt="blocked reason"
+            class="table_body__reason" />
+          <img
+            [ngClass]="isOpenStatus(account)"
+            [src]="
+              getAccountIcon(
+                account.currency,
+                account.active,
+                account?.absState
+              )
+            "
+            alt="account icon"
+            (error)="imgError($event)" />
+        </div>
+        <div class="table_body_account_name_constainer">
+          <ng-template [ngIf]="!account.type">
+            <p>
+              {{ account.name }}
+            </p>
+            <p *ngIf="account.absState !== 'Открыт'" class="table_body__status">
+              {{
+                helperService.getDetailAccountStatus(
+                  account.absState | lowercase
+                ) | translate
+              }}
+            </p>
+          </ng-template>
+          <ng-template [ngIf]="account.type && account.type === 'deposit'">
+            <p
+              [ngClass]="{
+                table_body_deposit_name: account.type === 'deposit'
+              }">
+              {{ account.name }}
+            </p>
+            <p class="table_body_card_account_acc">
+              {{ account.depositContractNumber }}
+            </p>
+          </ng-template>
+          <p class="table_error">{{ account.lockedReasons }}</p>
+        </div>
+      </div>
+      <div>
+        <p *ngIf="type === 'accounts'" class="table_body__secondary">
+          {{ helperService.ibanSeparator(account.accountInfo) }}
+        </p>
+        <p *ngIf="type === 'deposits'" class="table_body__secondary">
+          {{
+            account?.depositClose
+              ? account?.depositClose.split('-').reverse().join('.')
+              : ''
+          }}
+        </p>
+        <p *ngIf="type === 'deposits'">
+          <span class="table_body__secondary">
+            {{
+              getParsedAmount(
+                type === 'deposits' ? 'amount' : '',
+                account.accountMoreInfo
+              ) | amountPipe
+            }}
+          </span>
+          {{ getCurrencySymbol(account.currency) }}
+        </p>
+        <p *ngIf="type === 'accounts'">
+          <span class="table_body__secondary">
+            {{ getParsedAmount('amount', account.amountLocked) | amountPipe }}
+          </span>
+          {{ getCurrencySymbol(account.currency) }}
+        </p>
+      </div>
+      <div class="table_body__amount">
+        <div>
+          <p class="amount">
+            <span class="table_body__bold">
+              {{ getParsedAmount('amount', account.amount) | amountPipe
+              }}{{ ' ' }}
+            </span>
+            {{ getCurrencySymbol(account.currency) }}
+          </p>
+        </div>
+        <!-- <div
+          class="btn-group table_settings"
+          dropdown
+          #dropdown="bs-dropdown"
+          placement="bottom right"
+        >
+          <img
+            *ngIf="account.active === 'Y' || account.active === 'V'"
+            id="button-animated"
+            dropdownToggle
+            src="./assets/icons/dots.svg"
+            alt="settings dots"
+            aria-controls="dropdown-animated"
+          />
+          <ul
+            id="dropdown-animated"
+            *dropdownMenu
+            class="dropdown-menu dropdown-menu-right"
+            role="menu"
+            aria-labelledby="button-animated"
+          >
+            <div
+              *ngFor="let action of getActions(account.currency)"
+              class="table_dropdown__element"
+              (click)="doActionByCode(action.code, account.accountInfo)"
+            >
+              {{ action.name }}
+            </div>
+          </ul>
+        </div> -->
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="type !== 'cards' && type === 'credits'">
+    <div
+      class="table_body_credit"
+      [ngClass]="i === list.length - 1 ? 'last_item' : 'last_item_not'"
+      *ngFor="let account of list; let i = index">
+      <div class="table_body_credit_col_1" (click)="navigateToDetails(account)">
+        <div class="table_body_account_img">
+          <img
+            *ngIf="
+              account.active === 'N' ||
+              account.active === 'I' ||
+              account.active === 'D'
+            "
+            src="./assets/icons/blocked.svg"
+            alt="blocked reason"
+            class="table_body__reason" />
+          <img
+            [ngClass]="
+              account.active === 'Y' ||
+              account.active === 'V' ||
+              type === 'credits'
+                ? ''
+                : 'table_body__img-error'
+            "
+            [src]="getAccountIcon(account.currency, account.active, '')"
+            alt="account icon"
+            (error)="imgError($event)" />
+        </div>
+
+        <div class="table_body_account_name_constainer">
+          <ng-template [ngIf]="!account.type">
+            <p>
+              {{ account.name || 'Кредит ' + account.purName }}
+            </p>
+            <p class="is_not_overude mt_2" *ngIf="account.isOverdue === false">
+              {{ 'acccountSavings.credit.isNotOverdue' | translate }}
+            </p>
+            <p class="is_overdue mt_2" *ngIf="account.isOverdue === true">
+              {{ 'acccountSavings.credit.isOverdue' | translate }}
+            </p>
+          </ng-template>
+          <p class="table_error mt_2">{{ account.lockedReasons }}</p>
+        </div>
+      </div>
+
+      <div class="table_body_credit_col_2">
+        <div>
+          <p>
+            {{ account.number }}
+          </p>
+          <p class="mt_2">
+            {{ account.fromDate }}
+          </p>
+        </div>
+        <div>
+          <p>
+            <span>
+              {{ getParsedAmount('amount', account?.od) | amountPipe }}
+            </span>
+            {{ getCurrencySymbol(account.currency) }}
+          </p>
+        </div>
+        <div>
+          <!--          четвертый столбец кредитов -->
+          <p>
+            <span>
+              {{ getPayDate(account.payDay) }}
+            </span>
+          </p>
+          <!--          четвертый столбец кредитов -->
+        </div>
+        <div>
+          <p>
+            <span>
+              {{ getParsedAmount('amount', account.amount) | amountPipe
+              }}{{ ' ' }}
+            </span>
+            {{ getCurrencySymbol(account.currency) }}
+          </p>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="type === 'cards'">
+    <div *ngFor="let account of getCards(); let i = index">
+      <div
+        class="table_body"
+        [ngClass]="(i === (getCards().length - 1)) &&
+           list[getCards()[getCards().length - 1]]?.[0]?.links.length === 0
+           ? 'last_item' : 'last_item_not'">
+        <div
+          class="table_body__name"
+          (click)="navigateCardAccount(list[account][0]?.contractId)">
+          <div class="table_body__img">
+            <img
+              *ngIf="
+                list[account][0].active === 'N' ||
+                list[account][0].active === 'I' ||
+                list[account][0].active === 'D'
+              "
+              src="./assets/icons/blocked.svg"
+              alt="blocked reason"
+              class="table_body__reason" />
+            <img
+              [ngClass]="
+                list[account][0].active === 'Y' ||
+                list[account][0].active === 'V'
+                  ? ''
+                  : 'table_body__img-error'
+              "
+              [src]="
+                getAccountIcon(
+                  list[account][0].currency,
+                  list[account][0].active,
+                  ''
+                )
+              "
+              alt="account icon"
+              (error)="imgError($event)" />
+          </div>
+
+          <div class="table_body_card_account_wrapper">
+            <p
+              *ngIf="list[account][0].levelName === 'corpCardsRoot'"
+              class="table_body_card_account_name">
+              {{ 'default.card_account' | translate }}
+            </p>
+            <p class="table_body_card_account_acc">
+              {{ list[account][0].name }}
+            </p>
+            <p class="table_error">{{ list[account][0].lockedReasons }}</p>
+          </div>
+        </div>
+        <div>
+          <p></p>
+          <p *ngIf="type === 'cards' || type === 'deposits'">
+            <span class="table_body__secondary">
+              {{
+                getParsedAmount(
+                  type === 'cards' || type === 'deposits' ? 'amount' : '',
+                  list[account][0].accountMoreInfo
+                ) | amountPipe
+              }}
+            </span>
+            {{ getCurrencySymbol(list[account][0].currency) }}
+          </p>
+        </div>
+        <div>
+          <p class="amount">
+            <span class="table_body__bold">
+              {{
+                getParsedAmount('amount', list[account][0].amount) | amountPipe
+              }}
+            </span>
+            {{ getCurrencySymbol(list[account][0].currency) }}
+          </p>
+        </div>
+        <!-- <div
+          class="btn-group table_settings"
+          dropdown
+          #dropdown="bs-dropdown"
+          placement="bottom right"
+        >
+          <img
+            *ngIf="
+              list[account][0].active === 'Y' || list[account][0].active === 'V'
+            "
+            id="button-animated"
+            dropdownToggle
+            src="./assets/icons/dots.svg"
+            alt="settings dots"
+            aria-controls="dropdown-animated"
+          />
+          <ul
+            id="dropdown-animated"
+            *dropdownMenu
+            class="dropdown-menu dropdown-menu-right"
+            role="menu"
+            aria-labelledby="button-animated"
+          >
+            <div
+              *ngFor="let action of getActions()"
+              class="table_dropdown__element"
+              (click)="doActionByCode(action.code)"
+            >
+              {{ action.name }}
+            </div>
+          </ul>
+        </div> -->
+      </div>
+
+      <div *ngFor="let item of list[account]?.[0]?.links;let j = index">
+        <div
+          class="table_body"
+          [ngClass]="(j === list[account]?.[0]?.links.length - 1) && (i === (getCards().length - 1))
+           ? 'card_item_last' : 'card_item'"
+          (click)="navigateToDetails(item)">
+          <div class="table_body__name table_body__name-hover">
+            <div>
+              <img src="./assets/icons/nested.svg" alt="" />
+            </div>
+
+            <div class="table_body__img">
+              <img
+                *ngIf="
+                  item.active === 'N' ||
+                  item.active === 'I' ||
+                  item.active === 'D'
+                "
+                src="./assets/icons/blocked.svg"
+                alt="blocked reason"
+                class="table_body__reason" />
+              <img
+                [ngClass]="
+                  item.active === 'Y' || item.active === 'V'
+                    ? ''
+                    : 'table_body__img-error'
+                "
+                [src]="getCardImg(item.contractNumber, item.active)"
+                alt="account icon" />
+            </div>
+
+            <div>
+              <p>
+                {{
+                  (accountsService.cardNames[item?.name] | translate) ||
+                    item?.name
+                }}
+              </p>
+              <p class="table_error">{{ item.lockedReasons }}</p>
+            </div>
+          </div>
+          <div>
+            <p class="table_body__secondary">
+              {{ capitalizeName(item.accountInfo) }}
+            </p>
+            <p *ngIf="type === 'cards' || type === 'deposits'">
+              <span class="table_body__secondary">
+                {{
+                  getParsedAmount(
+                    type === 'cards' || type === 'deposits' ? 'amount' : '',
+                    item.accountMoreInfo
+                  ) | amountPipe
+                }}
+              </span>
+              {{ getCurrencySymbol(item.currency) }}
+            </p>
+          </div>
+          <div>
+            <p class="amount">
+              <span class="table_body__bold">
+                {{ getParsedAmount('amount', item.amount) | amountPipe }}
+              </span>
+              {{ getCurrencySymbol(item.currency) }}
+            </p>
+          </div>
+        </div>
+        <div
+          [ngClass]="(j === list[account]?.[0]?.links.length - 1) && (i === (getCards().length - 1))
+           ? 'card_item_last_line' : 'card_item_line'"></div>
+      </div>
+    </div>
+  </ng-container>
+
+  <ng-container *ngIf="list.length < 1 || getCards().length < 1">
+    <ob-empty-accounts [type]="type"></ob-empty-accounts>
+  </ng-container>
+</div>

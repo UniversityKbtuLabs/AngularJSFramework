@@ -1,0 +1,37 @@
+<div class="row mb-114">
+  <section class="come-back">
+    <ob-back-button [currentPage]="'operation'"></ob-back-button>
+  </section>
+  <!--  <div class="col-smdt-12 col-dt-9 col-lgdt-8 g-custom">-->
+  <!--    <div class="transfer">-->
+  <!-- <ob-common-transfer *ngIf="transferType === 'accounts'"></ob-common-transfer> -->
+  <div>
+    <ob-a2a-transfer *ngIf="transferType === 'accounts'"></ob-a2a-transfer>
+    <ob-common-transfer *ngIf="transferType === 'card'"></ob-common-transfer>
+  </div>
+  <!--    </div>-->
+  <!--  </div>-->
+  <!-- <div class="col-dt-3 col-smdt-12">
+      <div class="information transfer">
+        <p class="transfer__right-heading">Информация</p>
+        <div class="information-content" *ngIf="transferType === 'accounts'">
+          <p class="text-muted information-content__title">
+            Переводы между своими счетами в валюте
+          </p>
+          <span class="icon icon_down-arrow"></span>
+        </div>
+        <div class="information-content" *ngIf="transferType === 'card'">
+          <p class="text-muted information-content__title">
+            Комиссия для переводов
+          </p>
+          <span class="icon icon_down-arrow"></span>
+        </div>
+        <div class="information-content" *ngIf="transferType === 'card'">
+          <p class="text-muted information-content__title">
+            На карты каких банков можно сделать перевод?
+          </p>
+          <span class="icon icon_down-arrow"></span>
+        </div>
+      </div>
+    </div> -->
+</div>

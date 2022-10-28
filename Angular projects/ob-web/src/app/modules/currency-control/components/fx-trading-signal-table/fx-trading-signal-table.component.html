@@ -1,0 +1,71 @@
+<div class="signal_table">
+  <ob-loader [loading]="tradingSignalsListLoading">
+    <p class="signal_table_title">
+      {{ 'currencyControl.halykFX.tradingSignalList' | translate }}
+    </p>
+    <div class="signal_table_main">
+      <table *ngIf="tradingSignalsList && tradingSignalsList.length > 0">
+        <tr *ngFor="let item of tradingSignalsList; let i = index">
+          <td class="signal_table_main_col_1">
+            <img
+              src="assets/icons/{{
+                item?.mainCurrency.toLowerCase()
+              }}flag.svg" />
+            <div>
+              <p *ngIf="item.buyRate && !item.sellRate">
+                {{ 'currencyControl.halykFX.bankBuy' | translate }}
+                {{ item?.mainCurrency }}
+              </p>
+              <p *ngIf="!item.buyRate && item.sellRate">
+                {{ 'currencyControl.halykFX.bankSale' | translate }}
+                {{ item?.mainCurrency }}
+              </p>
+              <p class="signal_table_text_wait" *ngIf="item?.status === 'WAIT'">
+                {{ 'currencyControl.halykFX.observation' | translate }}
+              </p>
+              <p class="signal_table_text_done" *ngIf="item?.status === 'DONE'">
+                {{ 'currencyControl.halykFX.done' | translate }}
+                {{ getDate(item?.executionDate) }}
+              </p>
+            </div>
+          </td>
+          <td class="signal_table_main_col_2">
+            <div class="signal_table_main_col_2_wrapper">
+              <p class="signal_table_text_amount">
+                {{ item?.buyRate || item?.sellRate }}
+                {{ formatCurrency(item?.counterCurrency) }}
+              </p>
+              <p class="signal_table_text_created">
+                {{ getDate(item?.createdDate) }}
+              </p>
+            </div>
+            <div class="img_wrapper" (click)="showItemDropdown(i)">
+              <img src="./assets/icons/ic_four_dots.svg" />
+              <div
+                [ngClass]="
+                  showTradingSignalActionsDropdawn[i]
+                    ? 'dropdown_body_visible'
+                    : 'dropdown_body_invisible'
+                "
+                #dropdown>
+                <div class="d-flex flex-column">
+                  <button class="dropdown_btn" (click)="deleteSignal(item.id)">
+                    {{ 'operations.default.delete' | translate }}
+                  </button>
+                </div>
+              </div>
+            </div>
+          </td>
+        </tr>
+      </table>
+      <div
+        class="signal_table_empty"
+        *ngIf="!tradingSignalsList || tradingSignalsList.length === 0">
+        <div class="d-flex flex-column">
+          <img src="assets/icons/empty_list.svg" />
+          <p>{{ 'currencyControl.halykFX.noAddedSignals' | translate }}</p>
+        </div>
+      </div>
+    </div>
+  </ob-loader>
+</div>

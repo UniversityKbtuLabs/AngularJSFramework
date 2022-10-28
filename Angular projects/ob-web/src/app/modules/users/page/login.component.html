@@ -1,0 +1,14 @@
+<div class="auth">
+  <div class="inner-container">
+    <p *ngIf="!isCodeComponent" class="auth-title">
+      {{ 'auth.enter' | translate }}
+    </p>
+    <p *ngIf="isCodeComponent" class="auth-title">
+      {{ 'sms.codeConfirmation' | translate }}
+    </p>
+    <ob-loader [loading]="isLoading">
+      <ob-sms></ob-sms>
+    </ob-loader>
+  </div>
+</div>
+<div class="bottom-container"></div>
