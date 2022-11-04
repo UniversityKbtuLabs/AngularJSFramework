@@ -5,7 +5,7 @@
     <hr class="title_line">
   </div>
 
-  <div fxFlex class="dish_menu">
+  <div fxFlex class="dish_menu" *ngIf="dishes">
     <mat-grid-list cols="2" rowHeight="200px">
       <mat-grid-tile *ngFor="let dish of dishes" class="dish_tile" (click)="goToDishPage(dish)">
         <img height="200px" src="{{dish.image}}" alt="{{dish.name}}">
@@ -14,5 +14,12 @@
         </mat-grid-tile-footer>
       </mat-grid-tile>
     </mat-grid-list>
+  </div>
+  <div [hidden]="dishes" style="width: 100%">
+    <mat-spinner style="margin-left: auto;margin-right: auto">
+    </mat-spinner>
+    <h4 style="width: 100%;text-align: center">
+      Loading . . . Please Wait
+    </h4>
   </div>
 </div>

@@ -11,6 +11,13 @@
       <p>{{dish.description}}    </p>
     </mat-card-content>
   </mat-card>
+  <div [hidden]="dish" style="width: 100%">
+    <mat-spinner style="margin-left: auto;margin-right: auto">
+    </mat-spinner>
+    <h4 style="width: 100%;text-align: center">
+      Loading . . . Please Wait
+    </h4>
+  </div>
   <mat-card *ngIf="promotion" fxFlex class="card">
     <mat-card-header>
       <div mat-card-avatar></div>

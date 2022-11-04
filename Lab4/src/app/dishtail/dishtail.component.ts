@@ -15,7 +15,9 @@ export class DishtailComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.dish = this.dishService.getDish(this.activatedRoute.snapshot.params['id'])
+    this.dishService.getDish(this.activatedRoute.snapshot.params['id']).then((dish: Dish) => {
+      this.dish = dish
+    })
     console.log(this.dish)
   }
 

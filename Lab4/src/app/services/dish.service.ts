@@ -73,11 +73,21 @@ export class DishService {
   constructor() {
   }
 
-  getDish(id: string): Dish {
-    return this.dishes.filter((dish) => (dish.id === id))[0];
+  getDishes(): Promise<Dish[]> {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(this.dishes), 2000);
+    });
   }
 
-  getFeaturedDish(): Dish {
-    return this.dishes.filter((dish) => dish.featured)[0];
+  getDish(id: string): Promise<Dish> {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(this.dishes.filter((dish) => (dish.id === id))[0]), 2000);
+    });
+  }
+
+  getFeaturedDish(): Promise<Dish> {
+    return new Promise(resolve => {
+      setTimeout(() => resolve(this.dishes.filter((dish) => dish.featured)[0]), 2000);
+    });
   }
 }

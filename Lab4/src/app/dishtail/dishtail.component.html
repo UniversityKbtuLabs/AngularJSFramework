@@ -5,7 +5,7 @@
   <mat-card class="dish_info_main">
     <mat-card-header>
       <mat-card-title>
-        <h3>{{dish.name | uppercase}}</h3>
+        <h3 *ngIf="dish">{{dish.name | uppercase}}</h3>
       </mat-card-title>
     </mat-card-header>
     <img mat-card-image src="{{dish.image}}" alt="{{dish.name}}">
@@ -31,4 +31,11 @@
       </div>
     </div>
   </div>
+</div>
+<div [hidden]="dish" style="width: 100%">
+  <mat-spinner style="margin-left: auto;margin-right: auto">
+  </mat-spinner>
+  <h4 style="width: 100%;text-align: center">
+    Loading . . . Please Wait
+  </h4>
 </div>
