@@ -1,6 +1,15 @@
 <div class="back_btn_wrapper">
   <button mat-button (click)="goToMenu()" class="back_btn">Back</button>
 </div>
+<div style="width: 100%;padding: 24px;">
+  <button mat-button style="margin-left: 30%" [routerLink]="['/dishdetail', prev]">
+    <span class="fa fa-chevron-left fa-lg">Previous dish</span>
+  </button>
+  <span class="flex-spacer"></span>
+  <button mat-button style="margin-left: 20%" [routerLink]="['/dishdetail', next]">
+    <span class="fa fa-chevron-right fa-lg">Next dish</span>
+  </button>
+</div>
 <div fxFlex *ngIf="dish" class="mt_36 dish_info">
   <mat-card class="dish_info_main">
     <mat-card-header>
