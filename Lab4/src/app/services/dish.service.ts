@@ -1,92 +1,37 @@
 import {Injectable} from '@angular/core';
 import {Dish} from "../shared/models/Dish";
-import {delay, Observable, of} from "rxjs";
+import {catchError, delay, map, Observable, of} from "rxjs";
+import {HttpClient, HttpHeaders} from "@angular/common/http";
+import {baseURL} from "../shared/baseurl";
+import {ProcessHTTPMsgService} from "./process-httpmsg.service";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DishService {
-  public dishes: Dish[] = [
-    {
-      id: '0',
-      name: 'Uthappizza',
-      image: '/assets/images/uthappizza.png',
-      category: 'mains',
-      featured: true,
-      label: 'Hot',
-      price: '4.99',
-      description: 'A unique combination of Indian Uthappam (pancake) and Italian pizza, topped with Cerignola olives, ripe vine cherry tomatoes, Vidalia onion, Guntur chillies and Buffalo Paneer.',
-      comments: [
-        {
-          rating: 5,
-          text: 'Imagine all the eatables, living in conFusion!',
-          author: 'John Lemon',
-          date: '2012-10-16T17:57:28.556094Z'
-        }, {
-          rating: 4,
-          text: 'Sends anyone to heaven, I wish I could get my mother-in-law to eat it!',
-          author: 'Paul McVites',
-          date: '2014-09-05T17:57:28.556094Z'
-        }
-      ]
-    }, {
-      id: '1',
-      name: 'Zucchipakoda',
-      image: '/assets/images/zucchipakoda.png',
-      category: 'appetizer',
-      featured: false,
-      label: '',
-      price: '1.99',
-      description: 'Deep fried Zucchini coated with mildly spiced Chickpea flour batter accompanied with a sweet-tangy tamarind sauce',
-      comments: [
-        {
-          rating: 3,
-          text: 'Eat it, just eat it!',
-          author: 'Michael Jaikishan',
-          date: '2015-02-13T17:57:28.556094Z'
-        }, {
-          rating: 4,
-          text: 'Ultimate, Reaching for the stars!',
-          author: 'Ringo Starry',
-          date: '2013-12-02T17:57:28.556094Z'
-        }
-      ]
-    }, {
-      id: '2',
-      name: 'Vadonut',
-      image: '/assets/images/vadonut.png',
-      category: 'appetizer',
-      featured: false,
-      label: 'New',
-      price: '1.99',
-      description: 'A quintessential ConFusion experience, is it a vada or is it a donut?',
-      comments: [
-        {
-          rating: 2,
-          text: 'It\'s your birthday, we\'re gonna party!',
-          author: '25 Cent',
-          date: '2011-12-02T17:57:28.556094Z'
-        }
-      ]
-    }
-  ]
 
-  constructor() {
+  constructor(private http: HttpClient,
+              private processHTTPMsgService: ProcessHTTPMsgService) {
   }
 
   getDishes(): Observable<Dish[]> {
-    return of(this.dishes).pipe(delay(2000));
+    return this.http.get<Dish[]>(baseURL + 'dishes').pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
-  getDish(id: string): Observable<Dish> {
-    return of(this.dishes.filter((dish) => (dish.id === id))[0]).pipe(delay(2000));
+  getDish(id: number): Observable<Dish> {
+    return this.http.get<Dish>(baseURL + 'dishes/' + id).pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
   getFeaturedDish(): Observable<Dish> {
-    return of(this.dishes.filter((dish) => dish.featured)[0]).pipe(delay(2000));
+    return this.http.get<Dish[]>(baseURL + 'dishes?featured=true').pipe(map(dishes => dishes[0])).pipe(catchError(this.processHTTPMsgService.handleError));
   }
 
-  getDishIds(): Observable<string[] | any> {
-    return of(this.dishes.map(dish => dish.id));
+  getDishIds(): Observable<number[] | any> {
+    return this.getDishes().pipe(map(dishes => dishes.map(dish => dish.id))).pipe(catchError(error => error));
+  }
+
+  putDish(dish: Dish): Observable<Dish> {
+    const httpOptions = {headers: new HttpHeaders({'Content-Type': 'application/json'})};
+    return this.http.put<Dish>(baseURL + 'dishes/' + dish.id, dish, httpOptions).pipe(catchError(this.processHTTPMsgService.handleError));
   }
 }

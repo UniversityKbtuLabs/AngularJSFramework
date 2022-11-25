@@ -68,31 +68,23 @@ export class ContactComponent implements OnInit {
 
   private onValueChanged(data: ɵTypedOrUntyped<any, ɵFormGroupValue<any>, any>) {
     if (data && data.firstname) {
-      if (data.firstname.length === 0) {
-        this.formErrors.firstname = this.validationMessages.firstname.required
-      } else if (data.firstname.length < 2) {
+      if (data.firstname.length < 2 && data.firstname.length > 0) {
         this.formErrors.firstname = this.validationMessages.firstname.minlength
       } else if (data.firstname.length > 25) {
         this.formErrors.firstname = this.validationMessages.firstname.maxlength
-      } else {
-        this.formErrors.firstname = ''
       }
+    } else {
+      this.formErrors.firstname = ''
     }
     if (data && data.lastname) {
-      if (data.lastname.length === 0) {
-        this.formErrors.lastname = this.validationMessages.lastname.required
-      } else if (data.firstname.length < 2) {
+      if (data.firstname.length < 2 && data.lastname.length > 0) {
         this.formErrors.lastname = this.validationMessages.lastname.minlength
       } else if (data.firstname.length > 25) {
         this.formErrors.lastname = this.validationMessages.lastname.maxlength
-      } else {
-        this.formErrors.lastname = ''
       }
+    } else {
+      this.formErrors.lastname = ''
     }
     console.log(data)
-  }
-
-  isPhoneNumber(number: string) {
-
   }
 }

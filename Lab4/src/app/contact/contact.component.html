@@ -44,8 +44,12 @@
         <mat-form-field class="half-width">
           <input formControlName="firstname" placeholder="First Name" type="text" required>
           <p class="input_error"
-             *ngIf="formErrors.firstname">First
+             *ngIf="formErrors.firstname">
             {{formErrors.firstname}}
+          </p>
+          <p class="input_error"
+             *ngIf="feedbackForm.get('firstname').hasError('required') && feedbackForm.get('firstname').touched">
+            {{validationMessages.firstname.required}}
           </p>
         </mat-form-field>
         <mat-form-field class="half-width">
@@ -54,21 +58,25 @@
              *ngIf="formErrors.lastname">
             {{formErrors.lastname}}
           </p>
+          <p class="input_error"
+             *ngIf="feedbackForm.get('lastname').hasError('required') && feedbackForm.get('lastname').touched">
+            {{validationMessages.lastname.required}}
+          </p>
         </mat-form-field>
       </div>
       <div>
         <mat-form-field class="half-width">
           <input formControlName="telnum" placeholder="Tel. Number" type="tel" required>
           <p class="input_error"
-             *ngIf="formErrors.telnum">Tel.
-            {{formErrors.telnum}}
+             *ngIf="feedbackForm.get('telnum').hasError('required') && feedbackForm.get('telnum').touched">
+            {{validationMessages.telnum.required}}
           </p>
         </mat-form-field>
         <mat-form-field class="half-width">
           <input formControlName="email" placeholder="Email" type="email" required>
           <p class="input_error"
-             *ngIf="formErrors.email">Email
-            {{formErrors.email}}
+             *ngIf="feedbackForm.get('email').hasError('required') && feedbackForm.get('email').touched">
+            {{validationMessages.email.required}}
           </p>
         </mat-form-field>
       </div>

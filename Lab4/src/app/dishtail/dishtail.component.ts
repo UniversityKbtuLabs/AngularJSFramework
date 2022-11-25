@@ -3,6 +3,8 @@ import {Dish} from "../shared/models/Dish";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {DishService} from "../services/dish.service";
 import {switchMap} from "rxjs";
+import {baseURL} from "../shared/baseurl";
+import {Comment} from "../shared/models/Comment";
 
 @Component({
   selector: 'app-dishtail',
@@ -14,8 +16,17 @@ export class DishtailComponent implements OnInit {
   dishIds: string[];
   prev: string;
   next: string;
+  dishcopy: Dish;
+  comment: Comment;
+  errMess: string;
+  rate: number;
+  commentText: string;
+  baseUrl = baseURL
 
-  constructor(private activatedRoute: ActivatedRoute, private dishService: DishService, private router: Router, private changeDetector: ChangeDetectorRef) {
+  constructor(private activatedRoute: ActivatedRoute,
+              private dishService: DishService,
+              private router: Router,
+              private changeDetector: ChangeDetectorRef) {
   }
 
   ngOnInit() {
@@ -24,7 +35,10 @@ export class DishtailComponent implements OnInit {
         this.dish = null
         this.dishService.getDish(params['id']).subscribe(dish => {
           this.dish = dish;
+          this.dishcopy = dish
           this.setPrevNext(dish.id);
+        }, error => {
+          console.log(error)
         });
       }
     )
@@ -38,5 +52,23 @@ export class DishtailComponent implements OnInit {
     const index = this.dishIds.indexOf(dishId);
     this.prev = this.dishIds[(this.dishIds.length + index - 1) % this.dishIds.length];
     this.next = this.dishIds[(this.dishIds.length + index + 1) % this.dishIds.length];
+  }
+
+  onSubmit() {
+    this.comment = {
+      rating: this.rate,
+      text: this.commentText,
+      author: "Edige",
+      date: String(Date.now())
+    }
+    this.dishcopy.comments.push(this.comment);
+    this.dishService.putDish(this.dishcopy).subscribe(dish => {
+      this.dish = dish;
+      this.dishcopy = dish;
+    }, errmess => {
+      this.dish = null;
+      this.dishcopy = null;
+      this.errMess = <any>errmess;
+    });
   }
 }

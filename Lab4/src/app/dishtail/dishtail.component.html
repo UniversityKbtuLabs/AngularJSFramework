@@ -17,7 +17,7 @@
         <h3 *ngIf="dish">{{dish.name | uppercase}}</h3>
       </mat-card-title>
     </mat-card-header>
-    <img mat-card-image src="{{dish.image}}" alt="{{dish.name}}">
+    <img mat-card-image src="{{ baseUrl + dish.image }}" alt="{{dish.name}}">
     <mat-card-content>
       <p>{{dish.description}}</p>
     </mat-card-content>
@@ -38,6 +38,12 @@
         <p>{{comment.rating}}</p>
         <p>-- {{comment.author}} {{comment.date | date}}</p>
       </div>
+    </div>
+
+    <div class="comments_form">
+      <input class="comments_input" type="text" placeholder="Comment" [(ngModel)]="commentText">
+      <input class="comments_input" type="number" min="1" max="5" placeholder="Rate" [(ngModel)]="rate">
+      <button class="comments_submit" (click)="onSubmit()">Submit comment</button>
     </div>
   </div>
 </div>
