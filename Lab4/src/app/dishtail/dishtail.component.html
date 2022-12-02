@@ -10,7 +10,7 @@
     <span class="fa fa-chevron-right fa-lg">Next dish</span>
   </button>
 </div>
-<div fxFlex *ngIf="dish" class="mt_36 dish_info">
+<div fxFlex *ngIf="dish" [@visibility]="visibility" class="mt_36 dish_info">
   <mat-card class="dish_info_main">
     <mat-card-header>
       <mat-card-title>

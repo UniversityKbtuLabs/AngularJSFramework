@@ -7,7 +7,7 @@
 
   <div fxFlex class="dish_menu" *ngIf="dishes">
     <mat-grid-list cols="2" rowHeight="200px">
-      <mat-grid-tile *ngFor="let dish of dishes" class="dish_tile" (click)="goToDishPage(dish)">
+      <mat-grid-tile *ngFor="let dish of dishes" class="dish_tile" (click)="goToDishPage(dish)" appHighlight>
         <img height="200px" src="{{ baseUrl + dish.image }}" alt="{{dish.name}}">
         <mat-grid-tile-footer>
           <h1>{{dish.name | uppercase}}</h1>

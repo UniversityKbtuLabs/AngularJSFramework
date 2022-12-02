@@ -2,14 +2,16 @@ import {ChangeDetectorRef, Component, Input, OnInit} from '@angular/core';
 import {Dish} from "../shared/models/Dish";
 import {ActivatedRoute, Params, Router} from "@angular/router";
 import {DishService} from "../services/dish.service";
-import {switchMap} from "rxjs";
 import {baseURL} from "../shared/baseurl";
 import {Comment} from "../shared/models/Comment";
+import {expand, flyInOut, visibility} from "../animations/animation";
 
 @Component({
   selector: 'app-dishtail',
   templateUrl: './dishtail.component.html',
-  styleUrls: ['./dishtail.component.scss']
+  styleUrls: ['./dishtail.component.scss'],
+  host: {'[@flyInOut]': 'true', 'style': 'display: block;'},
+  animations: [visibility(), flyInOut(), expand()]
 })
 export class DishtailComponent implements OnInit {
   public dish: Dish | undefined
@@ -22,6 +24,7 @@ export class DishtailComponent implements OnInit {
   rate: number;
   commentText: string;
   baseUrl = baseURL
+  visibility = 'hidden';
 
   constructor(private activatedRoute: ActivatedRoute,
               private dishService: DishService,
@@ -33,10 +36,14 @@ export class DishtailComponent implements OnInit {
     this.dishService.getDishIds().subscribe(dishIds => this.dishIds = dishIds);
     this.activatedRoute.params.subscribe((params: Params) => {
         this.dish = null
+        this.visibility = 'hidden'
         this.dishService.getDish(params['id']).subscribe(dish => {
           this.dish = dish;
           this.dishcopy = dish
           this.setPrevNext(dish.id);
+          setTimeout(() => {
+            this.visibility = 'shown'
+          }, 500);
         }, error => {
           console.log(error)
         });

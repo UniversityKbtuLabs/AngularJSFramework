@@ -26,6 +26,7 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 import {MatSelectModule} from "@angular/material/select";
 import {MatProgressSpinnerModule} from "@angular/material/progress-spinner";
 import {HttpClient, HttpClientModule} from "@angular/common/http";
+import { HighlightDirective } from './directives/highlight.directive';
 
 @NgModule({
   declarations: [
@@ -37,7 +38,8 @@ import {HttpClient, HttpClientModule} from "@angular/common/http";
     AboutComponent,
     HomeComponent,
     ContactComponent,
-    LoginModalComponent
+    LoginModalComponent,
+    HighlightDirective
   ],
   imports: [
     BrowserModule,
