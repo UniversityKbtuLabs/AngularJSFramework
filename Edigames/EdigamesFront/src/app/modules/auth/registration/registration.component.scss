@@ -1,0 +1,102 @@
+.register {
+  height: 710px;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../../../assets/images/auth_page_bg.jpg");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+
+  &_back {
+    display: flex;
+    flex-direction: row;
+    cursor: pointer;
+    margin-left: 50px;
+    margin-top: 50px;
+
+    &_img {
+      width: 48px;
+      height: 48px;
+    }
+
+    &_text {
+      margin-top: auto;
+      margin-bottom: auto;
+      font-size: 24px;
+      font-family: sans-serif;
+      color: #e9a401;
+    }
+  }
+
+  &_form {
+    width: 400px;
+    margin-top: 24px;
+    margin-left: 200px;
+    padding: 24px 48px;
+    border-radius: 24px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+    background-color: rgba(40, 29, 45, 0.8);
+  }
+
+  &_title {
+    font-size: 48px;
+    font-weight: bold;
+    font-family: sans-serif;
+    margin-left: auto;
+    margin-right: auto;
+    color: #FFFFFF;
+  }
+
+  &_input {
+    font-size: 16px;
+    background: #e0dede;
+    padding: 12px 10px;
+    border: none;
+    outline: none;
+    border-radius: 5px;
+  }
+
+  &_reg {
+    &_wrapper {
+      width: 300px;
+      margin-left: auto;
+      margin-right: auto;
+      display: flex;
+      flex-direction: column;
+      border: #FFFFFF solid 1px;
+      border-radius: 16px;
+
+      &:hover {
+        border: #e9a401 solid 1px;
+        cursor: pointer;
+      }
+    }
+
+    &_text {
+      margin: 8px auto;
+      color: #FFFFFF;
+    }
+  }
+
+  &_btn {
+    width: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    color: #FFFFFF;
+    background: #573b8a;
+    font-size: 16px;
+    font-weight: bold;
+    outline: none;
+    border: none;
+    border-radius: 5px;
+    transition: .2s ease-in;
+    cursor: pointer;
+
+    &:hover {
+      background: #6d44b8;
+    }
+  }
+}

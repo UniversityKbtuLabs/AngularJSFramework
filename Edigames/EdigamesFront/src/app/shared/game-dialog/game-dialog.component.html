@@ -1,0 +1,40 @@
+<div class="game_dialog">
+  <div class="game_dialog_header">
+    <p class="game_dialog_header_title">{{dialogGame.name}}</p>
+    <img class="game_dialog_header_close" src="assets/images/close_btn.png" (click)="closeDialog()">
+  </div>
+  <div class="game_dialog_body">
+    <img class="game_dialog_body_img" src="{{dialogGame.image}}">
+    <div class="game_dialog_body_info">
+      <div class="game_dialog_body_info_wrapper">
+        <p class="game_dialog_body_info_field">
+          Название
+        </p>
+        <p class="game_dialog_body_info_data">
+          {{dialogGame.name}}
+        </p>
+      </div>
+      <div class="game_dialog_body_info_wrapper">
+        <p class="game_dialog_body_info_field">
+          Жанр
+        </p>
+        <p class="game_dialog_body_info_data">
+          {{dialogGame.genre}}
+        </p>
+      </div>
+      <div class="game_dialog_body_info_wrapper">
+        <p class="game_dialog_body_info_field">
+          Год
+        </p>
+        <p class="game_dialog_body_info_data">
+          {{dialogGame.year}}
+        </p>
+      </div>
+    </div>
+  </div>
+  <div class="game_dialog_footer">
+    <button class="game_dialog_footer_cart_btn">
+      В корзину
+    </button>
+  </div>
+</div>

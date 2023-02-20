@@ -1,0 +1,28 @@
+<div class="login">
+  <div class="login_back" (click)="back()">
+    <img class="login_back_img" src="assets/images/arrow_back.png">
+    <p class="login_back_text">Вернуться</p>
+  </div>
+  <div class="login_form" [formGroup]="loginForm">
+    <p class="login_title">Логин</p>
+    <input class="login_input"
+           placeholder="Username"
+           formControlName="username"
+           maxlength="20">
+    <input class="login_input"
+           placeholder="Password"
+           formControlName="password"
+           maxlength="20">
+    <div class="login_reg_wrapper" (click)="moveToRegister()">
+      <p class="login_reg_text">
+        Нет зарегестрированы в Edigames?
+      </p>
+      <p class="login_reg_text">
+        Присоедениться
+      </p>
+    </div>
+    <button class="login_btn" (click)="login()">
+      <p>Войти</p>
+    </button>
+  </div>
+</div>

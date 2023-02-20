@@ -1,0 +1,21 @@
+<div class="game_list">
+  <div class="game_list_wrapper">
+    <div class="section_main">
+      <div class="section_game" *ngFor="let item of [1,1,1,1,1,1,1]" (click)="openGameDialog()">
+        <div class="section_game_info">
+          <p class="section_game_info_name">
+            Assasin's creed origins
+          </p>
+          <p class="section_game_info_price">
+            1000 тг
+          </p>
+        </div>
+      </div>
+    </div>
+    <div class="section_filter">
+      <button class="section_filter_option" *ngFor="let option of [1,1,1,1,1,1,1,1]">
+        <p class="section_filter_option_name">Игры 2022 года</p>
+      </button>
+    </div>
+  </div>
+</div>

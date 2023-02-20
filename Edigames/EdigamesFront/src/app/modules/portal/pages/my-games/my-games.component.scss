@@ -1,0 +1,63 @@
+.cart {
+  height: 1020px;
+  display: flex;
+  flex-direction: column;
+  background-image: url("../../../../../assets/images/breadcrumb_bg.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+
+  &_title {
+    margin-left: auto;
+    margin-right: auto;
+    font-family: sans-serif;
+    font-size: 48px;
+    margin-bottom: 32px;
+    font-weight: bold;
+    color: #e9a401;
+  }
+
+  &_wrapper {
+    width: 78%;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 150px;
+    display: flex;
+    flex-direction: column;
+    row-gap: 24px;
+  }
+
+  &_list {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    column-gap: 64px;
+    row-gap: 32px;
+  }
+
+  &_game {
+    height: 300px;
+    width: 530px;
+    background: rgba(255, 255, 255, 0.1);
+    display: flex;
+    flex-direction: row;
+    column-gap: 24px;
+
+    &_img {
+      width: 250px;
+    }
+
+    &_info {
+      display: flex;
+      flex-direction: column;
+
+      &_field {
+        width: 100px;
+        color: #FFFFFF;
+        font-size: 16px;
+        font-family: sans-serif;
+        font-weight: bold;
+      }
+    }
+  }
+}

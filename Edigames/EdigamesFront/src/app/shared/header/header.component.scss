@@ -1,0 +1,92 @@
+.header {
+  position: fixed;
+  height: 100px;
+  width: 100%;
+  padding: 24px 48px;
+  background-color: rgba(40, 29, 45, 0.7);
+  display: flex;
+  flex-direction: row;
+
+  &_logo {
+    width: 50%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+
+    &_img {
+      width: 90px;
+      height: 90px;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+
+    &_title {
+      color: #e9a401;
+      font-size: 40px;
+      font-family: monospace;
+      font-weight: bold;
+      margin-top: auto;
+      margin-bottom: auto;
+    }
+  }
+
+  &_pages {
+    height: 100%;
+    width: 50%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    padding-left: 30%;
+
+    &_btn {
+      height: 48px;
+      margin-top: auto;
+      margin-bottom: auto;
+      padding: 8px 16px;
+      border: none;
+      outline: none;
+      background-color: rgba(40, 29, 45, 0);
+      color: #FFFFFF;
+      transform: skewX(-16deg);
+
+      &:hover {
+        background-color: #e9a401;
+        transition: 0.2s linear;
+        color: #281d2d;
+      }
+    }
+
+    &_name {
+      font-size: 20px;
+      font-weight: bold;
+      font-family: sans-serif;
+      margin-top: auto;
+      margin-bottom: auto;
+      transform: skewX(16deg);
+    }
+
+    &_cart {
+      height: 32px;
+      width: 32px;
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-left: 32px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+
+    &_login {
+      height: 32px;
+      width: 32px;
+      margin-top: auto;
+      margin-bottom: auto;
+      margin-left: 24px;
+
+      &:hover {
+        cursor: pointer;
+      }
+    }
+  }
+}

@@ -1,0 +1,78 @@
+.game_dialog {
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  row-gap: 32px;
+  background: linear-gradient(to top, rgba(#cffffe, 0.3), rgba(#f9f7d9, 0.3), rgba(#fce2ce, 0.3), rgba(#cffffe, 0.3));
+
+  &_header {
+    display: flex;
+    flex-direction: row;
+
+    &_title {
+      margin-left: 30%;
+      font-family: sans-serif;
+      font-size: 24px;
+      font-weight: bold;
+    }
+
+    &_close {
+      width: 24px;
+      height: 24px;
+      margin-left: auto;
+      cursor: pointer;
+    }
+  }
+
+  &_body {
+    display: flex;
+    flex-direction: row;
+    column-gap: 24px;
+
+    &_img {
+      width: 300px;
+      height: 320px;
+    }
+
+    &_info {
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+
+      &_wrapper {
+        display: flex;
+        flex-direction: row;
+        column-gap: 24px;
+      }
+
+      &_field {
+        width: 150px;
+        font-size: 16px;
+        font-weight: bold;
+        font-family: sans-serif;
+      }
+
+      &_data {
+        font-size: 16px;
+        font-weight: bold;
+        font-family: sans-serif;
+      }
+    }
+  }
+
+  &_footer {
+    display: flex;
+    flex-direction: row;
+
+    &_cart_btn {
+      font-size: 18px;
+      font-family: sans-serif;
+      font-weight: bold;
+      padding: 16px 24px;
+      border-radius: 8px;
+      border: none;
+      outline: none;
+      cursor: pointer;
+    }
+  }
+}
